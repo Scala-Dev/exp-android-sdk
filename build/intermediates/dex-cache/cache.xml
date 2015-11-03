@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit/retrofit/2.0.0-beta2/880d9e0997b2d1bfc98e0d121ced33ee5d04aac4/retrofit-2.0.0-beta2.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="880d9e0997b2d1bfc98e0d121ced33ee5d04aac4">
+        <dex dex="/Users/cesar/ExpAndroidSDK/app/build/intermediates/pre-dexed/debug/retrofit-2.0.0-beta2-e7b79aef96dc942c69e34288f41d8d5d42ecc425.jar" />
+    </item>
+    <item
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.4.0/d6a66c7a5f01cf500377bd669507a08cfeba882a/jackson-annotations-2.4.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="d6a66c7a5f01cf500377bd669507a08cfeba882a">
+        <dex dex="/Users/cesar/ExpAndroidSDK/app/build/intermediates/pre-dexed/debug/jackson-annotations-2.4.0-b57020fd2c6280fee81412e886c39894b16ac15d.jar" />
+    </item>
+    <item
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.5.0/4de2b4ed3445c37ec1720a7d214712e845a24636/okhttp-2.5.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4de2b4ed3445c37ec1720a7d214712e845a24636">
+        <dex dex="/Users/cesar/ExpAndroidSDK/app/build/intermediates/pre-dexed/debug/okhttp-2.5.0-4ba977c5fbe6b6ce050081efca087385bcb1be60.jar" />
+    </item>
+    <item
+        jar="/Users/cesar/exp-android-sdk/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="d84409890828e07d344a3b9b1da545dba9897b51">
+        <dex dex="/Users/cesar/exp-android-sdk/app/build/intermediates/pre-dexed/debug/classes-31f5f150f9c8cb0d31d228adc334ee294c73bdf5.jar" />
+    </item>
+    <item
+        jar="/Users/cesar/ExpAndroidSDK/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="d84409890828e07d344a3b9b1da545dba9897b51">
+        <dex dex="/Users/cesar/ExpAndroidSDK/app/build/intermediates/pre-dexed/debug/classes-879001217a67e0b4c49a42d102689aa87079f769.jar" />
+    </item>
+    <item
+        jar="/Users/cesar/exp-android-sdk/app/build/intermediates/exploded-aar/io.reactivex/rxandroid/1.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="aa81bfe8c5cc88c2472ca936ae71f0c3dd1766df">
+        <dex dex="/Users/cesar/exp-android-sdk/app/build/intermediates/pre-dexed/debug/classes-39b7b12dee1456b4f715944a19d3055578902b7c.jar" />
+    </item>
+    <item
+        jar="/Users/cesar/ExpAndroidSDK/app/build/intermediates/exploded-aar/io.reactivex/rxandroid/1.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="aa81bfe8c5cc88c2472ca936ae71f0c3dd1766df">
+        <dex dex="/Users/cesar/ExpAndroidSDK/app/build/intermediates/pre-dexed/debug/classes-2cbf024c7b81cba78edf2a44ccfa753d20272410.jar" />
+    </item>
+    <item
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit/adapter-rxjava/2.0.0-beta2/3a233746381a03dbb0f5f3ed10b11c3e72dba499/adapter-rxjava-2.0.0-beta2.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3a233746381a03dbb0f5f3ed10b11c3e72dba499">
+        <dex dex="/Users/cesar/ExpAndroidSDK/app/build/intermediates/pre-dexed/debug/adapter-rxjava-2.0.0-beta2-ba18c5d9b27581050096903150ac8bb6350d6960.jar" />
+    </item>
+    <item
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.3.1/ecb6e1f8e4b0e84c4b886c2f14a1500caf309757/gson-2.3.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="ecb6e1f8e4b0e84c4b886c2f14a1500caf309757">
+        <dex dex="/Users/cesar/ExpAndroidSDK/app/build/intermediates/pre-dexed/debug/gson-2.3.1-0e7292dbecbf09fcc743d47c94eac0f9808e4fdc.jar" />
+    </item>
+    <item
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.4.2/8e31266a272ad25ac4c089734d93e8d811652c1f/jackson-databind-2.4.2.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="8e31266a272ad25ac4c089734d93e8d811652c1f">
+        <dex dex="/Users/cesar/ExpAndroidSDK/app/build/intermediates/pre-dexed/debug/jackson-databind-2.4.2-0c211580d01feed5a9bb84a00ac53e1fbf95fc70.jar" />
+    </item>
+    <item
+        jar="/Users/cesar/exp-android-sdk/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/jars/libs/internal_impl-22.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
+        <dex dex="/Users/cesar/exp-android-sdk/app/build/intermediates/pre-dexed/debug/internal_impl-22.0.0-c6dfdd027354279a12d9b9729dafe24fbb427d99.jar" />
+    </item>
+    <item
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.4.2/ceb72830d95c512b4b300a38f29febc85bdf6e4b/jackson-core-2.4.2.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="ceb72830d95c512b4b300a38f29febc85bdf6e4b">
+        <dex dex="/Users/cesar/ExpAndroidSDK/app/build/intermediates/pre-dexed/debug/jackson-core-2.4.2-9902fc911927c78138cf4539cb18fcfb4a9a3dc4.jar" />
+    </item>
+    <item
+        jar="/Users/cesar/ExpAndroidSDK/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
+        <dex dex="/Users/cesar/ExpAndroidSDK/app/build/intermediates/pre-dexed/debug/classes-0f7fffa7ca8e900effc1be1f8d2b84ad34eca3ce.jar" />
+    </item>
+    <item
+        jar="/Users/cesar/exp-android-sdk/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
+        <dex dex="/Users/cesar/exp-android-sdk/app/build/intermediates/pre-dexed/debug/classes-f60c3f3c66a2d86700241faa66bb0ef2f3c8d3d5.jar" />
+    </item>
+    <item
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit/converter-gson/2.0.0-beta2/392c3d09e0f5e7087544093cc0cb23bb9c7af5fa/converter-gson-2.0.0-beta2.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="392c3d09e0f5e7087544093cc0cb23bb9c7af5fa">
+        <dex dex="/Users/cesar/ExpAndroidSDK/app/build/intermediates/pre-dexed/debug/converter-gson-2.0.0-beta2-56d920bdb7a6f551e12e01af6923d5d88ca5c6e8.jar" />
+    </item>
+    <item
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/io.jsonwebtoken/jjwt/0.6.0/3c8a7897b9ca31c83d3dd364be7f75ce5cd417d7/jjwt-0.6.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3c8a7897b9ca31c83d3dd364be7f75ce5cd417d7">
+        <dex dex="/Users/cesar/ExpAndroidSDK/app/build/intermediates/pre-dexed/debug/jjwt-0.6.0-54ce5e99105cfa9e0e27a7fd99fb44c897003037.jar" />
+    </item>
+    <item
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/io.reactivex/rxjava/1.0.14/898f9ab61e2a23afd615f0b0389478bec86f49f9/rxjava-1.0.14.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="898f9ab61e2a23afd615f0b0389478bec86f49f9">
+        <dex dex="/Users/cesar/ExpAndroidSDK/app/build/intermediates/pre-dexed/debug/rxjava-1.0.14-91e4b430abc0d1f9ae97e8b88b664b23dea78979.jar" />
+    </item>
+    <item
+        jar="/Users/cesar/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.0.0/support-annotations-22.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
+        <dex dex="/Users/cesar/ExpAndroidSDK/app/build/intermediates/pre-dexed/debug/support-annotations-22.0.0-c0e249caec829fe7c98f930f7bf21c43efb5e0e7.jar" />
+    </item>
+    <item
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.6.0/98476622f10715998eacf9240d6b479f12c66143/okio-1.6.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="98476622f10715998eacf9240d6b479f12c66143">
+        <dex dex="/Users/cesar/ExpAndroidSDK/app/build/intermediates/pre-dexed/debug/okio-1.6.0-5c79c14cbb3b5a201af5cd3be72e10c4696c26b4.jar" />
+    </item>
+    <item
+        jar="/Users/cesar/ExpAndroidSDK/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/jars/libs/internal_impl-22.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
+        <dex dex="/Users/cesar/ExpAndroidSDK/app/build/intermediates/pre-dexed/debug/internal_impl-22.0.0-a552c1a198285cd0c461cdbfa633e14522eae92b.jar" />
+    </item>
+
+</items>
