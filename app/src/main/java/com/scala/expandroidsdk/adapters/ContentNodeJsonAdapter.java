@@ -16,19 +16,23 @@ import java.util.List;
  * Created by Cesar Oyarzun on 10/30/15.
  */
 public class ContentNodeJsonAdapter implements JsonDeserializer<ContentNode> {
+
+    public static final String SUBTYPE = "subtype";
+    public static final String CHILDREN = "children";
+
     @Override
     public ContentNode deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext
             context) throws JsonParseException {
 
         LinkedTreeMap treeMap = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
-        String subtype = (String) treeMap.get("subtype");
+        String subtype = (String) treeMap.get(SUBTYPE);
         ContentNode contentNode = new ContentNode(ContentNode.fromString(subtype));
         contentNode.setProperties(treeMap);
-        List<LinkedTreeMap> children = (List<LinkedTreeMap>) treeMap.get("children");
+        List<LinkedTreeMap> children = (List<LinkedTreeMap>) treeMap.get(CHILDREN);
         if(!children.isEmpty()){
             List<ContentNode> childrenList = new ArrayList<ContentNode>();
             for (LinkedTreeMap child : children) {
-                String subtypeChild = (String) child.get("subtype");
+                String subtypeChild = (String) child.get(SUBTYPE);
                 ContentNode childContentNode = new ContentNode(ContentNode.fromString(subtypeChild));
                 LinkedTreeMap treeMapChild = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
                 childContentNode.setProperties(treeMapChild);
@@ -36,6 +40,6 @@ public class ContentNodeJsonAdapter implements JsonDeserializer<ContentNode> {
             }
             contentNode.setChildren(childrenList);
         }
-            return contentNode;
+        return contentNode;
     }
 }

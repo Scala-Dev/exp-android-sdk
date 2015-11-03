@@ -15,8 +15,14 @@ import com.scala.expandroidsdk.model.Thing;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
+import rx.Observable;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -33,154 +39,68 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        Exp.start(host, uuid, secret).then(new Subscriber<Object>() {
-            @Override
-            public void onCompleted() {}
-
-            @Override
-            public void onError(Throwable e) {}
-
-            @Override
-            public void onNext(Object o) {
-                Log.e("Response", o.toString());
-            }
-        });
-
-
-//        Exp.start(host, uuid, secret).then(new Subscriber<Object>() {
-//            @Override
-//            public void onCompleted() {}
-//
-//            @Override
-//            public void onError(Throwable e) {}
-//
-//            @Override
-//            public void onNext(Object o) {
-//                Log.e("Response", o.toString());
-//            }
-//        });
-
-        Exp.getThing("052a2419-0621-45ad-aa03-3747dbfe2b6d")
-                .then(new Subscriber<Thing>() {
+        Exp.start(host, user, password, org)
+                .subscribe(new Action1() {
                     @Override
-                    public void onCompleted() {
+                    public void call(Object o) {
+
+                        Exp.getThing("052a2419-0621-45ad-aa03-3747dbfe2b6d")
+                                .then(new Subscriber<Thing>() {
+                                    @Override
+                                    public void onCompleted() {}
+                                    @Override
+                                    public void onError(Throwable e) {Log.e("error", e.toString());}
+
+                                    @Override
+                                    public void onNext(Thing thing) {
+                                        Object zones = thing.get("location.zones");
+                                        Log.e("Response", thing.toString());
+                                    }
+                                });
+
+                        Exp.findExperiences("10","0","asc").then(new Subscriber<ResultExperience>() {
+                            @Override
+                            public void onCompleted() {}
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e("error", e.toString());
+                            }
+
+                            @Override
+                            public void onNext(ResultExperience resultExperience) {
+                                Log.e("Response", resultExperience.toString());
+                            }
+                        });
+
+                        Exp.findLocation("10","0","asc").then(new Subscriber<ResultLocation>() {
+                            @Override
+                            public void onCompleted() {}
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e("error", e.toString());
+                            }
+
+                            @Override
+                            public void onNext(ResultLocation resultExperience) {
+                                Log.e("Response", resultExperience.toString());
+                            }
+                        });
+
+                        Exp.getContentNode("d24c6581-f3d2-4d5a-b6b8-e90a4812d7df")
+                                .then(new Subscriber<ContentNode>() {
+                                    @Override
+                                    public void onCompleted() {}
+                                    @Override
+                                    public void onError(Throwable e) {Log.e("error", e.toString());}
+
+                                    @Override
+                                    public void onNext(ContentNode thing) {
+                                        Log.e("Response", thing.toString());
+                                    }
+                                });
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("error", e.toString());
-                    }
-
-                    @Override
-                    public void onNext(Thing thing) {
-                        Object o = thing.get("location.zones");
-                        Log.e("Response", thing.toString());
-                    }
                 });
-
-        Exp.getDevice("caffba04-47a4-4575-a9e1-e6cdbce0f7ee")
-                .then(new Subscriber<Device>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("error", e.toString());
-                    }
-
-                    @Override
-                    public void onNext(Device thing) {
-                        Object o = thing.get("location.zones");
-                        Log.e("Response", thing.toString());
-                    }
-                });
-
-
-        Map<String,String> optionsThings = new HashMap<>();
-        optionsThings.put("limit", "10");
-        optionsThings.put("skip", "0");
-        optionsThings.put("sort", "asc");
-
-        Exp.findthings(optionsThings).then(new Subscriber<ResultThing>() {
-            @Override
-            public void onCompleted() {
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e("error", e.toString());
-            }
-
-            @Override
-            public void onNext(ResultThing resultThing) {
-                Log.e("Response", resultThing.toString());
-            }
-        });
-
-
-        Map<String,String> optionsExp = new HashMap<>();
-        optionsExp.put("limit","10");
-        optionsExp.put("skip", "0");
-        optionsExp.put("sort", "asc");
-
-        Exp.findExperiences(optionsExp).then(new Subscriber<ResultExperience>() {
-            @Override
-            public void onCompleted() {
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e("error", e.toString());
-            }
-
-            @Override
-            public void onNext(ResultExperience resultExperience) {
-                Log.e("Response", resultExperience.toString());
-            }
-        });
-
-
-        Map<String,String> optionsLoc = new HashMap<>();
-        optionsLoc.put("limit","10");
-        optionsLoc.put("skip","0");
-        optionsLoc.put("sort", "asc");
-
-        Exp.findLocation(optionsLoc).then(new Subscriber<ResultLocation>() {
-            @Override
-            public void onCompleted() {
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e("error", e.toString());
-            }
-
-            @Override
-            public void onNext(ResultLocation resultExperience) {
-                Log.e("Response", resultExperience.toString());
-            }
-        });
-
-        Exp.getContentNode("d24c6581-f3d2-4d5a-b6b8-e90a4812d7df")
-                .then(new Subscriber<ContentNode>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("error", e.toString());
-                    }
-
-                    @Override
-                    public void onNext(ContentNode thing) {
-                        Log.e("Response", thing.toString());
-                    }
-                });
-
-
     }
 
     @Override

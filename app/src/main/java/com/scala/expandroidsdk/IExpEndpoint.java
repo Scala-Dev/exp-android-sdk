@@ -21,6 +21,7 @@ import retrofit.http.QueryMap;
 import rx.Observable;
 
 /**
+ * End Point EXP service
  * Created by Cesar Oyarzun on 10/27/15.
  */
 public interface IExpEndpoint {

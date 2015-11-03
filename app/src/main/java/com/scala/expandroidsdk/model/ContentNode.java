@@ -10,6 +10,12 @@ import java.util.List;
  */
 public class ContentNode extends AbsModel{
 
+    public static final String PATH = "path";
+    public static final String API_DELIVERY = "/api/delivery";
+    public static final String VARIANTS = "variants";
+    public static final String NAME = "name";
+    public static final String INDEX_HTML = "/index.html";
+    public static final String VARIANT = "?variant=";
     private CONTENT_TYPES subtype = null;
     private List<ContentNode> children = null;
 
@@ -46,17 +52,17 @@ public class ContentNode extends AbsModel{
         String url = "";
         switch (this.subtype){
             case APP:
-                String pathApp = (String) this.get("path");
-                url = AppSingleton.getInstance().getHost() + "/api/delivery" + pathApp + "/index.html";
+                String pathApp = (String) this.get(PATH);
+                url = AppSingleton.getInstance().getHost() + API_DELIVERY + pathApp + INDEX_HTML;
                 break;
             case FILE:
-                String pathFile = (String) this.get("path");
-                url = AppSingleton.getInstance().getHost() + "/api/delivery" + pathFile;
+                String pathFile = (String) this.get(PATH);
+                url = AppSingleton.getInstance().getHost() + API_DELIVERY + pathFile;
                 break;
             case FOLDER:
                 break;
             case URL:
-                url = (String) this.get("path");
+                url = (String) this.get(PATH);
                 break;
             case UNKNOW:
                 break;
@@ -65,19 +71,29 @@ public class ContentNode extends AbsModel{
     }
 
 
+    /**
+     * Get Variant URL
+     * @param name
+     * @return
+     */
     public String getVariantUrl(String name){
         if(CONTENT_TYPES.FILE == this.subtype && hasVariant(name)){
-            return getUrl() + "?variant=" + name;
+            return getUrl() + VARIANT + name;
         }
         return "";
     }
 
+    /**
+     * Check for variants
+     * @param name
+     * @return
+     */
     public boolean hasVariant(String name) {
         boolean hasVariant = false;
-        if(get("variants")!= null){
-            List<LinkedTreeMap> variants = (List<LinkedTreeMap>) get("variants");
+        if(get(VARIANTS)!= null){
+            List<LinkedTreeMap> variants = (List<LinkedTreeMap>) get(VARIANTS);
             for(LinkedTreeMap variantsList: variants){
-              String variantName = (String) variantsList.get("name");
+              String variantName = (String) variantsList.get(NAME);
                 if(variantName.equalsIgnoreCase(name)){
                     hasVariant = true;
                     break;
@@ -87,6 +103,11 @@ public class ContentNode extends AbsModel{
         return hasVariant;
     }
 
+    /**
+     * Create Enum from string
+     * @param text
+     * @return
+     */
     public static CONTENT_TYPES fromString(String text) {
         if (text != null) {
             for (CONTENT_TYPES type : CONTENT_TYPES.values()) {
