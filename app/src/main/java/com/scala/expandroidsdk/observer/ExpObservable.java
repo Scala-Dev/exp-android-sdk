@@ -1,4 +1,4 @@
-package com.scala.expandroidsdk.adapters;
+package com.scala.expandroidsdk.observer;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -15,8 +15,8 @@ public class ExpObservable {
         this.observable = observable;
     }
 
-    public Observable map(Func1 func){
-        return this.observable.map(func);
+    public Observable flatMap(Func1 func){
+        return this.observable.flatMap(func);
     }
 
     public Subscription then(Subscriber<?> subscriber){
