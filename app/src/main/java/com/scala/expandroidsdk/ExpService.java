@@ -4,6 +4,7 @@ package com.scala.expandroidsdk;
  * Created by Cesar Oyarzun on 10/27/15.
  */
 
+
 import com.google.gson.GsonBuilder;
 import com.scala.expandroidsdk.adapters.ContentNodeJsonAdapter;
 import com.scala.expandroidsdk.adapters.DeviceJsonAdapter;
@@ -31,6 +32,7 @@ public final class ExpService {
     public static final String AUTHORIZATION = "Authorization";
     public static final String BEARER = "Bearer ";
 
+
     /**
      * Init connection to Rest client TODO make this ExpObservable
      * @param host
@@ -38,6 +40,9 @@ public final class ExpService {
      * @return
      */
     public static Observable init(String host, final String tokenExp)  {
+
+        //create socket connection
+
 
             AppSingleton.getInstance().setHost(host);
             // Define the interceptor, add authentication headers

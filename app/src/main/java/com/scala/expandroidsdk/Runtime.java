@@ -1,6 +1,7 @@
 package com.scala.expandroidsdk;
 
 import com.scala.expandroidsdk.model.Token;
+import com.scala.expandroidsdk.observer.ExpObservable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,14 +14,10 @@ import rx.functions.Func1;
 /**
  * Created by Cesar Oyarzun on 11/2/15.
  */
-public class Runtime {
+public class Runtime extends Exp{
 
-    public static final String TYP = "typ";
-    public static final String JWT = "JWT";
-    public static final String UUID = "uuid";
-    public static final String USERNAME = "username";
-    public static final String PASSWORD = "password";
-    public static final String ORG = "org";
+
+//    private static SocketManager socketManager = null;
 
     /**
      * Start with device credentials Host,UUID,Secret TODO make this ExpObservable
@@ -29,11 +26,11 @@ public class Runtime {
      * @param secret
      * @return
      */
-    public Observable start(String host,String uuid,String secret){
+    public static Observable start(String host, String uuid, String secret){
         Map<String,Object> header = new HashMap<String,Object>();
-        header.put(TYP, JWT);
+        header.put(Utils.TYP, Utils.JWT);
         Map<String,Object> payload = new HashMap<String,Object>();
-        payload.put(UUID, uuid);
+        payload.put(Utils.UUID, uuid);
         String token = Jwts.builder().setHeader(header).setClaims(payload).signWith(SignatureAlgorithm.HS256, secret.getBytes()).compact();
         AppSingleton.getInstance().setToken(token);
         return  ExpService.init(host,token);
@@ -47,20 +44,29 @@ public class Runtime {
      * @param organization
      * @return
      */
-    public Observable start(final String host, String user, String password, String organization){
+    public static Observable   start(final String host, String user, String password, String organization){
         final Map<String,String> options = new HashMap<String,String>();
-        options.put(USERNAME,user);
-        options.put(PASSWORD,password);
-        options.put(ORG, organization);
+        options.put(Utils.USERNAME,user);
+        options.put(Utils.PASSWORD,password);
+        options.put(Utils.ORG, organization);
         return ExpService.init(host)
                 .flatMap(new Func1<Boolean, Observable>() {
                     @Override
                     public Observable call(Boolean result) {
                         return Exp.login(options)
-                                .map(new Func1<Token,Observable>() {
+                                .flatMap(new Func1<Token, Observable>() {
                                     @Override
                                     public Observable call(Token token) {
-                                        return ExpService.init(host,token.getToken());
+                                        AppSingleton.getInstance().setToken(token.getToken());
+                                        AppSingleton.getInstance().setHost(host);
+                                        return ExpService.init(host, token.getToken())
+                                                .flatMap(new Func1<Boolean, Observable>() {
+                                                    @Override
+                                                    public Observable call(Boolean aBoolean) {
+                                                        socketManager = new SocketManager();
+                                                        return socketManager.startSocket();
+                                                    }
+                                                });
                                     }
                                 });
                     }

@@ -1,5 +1,6 @@
 package com.scala.expandroidsdk;
 
+import com.google.gson.JsonObject;
 import com.scala.expandroidsdk.observer.ExpObservable;
 import com.scala.expandroidsdk.model.ContentNode;
 import com.scala.expandroidsdk.model.Device;
@@ -12,10 +13,14 @@ import com.scala.expandroidsdk.model.ResultThing;
 import com.scala.expandroidsdk.model.Thing;
 import com.scala.expandroidsdk.model.Token;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -29,6 +34,8 @@ public class Exp {
     public static final String SKIP = "skip";
     public static final String SORT = "sort";
     private static Runtime runtime = new Runtime();
+    protected static SocketManager socketManager = new SocketManager();
+
 
     /**
      ** Start EXP connection
@@ -197,4 +204,19 @@ public class Exp {
     }
 
 
+    public static void getCurrentExperience(Subscriber subscriber){
+        try {
+            socketManager.getCurrentExperience(subscriber);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getCurrentDevice(Subscriber subscriber){
+        try {
+             socketManager.getCurrentDevice(subscriber);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }
