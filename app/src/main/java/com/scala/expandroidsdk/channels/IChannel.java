@@ -17,10 +17,10 @@ import rx.Subscriber;
 public interface IChannel {
 
     void onResponse(JSONObject response) throws JSONException;
-    void onRequest(JSONObject request);
+    void onRequest(JSONObject request) throws JSONException;
     void onBroadCast(JSONObject broadcast) throws JSONException;
     void request(Map<String,String> message, Subscriber callback) throws JSONException;
-    void broadcast();
+    void broadcast(Map<String,String> message);
     void listen(Map<String,String> message,Subscriber callback);
     void response(Map<String,String> message,Subscriber callback);
     void fling(String uuid);

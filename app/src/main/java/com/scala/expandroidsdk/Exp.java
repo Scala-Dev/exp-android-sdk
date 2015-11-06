@@ -1,6 +1,7 @@
 package com.scala.expandroidsdk;
 
 import com.google.gson.JsonObject;
+import com.scala.expandroidsdk.channels.IChannel;
 import com.scala.expandroidsdk.observer.ExpObservable;
 import com.scala.expandroidsdk.model.ContentNode;
 import com.scala.expandroidsdk.model.Device;
@@ -218,5 +219,9 @@ public class Exp {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public static IChannel getChannel(Utils.SOCKET_CHANNELS channel){
+        return socketManager.getChannel(channel);
     }
 }

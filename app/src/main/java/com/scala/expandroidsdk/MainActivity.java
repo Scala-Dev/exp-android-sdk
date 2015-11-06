@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.scala.expandroidsdk.channels.IChannel;
 import com.scala.expandroidsdk.model.ContentNode;
 import com.scala.expandroidsdk.model.Device;
 import com.scala.expandroidsdk.model.ResultExperience;
@@ -13,6 +14,7 @@ import com.scala.expandroidsdk.model.ResultLocation;
 import com.scala.expandroidsdk.model.ResultThing;
 import com.scala.expandroidsdk.model.Thing;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
@@ -59,92 +61,97 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         AppSingleton.getInstance().setHost(host);
-//        SocketManager socketManager = new SocketManager();
-//        socketManager.startSocket();
-
         Exp.start(host, user, password, org)
                 .subscribe(new Action1() {
                     @Override
                     public void call(Object o) {
 
-                       Subscriber currentExperienceSubs = new Subscriber() {
+                       Subscriber currentExperienceSubs = new Subscriber<JSONObject>() {
                            @Override
                            public void onCompleted() {}
                            @Override
                            public void onError(Throwable e) {Log.d(LOG_TAG, e.toString());}
 
                            @Override
-                           public void onNext(Object o) {
+                           public void onNext(JSONObject o) {
+                               try {
+                                   Object target = o.get("target");
+                                   System.out.println(target);
+                               } catch (JSONException e) {
+                                   e.printStackTrace();
+                               }
                                Log.d(LOG_TAG, o.toString());
                            }
                        };
 
                         Exp.getCurrentExperience(currentExperienceSubs);
+                        IChannel channel = Exp.getChannel(Utils.SOCKET_CHANNELS.SYSTEM);
+                        channel.fling("sdsdsd");
 
-                        Exp.getThing("052a2419-0621-45ad-aa03-3747dbfe2b6d")
-                                .then(new Subscriber<Thing>() {
-                                    @Override
-                                    public void onCompleted() {
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        Log.e("error", e.toString());
-                                    }
-
-                                    @Override
-                                    public void onNext(Thing thing) {
-                                        Object zones = thing.get("location.zones");
-                                        Log.e("Response", thing.toString());
-                                    }
-                                });
-
-                        Exp.findExperiences("10","0","asc")
-                                .then(new Subscriber<ResultExperience>() {
-                                    @Override
-                                    public void onCompleted() {
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        Log.e("error", e.toString());
-                                    }
-
-                                    @Override
-                                    public void onNext(ResultExperience resultExperience) {
-                                        Log.e("Response", resultExperience.toString());
-                                    }
-                                });
-
-                        Exp.findLocation("10","0","asc")
-                                .then(new Subscriber<ResultLocation>() {
-                                    @Override
-                                    public void onCompleted() {
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        Log.e("error", e.toString());
-                                    }
-
-                                    @Override
-                                    public void onNext(ResultLocation resultLocation) {
-                                        Log.e("Response", resultLocation.toString());
-                                    }
-                                });
-
-                        Exp.getContentNode("d24c6581-f3d2-4d5a-b6b8-e90a4812d7df")
-                                .then(new Subscriber<ContentNode>() {
-                                    @Override
-                                    public void onCompleted() {}
-                                    @Override
-                                    public void onError(Throwable e) {Log.e("error", e.toString());}
-
-                                    @Override
-                                    public void onNext(ContentNode contentNode) {
-                                        Log.e("Response", contentNode.toString());
-                                    }
-                                });
+//                        Exp.getThing("052a2419-0621-45ad-aa03-3747dbfe2b6d")
+//                                .then(new Subscriber<Thing>() {
+//                                    @Override
+//                                    public void onCompleted() {
+//                                    }
+//
+//                                    @Override
+//                                    public void onError(Throwable e) {
+//                                        Log.e("error", e.toString());
+//                                    }
+//
+//                                    @Override
+//                                    public void onNext(Thing thing) {
+//                                        Object zones = thing.get("location.zones");
+//                                        Log.e("Response", thing.toString());
+//                                    }
+//                                });
+//
+//                        Exp.findExperiences("10","0","asc")
+//                                .then(new Subscriber<ResultExperience>() {
+//                                    @Override
+//                                    public void onCompleted() {
+//                                    }
+//
+//                                    @Override
+//                                    public void onError(Throwable e) {
+//                                        Log.e("error", e.toString());
+//                                    }
+//
+//                                    @Override
+//                                    public void onNext(ResultExperience resultExperience) {
+//                                        Log.e("Response", resultExperience.toString());
+//                                    }
+//                                });
+//
+//                        Exp.findLocation("10","0","asc")
+//                                .then(new Subscriber<ResultLocation>() {
+//                                    @Override
+//                                    public void onCompleted() {
+//                                    }
+//
+//                                    @Override
+//                                    public void onError(Throwable e) {
+//                                        Log.e("error", e.toString());
+//                                    }
+//
+//                                    @Override
+//                                    public void onNext(ResultLocation resultLocation) {
+//                                        Log.e("Response", resultLocation.toString());
+//                                    }
+//                                });
+//
+//                        Exp.getContentNode("d24c6581-f3d2-4d5a-b6b8-e90a4812d7df")
+//                                .then(new Subscriber<ContentNode>() {
+//                                    @Override
+//                                    public void onCompleted() {}
+//                                    @Override
+//                                    public void onError(Throwable e) {Log.e("error", e.toString());}
+//
+//                                    @Override
+//                                    public void onNext(ContentNode contentNode) {
+//                                        Log.e("Response", contentNode.toString());
+//                                    }
+//                                });
                     }
 
                 });

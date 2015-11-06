@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.internal.LinkedTreeMap;
 import com.scala.expandroidsdk.AppSingleton;
+import com.scala.expandroidsdk.Utils;
 import com.scala.expandroidsdk.model.ContentNode;
 
 import java.lang.reflect.Type;
@@ -26,14 +27,14 @@ public class ContentNodeJsonAdapter implements JsonDeserializer<ContentNode> {
 
         LinkedTreeMap treeMap = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
         String subtype = (String) treeMap.get(SUBTYPE);
-        ContentNode contentNode = new ContentNode(ContentNode.fromString(subtype));
+        ContentNode contentNode = new ContentNode(Utils.getContentTypeEnum(subtype));
         contentNode.setProperties(treeMap);
         List<LinkedTreeMap> children = (List<LinkedTreeMap>) treeMap.get(CHILDREN);
         if(!children.isEmpty()){
             List<ContentNode> childrenList = new ArrayList<ContentNode>();
             for (LinkedTreeMap child : children) {
                 String subtypeChild = (String) child.get(SUBTYPE);
-                ContentNode childContentNode = new ContentNode(ContentNode.fromString(subtypeChild));
+                ContentNode childContentNode = new ContentNode(Utils.getContentTypeEnum(subtypeChild));
                 LinkedTreeMap treeMapChild = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
                 childContentNode.setProperties(treeMapChild);
                 childrenList.add(childContentNode);

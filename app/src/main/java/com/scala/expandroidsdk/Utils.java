@@ -20,6 +20,8 @@ public class Utils {
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
     public static final String ORG = "org";
+    public static final String PAYLOAD = "payload";
+    public static final String FLING = "fling";
 
     public enum SOCKET_CHANNELS {
         SYSTEM ("system"),
@@ -32,15 +34,43 @@ public class Utils {
         }
     }
 
+    public enum CONTENT_TYPES {
+        APP ("scala:content:app"),
+        FILE ("scala:content:file"),
+        FOLDER ("scala:content:folder"),
+        URL ("scala:content:url"),
+        UNKNOW ("");
+        private final String subtype;
+        CONTENT_TYPES(String subtype) {
+            this.subtype = subtype;
+        }
+    }
+
     /**
      * Create Enum from string
      * @param text
      * @return
      */
-    public static SOCKET_CHANNELS fromString(String text) {
+    public static SOCKET_CHANNELS getSocketEnum(String text) {
         if (text != null) {
             for (SOCKET_CHANNELS type : SOCKET_CHANNELS.values()) {
                 if (text.equalsIgnoreCase(type.channel)) {
+                    return type;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Create Enum from string
+     * @param text
+     * @return
+     */
+    public static CONTENT_TYPES getContentTypeEnum(String text) {
+        if (text != null) {
+            for (CONTENT_TYPES type : CONTENT_TYPES.values()) {
+                if (text.equalsIgnoreCase(type.subtype)) {
                     return type;
                 }
             }

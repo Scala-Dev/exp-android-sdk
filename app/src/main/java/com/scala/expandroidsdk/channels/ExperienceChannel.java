@@ -2,25 +2,28 @@ package com.scala.expandroidsdk.channels;
 
 
 import com.scala.expandroidsdk.Utils;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import io.socket.client.Socket;
 import rx.Subscriber;
 
 /**
  * Created by Cesar Oyarzun on 11/4/15.
  */
-public class SystemChannel implements IChannel {
+public class ExperienceChannel implements IChannel {
 
-    public static final String CHANNEL = "system";
+    public static final String CHANNEL = "experience";
 
     private Socket socket;
     public Map<String,Subscriber> request = new HashMap<>();
     public Map<String,Subscriber> listeners = new HashMap<>();
     public Map<String,Subscriber> responders = new HashMap<>();
-    public SystemChannel(Socket socket){
+    public ExperienceChannel(Socket socket){
         this.socket = socket;
     }
 
