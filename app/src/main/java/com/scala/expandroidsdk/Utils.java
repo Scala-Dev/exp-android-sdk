@@ -22,6 +22,8 @@ public class Utils {
     public static final String ORG = "org";
     public static final String PAYLOAD = "payload";
     public static final String FLING = "fling";
+    public static final String ONLINE = "online";
+    public static final String OFFLINE = "offline";
 
     public enum SOCKET_CHANNELS {
         SYSTEM ("system"),

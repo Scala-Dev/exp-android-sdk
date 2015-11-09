@@ -27,9 +27,13 @@ public class SystemChannel implements IChannel {
     @Override
     public void onResponse(JSONObject response) throws JSONException {
         String id = response.getString(Utils.ID);
-        Subscriber subscriber = request.get(id);
-        subscriber.onNext(response);
-        subscriber.onCompleted();
+        if( id != null){
+            if ( request.get(id) != null){
+                Subscriber subscriber = request.get(id);
+                subscriber.onNext(response);
+                subscriber.onCompleted();
+            }
+        }
     }
 
     @Override

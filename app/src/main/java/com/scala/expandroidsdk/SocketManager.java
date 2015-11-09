@@ -40,19 +40,24 @@ import rx.Subscriber;
  */
 public class SocketManager {
 
+    public static final String TLS = "TLS";
     private final String LOG_TAG = SocketManager.class.getSimpleName();
     private Socket socket;
     private OrganizationChannel organizationChannel = null;
     private SystemChannel systemChannel = null;
     private LocationChannel locationChannel = null;
     private ExperienceChannel experienceChannel = null;
+    private Map<String,Subscriber> connection = new HashMap<>();
 
-
+    /**
+     * Start Socket Connection
+     * @return
+     */
     public Observable startSocket() {
 
         if (socket == null) {
             try {
-                SSLContext sc = SSLContext.getInstance("TLS");
+                SSLContext sc = SSLContext.getInstance(TLS);
                 sc.init(null, trustAllCerts, new SecureRandom());
                 IO.setDefaultSSLContext(sc);
                 HttpsURLConnection.setDefaultHostnameVerifier(new RelaxedHostNameVerifier());
@@ -75,12 +80,21 @@ public class SocketManager {
                 socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
                     @Override
                     public void call(Object... args) {
+                        if(connection.containsKey(Utils.ONLINE)){
+                            Subscriber subscriber = connection.get(Utils.ONLINE);
+                            subscriber.onNext(true);
+                            subscriber.onCompleted();
+                        }
                     }
 
                 }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
                     @Override
                     public void call(Object... args) {
-                        Log.d(LOG_TAG, "Socket Disconnected");
+                        if(connection.containsKey(Utils.OFFLINE)){
+                            Subscriber subscriber = connection.get(Utils.OFFLINE);
+                            subscriber.onNext(true);
+                            subscriber.onCompleted();
+                        }
                     }
 
                 }).on(Utils.MESSAGE, new Emitter.Listener() {
@@ -128,6 +142,12 @@ public class SocketManager {
         return Observable.just(true);
     }
 
+    /**
+     * Handle BroadCast event bus
+     * @param json
+     * @param channel
+     * @throws JSONException
+     */
     private void handleBroadCast(JSONObject json, String channel) throws JSONException {
         if(channel == null){
             systemChannel.onBroadCast(json);
@@ -153,6 +173,12 @@ public class SocketManager {
         }
     }
 
+    /**
+     * Handle Request event bus
+     * @param json
+     * @param channel
+     * @throws JSONException
+     */
     private void handleRequest(JSONObject json, String channel) throws JSONException {
         if(channel == null){
             systemChannel.onRequest(json);
@@ -178,6 +204,12 @@ public class SocketManager {
         }
     }
 
+    /**
+     * Handle Response event bus
+     * @param json
+     * @param channel
+     * @throws JSONException
+     */
     private void handleResponse(JSONObject json, String channel) throws JSONException {
         if(channel == null){
             systemChannel.onResponse(json);
@@ -203,7 +235,9 @@ public class SocketManager {
         }
     }
 
-
+    /**
+     * Trust all Certificates
+     */
     private TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
         public java.security.cert.X509Certificate[] getAcceptedIssuers() {
             return new java.security.cert.X509Certificate[] {};
@@ -218,16 +252,23 @@ public class SocketManager {
         }
     } };
 
+    /**
+     * Host Name Verifier,is set to default true
+     */
     private static class RelaxedHostNameVerifier implements HostnameVerifier {
         public boolean verify(String hostname, SSLSession session) {
             return true;
         }
     }
 
+    /**
+     * Create SSL certificates for socket connection
+     * @return
+     */
     private SSLContext ceateSsl() {
         SSLContext sc = null;
         try {
-            sc = SSLContext.getInstance("TLS");
+            sc = SSLContext.getInstance(TLS);
             sc.init(null, trustAllCerts, new SecureRandom());
             IO.setDefaultSSLContext(sc);
             HttpsURLConnection.setDefaultHostnameVerifier(new RelaxedHostNameVerifier());
@@ -240,7 +281,11 @@ public class SocketManager {
         return sc;
     }
 
-
+    /**
+     * Get current Experience
+     * @param callback
+     * @throws JSONException
+     */
     public void getCurrentExperience(Subscriber callback) throws JSONException {
         Map<String,String> message = new HashMap<>();
         message.put(Utils.TYPE,Utils.REQUEST);
@@ -248,6 +293,11 @@ public class SocketManager {
         systemChannel.request(message, callback);
     }
 
+    /**
+     * Get Current Device
+     * @param callback
+     * @throws JSONException
+     */
     public void getCurrentDevice(Subscriber callback) throws JSONException {
         Map<String,String> message = new HashMap<>();
         message.put(Utils.TYPE, Utils.REQUEST);
@@ -255,6 +305,11 @@ public class SocketManager {
         systemChannel.request(message, callback);
     }
 
+    /**
+     * Get Channel from Enum
+     * @param channel
+     * @return
+     */
     public IChannel getChannel(Utils.SOCKET_CHANNELS channel){
         IChannel expChannel = null;
         switch (channel){
@@ -274,5 +329,13 @@ public class SocketManager {
         return expChannel;
     }
 
+    /**
+     * Connection subscriber for socket state
+     * @param name
+     * @param subscriber
+     */
+    public void connection(String name,Subscriber subscriber){
+        connection.put(name,subscriber);
+    }
 
 }

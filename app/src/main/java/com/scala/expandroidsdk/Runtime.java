@@ -16,9 +16,6 @@ import rx.functions.Func1;
  */
 public class Runtime extends Exp{
 
-
-//    private static SocketManager socketManager = null;
-
     /**
      * Start with device credentials Host,UUID,Secret TODO make this ExpObservable
      * @param host

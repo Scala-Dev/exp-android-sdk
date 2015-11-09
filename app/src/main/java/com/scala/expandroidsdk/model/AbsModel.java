@@ -14,7 +14,6 @@ public abstract class AbsModel {
         String[] keys = path.split("\\.");
         LinkedTreeMap subdoc = this.properties;
         for (int i = 0; i < keys.length; i++) {
-            System.out.print(keys[i]);
             if(i == keys.length -1){
                 o = subdoc.get(keys[i]);
             }
