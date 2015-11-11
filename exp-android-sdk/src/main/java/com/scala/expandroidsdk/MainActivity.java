@@ -1,48 +1,25 @@
 package com.scala.expandroidsdk;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.scala.expandroidsdk.channels.IChannel;
 import com.scala.expandroidsdk.model.ContentNode;
-import com.scala.expandroidsdk.model.Device;
 import com.scala.expandroidsdk.model.ResultExperience;
 import com.scala.expandroidsdk.model.ResultLocation;
-import com.scala.expandroidsdk.model.ResultThing;
 import com.scala.expandroidsdk.model.Thing;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URISyntaxException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
-import io.socket.client.IO;
-import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
-import rx.Observable;
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -58,7 +35,7 @@ public class MainActivity extends ActionBarActivity {
     public static final String SKIP = "skip";
     public static final String SORT = "sort";
     private final String LOG_TAG = MainActivity.class.getSimpleName();
-    private Socket socket;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
