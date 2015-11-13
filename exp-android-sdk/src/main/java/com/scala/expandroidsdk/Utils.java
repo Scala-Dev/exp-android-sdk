@@ -24,6 +24,13 @@ public class Utils {
     public static final String FLING = "fling";
     public static final String ONLINE = "online";
     public static final String OFFLINE = "offline";
+    public static final String ORGANIZATION = "organization";
+    public static final String SECRET = "secret";
+    public static final String DEVICE_UUID = "deviceUuid";
+    public static final String NETWORK_UUID = "networkUuid";
+    public static final String API_KEY = "apiKey";
+    public static final String HOST = "host";
+
 
     public enum SOCKET_CHANNELS {
         SYSTEM ("system"),

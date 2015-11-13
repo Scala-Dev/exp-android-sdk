@@ -58,6 +58,17 @@ public class Exp {
     }
 
     /**
+     * Start EXP connection
+     * @param host
+     * @param username
+     * @param password
+     * @return
+     */
+    public static Observable start(Map<String,String> options){
+        return runtime.start(options);
+    }
+
+    /**
      * Login observable TODO make this ExpObservable
      * @param options
      * @return
