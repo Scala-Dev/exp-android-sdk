@@ -3,12 +3,7 @@ package exp.android.sdk;
 
 import android.util.Log;
 
-import exp.android.sdk.channels.ExperienceChannel;
-import exp.android.sdk.channels.IChannel;
-import exp.android.sdk.channels.LocationChannel;
-import exp.android.sdk.channels.OrganizationChannel;
-import exp.android.sdk.channels.SystemChannel;
-
+import exp.android.sdk.channels.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,13 +16,7 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
+import javax.net.ssl.*;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;

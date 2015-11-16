@@ -1,24 +1,12 @@
 package exp.android.sdk;
 
-import exp.android.sdk.channels.IChannel;
-import exp.android.sdk.model.ContentNode;
-import exp.android.sdk.model.Data;
-import exp.android.sdk.model.Device;
-import exp.android.sdk.model.Experience;
-import exp.android.sdk.model.Location;
-import exp.android.sdk.model.ResultData;
-import exp.android.sdk.model.ResultDevice;
-import exp.android.sdk.model.ResultExperience;
-import exp.android.sdk.model.ResultLocation;
-import exp.android.sdk.model.ResultThing;
-import exp.android.sdk.model.Thing;
-import exp.android.sdk.model.Token;
+import exp.android.sdk.channels.*;
+import exp.android.sdk.model.*;
 import exp.android.sdk.observer.ExpObservable;
 
 import org.json.JSONException;
 
 import java.lang.*;
-import java.lang.Runtime;
 import java.util.Map;
 
 import rx.Observable;
@@ -33,7 +21,7 @@ import rx.schedulers.Schedulers;
 public class Exp {
 
 
-    private static java.lang.Runtime runtime = new Runtime();
+    private static Runtime runtime = new Runtime();
     protected static SocketManager socketManager = new SocketManager();
 
 
@@ -61,9 +49,7 @@ public class Exp {
 
     /**
      * Start EXP connection
-     * @param host
-     * @param username
-     * @param password
+     * @param options
      * @return
      */
     public static Observable start(Map<String,String> options){

@@ -5,7 +5,7 @@ import com.google.gson.internal.LinkedTreeMap;
 /**
  * Created by Cesar Oyarzun on 10/30/15.
  */
-public abstract class AbsModel {
+public abstract class AbstractModel {
 
     protected LinkedTreeMap properties = null;
 

@@ -6,19 +6,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.scala.expandroidsdk.R;
-import exp.android.sdk.channels.IChannel;
-import exp.android.sdk.model.ContentNode;
-import exp.android.sdk.model.ResultExperience;
-import exp.android.sdk.model.ResultLocation;
-import exp.android.sdk.model.Thing;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import exp.android.sdk.channels.IChannel;
+import exp.android.sdk.model.ContentNode;
+import exp.android.sdk.model.ResultExperience;
+import exp.android.sdk.model.ResultLocation;
+import exp.android.sdk.model.Thing;
 import rx.Subscriber;
 import rx.functions.Action1;
 

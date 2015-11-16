@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Cesar Oyarzun on 10/30/15.
  */
-public class ContentNode extends AbsModel{
+public class ContentNode extends AbstractModel {
 
     public static final String PATH = "path";
     public static final String API_DELIVERY = "/api/delivery";
