@@ -30,7 +30,7 @@ public class ExpObservable {
         return this.observable.subscribe(subscriber);
     }
 
-    public final Subscription subscribe(final Action1 onNext) {
+    public final Subscription then(final Action1 onNext) {
         return this.observable.subscribe(onNext);
     }
 }

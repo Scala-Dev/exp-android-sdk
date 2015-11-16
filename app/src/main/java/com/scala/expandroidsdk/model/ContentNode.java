@@ -2,13 +2,14 @@ package com.scala.expandroidsdk.model;
 
 import com.google.gson.internal.LinkedTreeMap;
 import com.scala.expandroidsdk.AppSingleton;
+import com.scala.expandroidsdk.Utils;
 
 import java.util.List;
 
 /**
  * Created by Cesar Oyarzun on 10/30/15.
  */
-public class ContentNode extends AbsModel{
+public class ContentNode extends AbstractModel {
 
     public static final String PATH = "path";
     public static final String API_DELIVERY = "/api/delivery";
@@ -16,26 +17,10 @@ public class ContentNode extends AbsModel{
     public static final String NAME = "name";
     public static final String INDEX_HTML = "/index.html";
     public static final String VARIANT = "?variant=";
-    private CONTENT_TYPES subtype = null;
+    private Utils.CONTENT_TYPES subtype = null;
     private List<ContentNode> children = null;
 
-    public enum CONTENT_TYPES {
-        APP ("scala:content:app"),
-        FILE ("scala:content:file"),
-        FOLDER ("scala:content:folder"),
-        URL ("scala:content:url"),
-        UNKNOW ("")
-        ;
-        private final String subtype;
-        CONTENT_TYPES(String subtype) {
-            this.subtype = subtype;
-        }
-        private String contentType() { return subtype; }
-    }
-
-
-
-    public ContentNode(CONTENT_TYPES subtype){
+    public ContentNode(Utils.CONTENT_TYPES subtype){
         this.subtype = subtype;
     }
 
@@ -77,7 +62,7 @@ public class ContentNode extends AbsModel{
      * @return
      */
     public String getVariantUrl(String name){
-        if(CONTENT_TYPES.FILE == this.subtype && hasVariant(name)){
+        if(Utils.CONTENT_TYPES.FILE == this.subtype && hasVariant(name)){
             return getUrl() + VARIANT + name;
         }
         return "";
@@ -103,19 +88,5 @@ public class ContentNode extends AbsModel{
         return hasVariant;
     }
 
-    /**
-     * Create Enum from string
-     * @param text
-     * @return
-     */
-    public static CONTENT_TYPES fromString(String text) {
-        if (text != null) {
-            for (CONTENT_TYPES type : CONTENT_TYPES.values()) {
-                if (text.equalsIgnoreCase(type.subtype)) {
-                    return type;
-                }
-            }
-        }
-        return null;
-    }
+
 }

@@ -1,21 +1,26 @@
 package com.scala.expandroidsdk;
 
-import com.scala.expandroidsdk.observer.ExpObservable;
+import com.scala.expandroidsdk.channels.IChannel;
 import com.scala.expandroidsdk.model.ContentNode;
+import com.scala.expandroidsdk.model.Data;
 import com.scala.expandroidsdk.model.Device;
 import com.scala.expandroidsdk.model.Experience;
 import com.scala.expandroidsdk.model.Location;
+import com.scala.expandroidsdk.model.ResultData;
 import com.scala.expandroidsdk.model.ResultDevice;
 import com.scala.expandroidsdk.model.ResultExperience;
 import com.scala.expandroidsdk.model.ResultLocation;
 import com.scala.expandroidsdk.model.ResultThing;
 import com.scala.expandroidsdk.model.Thing;
 import com.scala.expandroidsdk.model.Token;
+import com.scala.expandroidsdk.observer.ExpObservable;
 
-import java.util.HashMap;
+import org.json.JSONException;
+
 import java.util.Map;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -25,10 +30,10 @@ import rx.schedulers.Schedulers;
  */
 public class Exp {
 
-    public static final String LIMIT = "limit";
-    public static final String SKIP = "skip";
-    public static final String SORT = "sort";
+
     private static Runtime runtime = new Runtime();
+    protected static SocketManager socketManager = new SocketManager();
+
 
     /**
      ** Start EXP connection
@@ -78,16 +83,10 @@ public class Exp {
 
     /**
      * Find Things by Limit,Skip,Sort
-     * @param limit
-     * @param skip
-     * @param sort
+     * @param options
      * @return
      */
-    public static ExpObservable  findthings(String limit,String skip,String sort){
-        Map<String,String> options = new HashMap<>();
-        options.put(LIMIT,limit);
-        options.put(SKIP, skip);
-        options.put(SORT, sort);
+    public static ExpObservable  findthings(Map<String,String> options){
         Observable<ResultThing> resultThingObservable = AppSingleton.getInstance().getEndPoint().findThings(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -108,16 +107,10 @@ public class Exp {
 
     /**
      * Find Devices by Limit,Skip,Sort
-     * @param limit
-     * @param skip
-     * @param sort
+     * @param options
      * @return
      */
-    public static ExpObservable  findDevices(String limit,String skip,String sort){
-        Map<String,String> options = new HashMap<>();
-        options.put(LIMIT,limit);
-        options.put(SKIP, skip);
-        options.put(SORT, sort);
+    public static ExpObservable  findDevices(Map<String,String> options){
         Observable<ResultDevice> deviceObservable = AppSingleton.getInstance().getEndPoint().findDevices(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -138,16 +131,10 @@ public class Exp {
 
     /**
      * Find Experiences by Limit,Skip,Sort
-     * @param limit
-     * @param skip
-     * @param sort
+     * @param options
      * @return
      */
-    public static ExpObservable  findExperiences(String limit,String skip,String sort){
-        Map<String,String> options = new HashMap<>();
-        options.put(LIMIT,limit);
-        options.put(SKIP, skip);
-        options.put(SORT, sort);
+    public static ExpObservable  findExperiences(Map<String,String> options){
         Observable<ResultExperience> experienceObservable = AppSingleton.getInstance().getEndPoint().findExperiences(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -168,16 +155,10 @@ public class Exp {
 
     /**
      * Find Location by Limit,Skip,Sort
-     * @param limit
-     * @param skip
-     * @param sort
+     * @param options
      * @return
      */
-    public static ExpObservable  findLocation(String limit,String skip,String sort){
-        Map<String,String> options = new HashMap<>();
-        options.put(LIMIT,limit);
-        options.put(SKIP, skip);
-        options.put(SORT, sort);
+    public static ExpObservable  findLocations(Map<String,String> options){
         Observable<ResultLocation> locationObservable = AppSingleton.getInstance().getEndPoint().findLocations(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -196,5 +177,65 @@ public class Exp {
         return new ExpObservable(contentNodeObservable);
     }
 
+    /**
+     * Get Data by group,key
+     * @param group
+     * @param key
+     * @return
+     */
+    public static ExpObservable getData(String group,String key){
+        Observable<Data> dataObservable = AppSingleton.getInstance().getEndPoint().getData(group, key)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable(dataObservable);
+    }
 
+    /**
+     * Get Data by group,key
+     * @param options
+     * @return
+     */
+    public static ExpObservable findData(Map<String,String> options){
+        Observable<ResultData> dataObservable = AppSingleton.getInstance().getEndPoint().findData(options)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable(dataObservable);
+    }
+
+    /**
+     * Get Current Experience from event bus
+     * @param subscriber
+     */
+    public static void getCurrentExperience(Subscriber subscriber){
+        try {
+            socketManager.getCurrentExperience(subscriber);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Get Current Device from event bus
+     * @param subscriber
+     */
+    public static void getCurrentDevice(Subscriber subscriber){
+        try {
+             socketManager.getCurrentDevice(subscriber);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Get Channel
+     * @param channel
+     * @return
+     */
+    public static IChannel getChannel(Utils.SOCKET_CHANNELS channel){
+        return socketManager.getChannel(channel);
+    }
+
+    public static void connection(String name,Subscriber subscriber){
+        socketManager.connection(name,subscriber);
+    }
 }

@@ -1,9 +1,11 @@
 package com.scala.expandroidsdk;
 
 import com.scala.expandroidsdk.model.ContentNode;
+import com.scala.expandroidsdk.model.Data;
 import com.scala.expandroidsdk.model.Device;
 import com.scala.expandroidsdk.model.Experience;
 import com.scala.expandroidsdk.model.Location;
+import com.scala.expandroidsdk.model.ResultData;
 import com.scala.expandroidsdk.model.ResultDevice;
 import com.scala.expandroidsdk.model.ResultExperience;
 import com.scala.expandroidsdk.model.ResultLocation;
@@ -55,4 +57,11 @@ public interface IExpEndpoint {
 
         @GET("/api/content/{uuid}/children")
         Observable<ContentNode> getContentNode(@Path("uuid") String uuid);
+
+        @GET("/api/data/{group}/{key}")
+        Observable<Data> getData(@Path("group") String group,@Path("key") String key);
+
+        @GET("/api/data/{group}/{key}")
+        Observable<ResultData> findData(@QueryMap Map<String,String> options);
+
 }
