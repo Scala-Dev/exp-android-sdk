@@ -20,10 +20,8 @@ import rx.schedulers.Schedulers;
  */
 public class Exp {
 
-
     private static Runtime runtime = new Runtime();
     protected static SocketManager socketManager = new SocketManager();
-
 
     /**
      ** Start EXP connection
@@ -32,7 +30,7 @@ public class Exp {
      * @param secret
      * @return
      */
-    public static Observable start(String host,String uuid,String secret){
+    public static Observable<Boolean> start(String host,String uuid,String secret){
         return  runtime.start(host,uuid,secret);
     }
 
@@ -43,7 +41,7 @@ public class Exp {
      * @param password
      * @return
      */
-    public static Observable start(String host, String username, String password, String organization){
+    public static Observable<Boolean> start(String host, String username, String password, String organization){
         return runtime.start(host,username,password,organization);
     }
 
@@ -52,7 +50,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static Observable start(Map<String,String> options){
+    public static Observable<Boolean> start(Map<String,String> options){
         return runtime.start(options);
     }
 
@@ -61,11 +59,11 @@ public class Exp {
      * @param options
      * @return
      */
-    public static Observable login(Map<String, String> options){
-        Observable<Token> thingObservable = AppSingleton.getInstance().getEndPoint().login(options)
+    public static Observable<Token> login(Map<String, String> options){
+        Observable<Token> observable = AppSingleton.getInstance().getEndPoint().login(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
-        return thingObservable;
+        return observable;
     }
 
     /**
@@ -73,11 +71,11 @@ public class Exp {
      * @param uuid
      * @return
      */
-    public static ExpObservable getThing(String uuid){
+    public static ExpObservable<Thing> getThing(String uuid){
         Observable<Thing> thingObservable = AppSingleton.getInstance().getEndPoint().getThing(uuid)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
-        return new ExpObservable(thingObservable);
+        return new ExpObservable<Thing>(thingObservable);
     }
 
     /**
@@ -85,11 +83,11 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable  findthings(Map<String,String> options){
-        Observable<ResultThing> resultThingObservable = AppSingleton.getInstance().getEndPoint().findThings(options)
+    public static ExpObservable<SearchResults<Thing>> findThings(Map<String,String> options){
+        Observable<SearchResults<Thing>> resultThingObservable = AppSingleton.getInstance().getEndPoint().findThings(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
-        return new ExpObservable(resultThingObservable);
+        return new ExpObservable<SearchResults<Thing>>(resultThingObservable);
     }
 
     /**
@@ -97,11 +95,11 @@ public class Exp {
      * @param uuid
      * @return
      */
-    public static ExpObservable getDevice(String uuid){
+    public static ExpObservable<Device> getDevice(String uuid){
         Observable<Device> deviceObservable = AppSingleton.getInstance().getEndPoint().getDevice(uuid)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
-        return new ExpObservable(deviceObservable);
+        return new ExpObservable<Device>(deviceObservable);
     }
 
     /**
@@ -109,11 +107,11 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable  findDevices(Map<String,String> options){
-        Observable<ResultDevice> deviceObservable = AppSingleton.getInstance().getEndPoint().findDevices(options)
+    public static ExpObservable<SearchResults<Device>> findDevices(Map<String,String> options){
+        Observable<SearchResults<Device>> deviceObservable = AppSingleton.getInstance().getEndPoint().findDevices(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
-        return new ExpObservable(deviceObservable);
+        return new ExpObservable<SearchResults<Device>>(deviceObservable);
     }
 
     /**
@@ -121,11 +119,11 @@ public class Exp {
      * @param uuid
      * @return
      */
-    public static ExpObservable getExperience(String uuid){
+    public static ExpObservable<Experience> getExperience(String uuid){
         Observable<Experience> experienceObservable = AppSingleton.getInstance().getEndPoint().getExperience(uuid)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
-        return new ExpObservable(experienceObservable);
+        return new ExpObservable<Experience>(experienceObservable);
     }
 
     /**
@@ -133,11 +131,11 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable  findExperiences(Map<String,String> options){
-        Observable<ResultExperience> experienceObservable = AppSingleton.getInstance().getEndPoint().findExperiences(options)
+    public static ExpObservable<SearchResults<Experience>> findExperiences(Map<String,String> options){
+        Observable<SearchResults<Experience>> experienceObservable = AppSingleton.getInstance().getEndPoint().findExperiences(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
-        return new ExpObservable(experienceObservable);
+        return new ExpObservable<SearchResults<Experience>>(experienceObservable);
     }
 
     /**
@@ -145,11 +143,11 @@ public class Exp {
      * @param uuid
      * @return
      */
-    public static ExpObservable getLocation(String uuid){
+    public static ExpObservable<Location> getLocation(String uuid){
         Observable<Location> locationObservable = AppSingleton.getInstance().getEndPoint().getLocation(uuid)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
-        return new ExpObservable(locationObservable);
+        return new ExpObservable<Location>(locationObservable);
     }
 
     /**
@@ -157,11 +155,11 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable  findLocations(Map<String,String> options){
-        Observable<ResultLocation> locationObservable = AppSingleton.getInstance().getEndPoint().findLocations(options)
+    public static ExpObservable<SearchResults<Location>>  findLocations(Map<String,String> options){
+        Observable<SearchResults<Location>> locationObservable = AppSingleton.getInstance().getEndPoint().findLocations(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
-        return new ExpObservable(locationObservable);
+        return new ExpObservable<SearchResults<Location>>(locationObservable);
     }
 
     /**
@@ -169,11 +167,24 @@ public class Exp {
      * @param uuid
      * @return
      */
-    public static ExpObservable getContentNode(String uuid){
+    public static ExpObservable<ContentNode> getContentNode(String uuid){
         Observable<ContentNode> contentNodeObservable = AppSingleton.getInstance().getEndPoint().getContentNode(uuid)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
-        return new ExpObservable(contentNodeObservable);
+        return new ExpObservable<ContentNode>(contentNodeObservable);
+    }
+
+
+    /**
+     * Get Content Node by UUID
+     * @param options
+     * @return
+     */
+    public static ExpObservable<SearchResults<ContentNode>> findContentNodes(Map<String,String> options){
+        Observable<SearchResults<ContentNode>> contentNodeObservable = AppSingleton.getInstance().getEndPoint().findContentNodes(options)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<SearchResults<ContentNode>>(contentNodeObservable);
     }
 
     /**
@@ -182,11 +193,11 @@ public class Exp {
      * @param key
      * @return
      */
-    public static ExpObservable getData(String group,String key){
+    public static ExpObservable<Data> getData(String group,String key){
         Observable<Data> dataObservable = AppSingleton.getInstance().getEndPoint().getData(group, key)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
-        return new ExpObservable(dataObservable);
+        return new ExpObservable<Data>(dataObservable);
     }
 
     /**
@@ -194,11 +205,11 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable findData(Map<String,String> options){
-        Observable<ResultData> dataObservable = AppSingleton.getInstance().getEndPoint().findData(options)
+    public static ExpObservable<SearchResults<Data>> findData(Map<String,String> options){
+        Observable<SearchResults<Data>> dataObservable = AppSingleton.getInstance().getEndPoint().findData(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
-        return new ExpObservable(dataObservable);
+        return new ExpObservable<SearchResults<Data>>(dataObservable);
     }
 
     /**

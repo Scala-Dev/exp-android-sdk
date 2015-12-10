@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.scala.exp.android.sdk.model.ContentNode;
-import com.scala.exp.android.sdk.model.ResultLocation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,7 +17,9 @@ import java.util.Map;
 import exp.android.sdk.R;
 
 import com.scala.exp.android.sdk.channels.IChannel;
-import com.scala.exp.android.sdk.model.ResultExperience;
+import com.scala.exp.android.sdk.model.Experience;
+import com.scala.exp.android.sdk.model.Location;
+import com.scala.exp.android.sdk.model.SearchResults;
 import com.scala.exp.android.sdk.model.Thing;
 import rx.Subscriber;
 import rx.functions.Action1;
@@ -47,11 +48,11 @@ public class MainActivity extends ActionBarActivity {
         final Map<String,String> options = new HashMap<>();
         options.put(LIMIT,"10");
         options.put(SKIP, "0");
-        options.put(SORT, "asc");
+        options.put(SORT, "name");
         Exp.start(host, user, password, org)
-                .subscribe(new Action1() {
+                .subscribe(new Action1<Boolean>() {
                     @Override
-                    public void call(Object o) {
+                    public void call(Boolean o) {
 
                        Subscriber currentExperienceSubs = new Subscriber<JSONObject>() {
                            @Override
@@ -104,7 +105,7 @@ public class MainActivity extends ActionBarActivity {
                                 });
 
                         Exp.findExperiences(options)
-                                .then(new Subscriber<ResultExperience>() {
+                                .then(new Subscriber<SearchResults<Experience>>() {
                                     @Override
                                     public void onCompleted() {
                                     }
@@ -115,13 +116,13 @@ public class MainActivity extends ActionBarActivity {
                                     }
 
                                     @Override
-                                    public void onNext(ResultExperience resultExperience) {
+                                    public void onNext(SearchResults<Experience> resultExperience) {
                                         Log.e("Response", resultExperience.toString());
                                     }
                                 });
 
                         Exp.findLocations(options)
-                                .then(new Subscriber<ResultLocation>() {
+                                .then(new Subscriber<SearchResults<Location>>() {
                                     @Override
                                     public void onCompleted() {
                                     }
@@ -132,7 +133,7 @@ public class MainActivity extends ActionBarActivity {
                                     }
 
                                     @Override
-                                    public void onNext(ResultLocation resultLocation) {
+                                    public void onNext(SearchResults<Location> resultLocation) {
                                         Log.e("Response", resultLocation.toString());
                                     }
                                 });
@@ -147,6 +148,19 @@ public class MainActivity extends ActionBarActivity {
                                     @Override
                                     public void onNext(ContentNode contentNode) {
                                         Log.e("Response", contentNode.toString());
+                                    }
+                                });
+
+                        Exp.findContentNodes(options)
+                                .then(new Subscriber<SearchResults<ContentNode>>() {
+                                    @Override
+                                    public void onCompleted() {}
+                                    @Override
+                                    public void onError(Throwable e) {Log.e("error", e.toString());}
+
+                                    @Override
+                                    public void onNext(SearchResults<ContentNode> contentNodes) {
+                                        Log.e("Response", contentNodes.toString());
                                     }
                                 });
                     }

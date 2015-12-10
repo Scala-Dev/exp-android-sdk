@@ -3,14 +3,10 @@ package com.scala.exp.android.sdk;
 import com.scala.exp.android.sdk.model.ContentNode;
 import com.scala.exp.android.sdk.model.Device;
 import com.scala.exp.android.sdk.model.Experience;
-import com.scala.exp.android.sdk.model.ResultData;
-import com.scala.exp.android.sdk.model.ResultExperience;
-import com.scala.exp.android.sdk.model.ResultLocation;
+import com.scala.exp.android.sdk.model.SearchResults;
 import com.scala.exp.android.sdk.model.Token;
 import com.scala.exp.android.sdk.model.Data;
 import com.scala.exp.android.sdk.model.Location;
-import com.scala.exp.android.sdk.model.ResultDevice;
-import com.scala.exp.android.sdk.model.ResultThing;
 import com.scala.exp.android.sdk.model.Thing;
 
 import java.util.Map;
@@ -35,33 +31,37 @@ public interface IExpEndpoint {
         Observable<Thing> getThing(@Path("uuid") String uuid);
 
         @GET("/api/things")
-        Observable<ResultThing> findThings(@QueryMap Map<String,String> options);
+        Observable<SearchResults<Thing>> findThings(@QueryMap Map<String,String> options);
 
         @GET("/api/devices/{uuid}")
         Observable<Device> getDevice(@Path("uuid") String uuid);
 
         @GET("/api/devices")
-        Observable<ResultDevice> findDevices(@QueryMap Map<String,String> options);
+        Observable<SearchResults<Device>> findDevices(@QueryMap Map<String,String> options);
 
         @GET("/api/experiences/{uuid}")
         Observable<Experience> getExperience(@Path("uuid") String uuid);
 
         @GET("/api/experiences")
-        Observable<ResultExperience> findExperiences(@QueryMap Map<String,String> options);
+        Observable<SearchResults<Experience>> findExperiences(@QueryMap Map<String,String> options);
 
         @GET("/api/locations/{uuid}")
         Observable<Location> getLocation(@Path("uuid") String uuid);
 
         @GET("/api/locations")
-        Observable<ResultLocation> findLocations(@QueryMap Map<String,String> options);
+        Observable<SearchResults<Location>> findLocations(@QueryMap Map<String,String> options);
 
         @GET("/api/content/{uuid}/children")
         Observable<ContentNode> getContentNode(@Path("uuid") String uuid);
+
+        @GET("/api/content")
+        Observable<SearchResults<ContentNode>> findContentNodes(@QueryMap Map<String,String> options);
+
 
         @GET("/api/data/{group}/{key}")
         Observable<Data> getData(@Path("group") String group,@Path("key") String key);
 
         @GET("/api/data/{group}/{key}")
-        Observable<ResultData> findData(@QueryMap Map<String,String> options);
+        Observable<SearchResults<Data>> findData(@QueryMap Map<String,String> options);
 
 }

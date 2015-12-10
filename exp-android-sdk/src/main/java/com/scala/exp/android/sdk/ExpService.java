@@ -43,7 +43,7 @@ public final class ExpService {
      * @param tokenExp
      * @return
      */
-    public static Observable init(String host, final String tokenExp)  {
+    public static Observable<Boolean> init(String host, final String tokenExp)  {
 
         AppSingleton.getInstance().setHost(host);
         // Define the interceptor, add authentication headers
@@ -90,7 +90,7 @@ public final class ExpService {
      * @param host
      * @return
      */
-    public static Observable init(String host)  {
+    public static Observable<Boolean> init(String host)  {
 
         AppSingleton.getInstance().setHost(host);
         //GSON builder adapter for model

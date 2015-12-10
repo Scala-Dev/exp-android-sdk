@@ -2,21 +2,26 @@ package com.scala.exp.android.sdk.model;
 
 import com.google.gson.internal.LinkedTreeMap;
 import com.scala.exp.android.sdk.AppSingleton;
+import com.scala.exp.android.sdk.Exp;
 import com.scala.exp.android.sdk.Utils;
+import com.scala.exp.android.sdk.observer.ExpObservable;
 
 import java.util.List;
+
+import rx.observables.BlockingObservable;
 
 /**
  * Created by Cesar Oyarzun on 10/30/15.
  */
 public class ContentNode extends AbstractModel {
 
-    public static final String PATH = "path";
-    public static final String API_DELIVERY = "/api/delivery";
-    public static final String VARIANTS = "variants";
-    public static final String NAME = "name";
-    public static final String INDEX_HTML = "/index.html";
-    public static final String VARIANT = "?variant=";
+    private static final String UUID = "uuid";
+    private static final String PATH = "path";
+    private static final String API_DELIVERY = "/api/delivery";
+    private static final String VARIANTS = "variants";
+    private static final String NAME = "name";
+    private static final String INDEX_HTML = "/index.html";
+    private static final String VARIANT = "?variant=";
     private Utils.CONTENT_TYPES subtype = null;
     private List<ContentNode> children = null;
 
@@ -25,6 +30,13 @@ public class ContentNode extends AbstractModel {
     }
 
     public List<ContentNode> getChildren() {
+        if (this.children == null) {
+            final String uuid = String.valueOf(this.get(UUID));
+            final ExpObservable<ContentNode> observable = Exp.getContentNode(uuid);
+            final ContentNode node = observable.getObservable().toBlocking().first();
+            this.setChildren(node.getChildren());
+        }
+
         return this.children;
     }
 

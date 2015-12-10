@@ -47,7 +47,7 @@ public class SocketManager {
      * Start Socket Connection
      * @return
      */
-    public Observable startSocket() {
+    public Observable<Boolean> startSocket() {
 
         if (socket == null) {
             try {
