@@ -179,7 +179,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable<SearchResults<Location>>  findLocations(Map<String,String> options){
+    public static ExpObservable<SearchResults<Location>> findLocations(Map<String,String> options){
         Observable<SearchResults<Location>> locationObservable = AppSingleton.getInstance().getEndPoint().findLocations(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -198,9 +198,17 @@ public class Exp {
         return new ExpObservable<ContentNode>(contentNodeObservable);
     }
 
-
     /**
      * Get Content Node by UUID
+     * @param uuid
+     * @return
+     */
+    public static ExpObservable<ContentNode> getContent(String uuid){
+        return getContentNode(uuid);
+    }
+
+    /**
+     * Find ContentNodes by Limit,Skip,Sort
      * @param options
      * @return
      */
@@ -209,6 +217,15 @@ public class Exp {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
         return new ExpObservable<SearchResults<ContentNode>>(contentNodeObservable);
+    }
+
+    /**
+     * Find ContentNodes by Limit,Skip,Sort
+     * @param options
+     * @return
+     */
+    public static ExpObservable<SearchResults<ContentNode>> findContent(Map<String,String> options){
+        return findContentNodes(options);
     }
 
     /**
