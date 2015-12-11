@@ -22,7 +22,7 @@ public class Runtime extends Exp{
      * @param secret
      * @return
      */
-    public static Observable start(String host, String uuid, String secret){
+    public static Observable<Boolean> start(String host, String uuid, String secret){
         Map<String,Object> header = new HashMap<String,Object>();
         header.put(Utils.TYP, Utils.JWT);
         Map<String,Object> payload = new HashMap<String,Object>();
@@ -39,7 +39,7 @@ public class Runtime extends Exp{
      * @param options
      * @return
      */
-    public static Observable start(Map<String,String> options){
+    public static Observable<Boolean> start(Map<String,String> options){
         Observable observable = null;
         String hostUrl = "";
         if(options.get(Utils.HOST)!=null){
@@ -65,23 +65,25 @@ public class Runtime extends Exp{
      * @param organization
      * @return
      */
-    public static Observable start(final String host, String user, String password, String organization){
+    public static Observable<Boolean> start(final String host, String user, String password, String organization){
         final Map<String,String> options = new HashMap<String,String>();
         options.put(Utils.USERNAME,user);
         options.put(Utils.PASSWORD,password);
         options.put(Utils.ORG, organization);
+
         return ExpService.init(host)
-                .flatMap(new Func1<Boolean, Observable>() {
+                .flatMap(new Func1<Boolean, Observable<Boolean>>() {
                     @Override
-                    public Observable call(Boolean result) {
+                    public Observable<Boolean> call(Boolean result) {
+
                         return Exp.login(options)
-                                .flatMap(new Func1<Token, Observable>() {
+                                .flatMap(new Func1<Token, Observable<Boolean>>() {
                                     @Override
-                                    public Observable call(Token token) {
+                                    public Observable<Boolean> call(Token token) {
                                         AppSingleton.getInstance().setToken(token.getToken());
                                         AppSingleton.getInstance().setHost(host);
                                         return ExpService.init(host, token.getToken())
-                                                .flatMap(new Func1<Boolean, Observable>() {
+                                                .flatMap(new Func1<Boolean, Observable<Boolean>>() {
                                                     @Override
                                                     public Observable call(Boolean aBoolean) {
                                                         socketManager = new SocketManager();

@@ -14,7 +14,7 @@ Init exp connection for device with Host,Uuid,secret.
                 .subscribe(new Action1() {
                     @Override
                     public void call(Object o) {
-                      Log.e("EXP CONNECTED", o.toString());
+                      Log.i("EXP CONNECTED", o.toString());
                     }
                 }
 
@@ -28,7 +28,7 @@ Init exp connection for user with Host,User,Password,Organization.
                 .subscribe(new Action1() {
                     @Override
                     public void call(Object o) {
-                      Log.e("EXP CONNECTED", o.toString());
+                      Log.i("EXP CONNECTED", o.toString());
                     }
                 }
 
@@ -47,7 +47,7 @@ Init exp connection for user with options object.
                 .subscribe(new Action1() {
                     @Override
                     public void call(Object o) {
-                      Log.e("EXP CONNECTED", o.toString());
+                      Log.i("EXP CONNECTED", o.toString());
                     }
                 }
 
@@ -228,13 +228,13 @@ Get a single device by UUID. Resolves to a [Device Object](#device-object).
 
               @Override
               public void onNext(Device device) {
-                Log.e("DEVICE", device.toString());
+                Log.i("DEVICE", device.toString());
               }
   });
 ```
 
 ### Exp.findDevices(options)
-Query for multiple devices. Resolves to an array of [Device Objects](#device-object).
+Query for multiple devices. Resolves to a SearchResults object containing [Device Objects](#device-object).
 ```java
  //GET DEVICES
 final Map<String,String> options = new HashMap<>();
@@ -242,7 +242,7 @@ final Map<String,String> options = new HashMap<>();
         options.put("skip", "0");
         options.put("sort", "asc");
 Exp.findDevices(options)
-    .then(new Subscriber<ResultDevice>() {
+    .then(new Subscriber<SearchResults<Device>>() {
       @Override
       public void onCompleted() {}
       @Override
@@ -250,8 +250,8 @@ Exp.findDevices(options)
         Log.e("error", e.toString());
       }
       @Override
-      public void onNext(ResultDevice resultDevice) {
-        Log.e("Response", resultDevice.toString());
+      public void onNext(SearchResults<Device> resultDevice) {
+        Log.i("Response", resultDevice.toString());
       }
   });
 ```
@@ -291,12 +291,12 @@ Get a single experience by UUID. Resolves to a [Experience Object](#experience-o
 
                                     @Override
                                     public void onNext(Experience experience) {
-                                        Log.e("Response", experience.toString());
+                                        Log.i("Response", experience.toString());
                                     }
                                 });
 ```
 ### Exp.findExperiences(options)
-Query for multiple experiences. Resolves to an array of [Experience Objects](#experience-object).
+Query for multiple experiences. Resolves to a SearchResults object containing [Experience Objects](#experience-object).
 ```java
  //GET EXPERIENCES
   final Map<String,String> options = new HashMap<>();
@@ -304,7 +304,7 @@ Query for multiple experiences. Resolves to an array of [Experience Objects](#ex
   options.put(SKIP, "0");
   options.put(SORT, "asc");
   Exp.findExperiences(options)
-            .then(new Subscriber<ResultExperience>() {
+            .then(new Subscriber<SearchResults<Experience>>() {
                   @Override
                   public void onCompleted() {}
                   @Override
@@ -312,8 +312,8 @@ Query for multiple experiences. Resolves to an array of [Experience Objects](#ex
                       Log.e("error", e.toString());
                   }
                   @Override
-                  public void onNext(ResultExperience resultExperience) {
-                      Log.e("Response", resultExperience.toString());
+                  public void onNext(SearchResults<Experience> resultExperience) {
+                      Log.i("Response", resultExperience.toString());
                   }
   });
 
@@ -333,18 +333,18 @@ Get a single location by UUID. Resolves to a [Location Object](#location-object)
               }
               @Override
               public void onNext(Location location) {
-                  Log.e("Response", location.toString());
+                  Log.i("Response", location.toString());
               }
           });
 
 ```
 
 ### Exp.findLocations(options)
-Query for multiple locations. Resolves to an array of [Location Objects](#location-object).
+Query for multiple locations. Resolves to a SearchResults object containing [Location Objects](#location-object).
 ```java
 //GET LOCATIONS
   Exp.findLocations(options)
-        .then(new Subscriber<ResultLocation>() {
+        .then(new Subscriber<SearchResults<Location>>() {
             @Override
             public void onCompleted() {}
             @Override
@@ -352,8 +352,8 @@ Query for multiple locations. Resolves to an array of [Location Objects](#locati
                 Log.e("error", e.toString());
             }
             @Override
-            public void onNext(ResultLocation resultLocation) {
-                Log.e("Response", resultLocation.toString());
+            public void onNext(SearchResults<Location> resultLocation) {
+                Log.i("Response", resultLocation.toString());
             }
         });
 
@@ -372,7 +372,7 @@ Exp.getContentNode("d24c6581-f3d2-4d5a-b6b8-e90a4812d7df")
 
             @Override
             public void onNext(ContentNode contentNode) {
-                Log.e("Response", contentNode.toString());
+                Log.i("Response", contentNode.toString());
             }
         });
 ```
@@ -391,18 +391,18 @@ Get a single data item by group and key. Resolves to a [Data Object](#data-objec
 
                   @Override
                   public void onNext(Data data) {
-                    Log.e("Response", data.toString());
+                    Log.i("Response", data.toString());
                   }
   });
 
 ```
 
 ### Exp.findData(options)
-Query for multiple data items. Resolves to an SearchResults object containing [Data Objects](#data-object).
+Query for multiple data items. Resolves to a SearchResults object containing [Data Objects](#data-object).
 ```java
 //GET DATA
  Exp.findData(options)
-        .then(new Subscriber<ResultData>() {
+        .then(new Subscriber<SearchResults<Data>>() {
             @Override
             public void onCompleted() {
             }
@@ -413,8 +413,8 @@ Query for multiple data items. Resolves to an SearchResults object containing [D
             }
 
             @Override
-            public void onNext(ResultData resultData) {
-                Log.e("Response", resultData.toString());
+            public void onNext(SearchResults<Data> resultData) {
+                Log.i("Response", resultData.toString());
             }
         });
 
@@ -438,17 +438,17 @@ Get a single thing by UUID. Resolves to a [Thing Object](#thing-object).
               @Override
               public void onNext(Thing thing) {
                   Object zones = thing.get("location.zones");
-                  Log.e("Response", thing.toString());
+                  Log.i("Response", thing.toString());
               }
           });
 ```
 
 ### Exp.findThings(options)
-Query for multiple things. Resolves to an array of [Thing Objects](#thing-object).
+Query for multiple things. Resolves to a SearchResults object containing [Thing Objects](#thing-object).
 ```java
  //FIND THINGS
         Exp.findthings(options)
-            .then(new Subscriber<ResultThing>() {
+            .then(new Subscriber<SearchResults<Thing>>() {
                 @Override
                 public void onCompleted() {
                 }
@@ -459,8 +459,8 @@ Query for multiple things. Resolves to an array of [Thing Objects](#thing-object
                 }
 
                 @Override
-                public void onNext(ResultThing resultThing) {
-                    Log.e("Response", resultThing.toString());
+                public void onNext(SearchResults<Thing> resultThing) {
+                    Log.i("Response", resultThing.toString());
                 }
             });
 ```
@@ -474,9 +474,26 @@ Query for multiple things. Resolves to an array of [Thing Objects](#thing-object
 The content's UUID.
 
 ##### content.getChildren()
-Get the immediate children of this content node. Resolves to an array of [ContentNode Objects](#content-object).
+Get the immediate children of this content node. Resolves to a list of [ContentNode Objects](#content-object).
 ```java
-  List<ContentNode> children = contentNode.getChildren();
+  contentNode.getChildren()
+    .then(new Subscriber<List<ContentNode>() {
+        @Override
+        public void onCompleted() {
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            Log.e("error", e.toString());
+        }
+
+        @Override
+        public void onNext(List<ContentNode> children) {
+          for (ContentNode child : children) {
+            Log.i("Child", child.get("name"));
+          }
+        }
+    });
 
 ```
 

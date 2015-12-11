@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Cesar Oyarzun on 10/30/15.
+ * Created by adamgalloway on 12/10/15.
  */
-public class ResultExperience {
+public class SearchResults<T> {
+
     private Integer total;
-    private List<Experience> results = new ArrayList<Experience>();
+    private List<T> results = new ArrayList<T>();
 
     /**
      *
@@ -33,7 +34,7 @@ public class ResultExperience {
      * @return
      * The results
      */
-    public List<Experience> getResults() {
+    public List<T> getResults() {
         return results;
     }
 
@@ -42,9 +43,9 @@ public class ResultExperience {
      * @param results
      * The results
      */
-    public void setResults(List<Experience> results) {
+    public void setResults(List<T> results) {
         this.results = results;
     }
 
-
 }
+

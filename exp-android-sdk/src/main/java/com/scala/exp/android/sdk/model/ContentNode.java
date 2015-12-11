@@ -2,21 +2,29 @@ package com.scala.exp.android.sdk.model;
 
 import com.google.gson.internal.LinkedTreeMap;
 import com.scala.exp.android.sdk.AppSingleton;
+import com.scala.exp.android.sdk.Exp;
 import com.scala.exp.android.sdk.Utils;
+import com.scala.exp.android.sdk.observer.ExpObservable;
 
 import java.util.List;
+
+import rx.Observable;
+import rx.functions.Func1;
+import rx.observables.BlockingObservable;
 
 /**
  * Created by Cesar Oyarzun on 10/30/15.
  */
 public class ContentNode extends AbstractModel {
 
-    public static final String PATH = "path";
-    public static final String API_DELIVERY = "/api/delivery";
-    public static final String VARIANTS = "variants";
-    public static final String NAME = "name";
-    public static final String INDEX_HTML = "/index.html";
-    public static final String VARIANT = "?variant=";
+    private static final String UUID = "uuid";
+    private static final String PATH = "path";
+    private static final String API_DELIVERY = "/api/delivery";
+    private static final String VARIANTS = "variants";
+    private static final String NAME = "name";
+    private static final String INDEX_HTML = "/index.html";
+    private static final String VARIANT = "?variant=";
+
     private Utils.CONTENT_TYPES subtype = null;
     private List<ContentNode> children = null;
 
@@ -24,11 +32,23 @@ public class ContentNode extends AbstractModel {
         this.subtype = subtype;
     }
 
-    public List<ContentNode> getChildren() {
-        return this.children;
+    public ExpObservable<List<ContentNode>> getChildren() {
+        if (this.children == null) {
+            final String uuid = getString(UUID);
+            final ExpObservable<ContentNode> observable = Exp.getContentNode(uuid);
+            return new ExpObservable<List<ContentNode>>(observable.<List<ContentNode>>flatMap(new Func1<ContentNode, Observable<List<ContentNode>>>() {
+                @Override
+                public Observable<List<ContentNode>> call(ContentNode content) {
+                    ContentNode.this.children = content.children;
+                    return Observable.just(content.children);
+                }
+            }));
+        }
+
+        return new ExpObservable<List<ContentNode>>(Observable.just(this.children));
     }
 
-    public void setChildren(List<ContentNode> children){
+        public void setChildren(List<ContentNode> children){
         this.children = children;
     }
 
@@ -37,17 +57,17 @@ public class ContentNode extends AbstractModel {
         String url = "";
         switch (this.subtype){
             case APP:
-                String pathApp = (String) this.get(PATH);
+                String pathApp = this.getString(PATH);
                 url = AppSingleton.getInstance().getHost() + API_DELIVERY + pathApp + INDEX_HTML;
                 break;
             case FILE:
-                String pathFile = (String) this.get(PATH);
+                String pathFile = this.getString(PATH);
                 url = AppSingleton.getInstance().getHost() + API_DELIVERY + pathFile;
                 break;
             case FOLDER:
                 break;
             case URL:
-                url = (String) this.get(PATH);
+                url = this.getString(PATH);
                 break;
             case UNKNOW:
                 break;
