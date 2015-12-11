@@ -8,6 +8,8 @@ import com.scala.exp.android.sdk.observer.ExpObservable;
 
 import java.util.List;
 
+import rx.Observable;
+import rx.functions.Func1;
 import rx.observables.BlockingObservable;
 
 /**
@@ -22,6 +24,7 @@ public class ContentNode extends AbstractModel {
     private static final String NAME = "name";
     private static final String INDEX_HTML = "/index.html";
     private static final String VARIANT = "?variant=";
+
     private Utils.CONTENT_TYPES subtype = null;
     private List<ContentNode> children = null;
 
@@ -29,18 +32,23 @@ public class ContentNode extends AbstractModel {
         this.subtype = subtype;
     }
 
-    public List<ContentNode> getChildren() {
+    public ExpObservable<List<ContentNode>> getChildren() {
         if (this.children == null) {
             final String uuid = String.valueOf(this.get(UUID));
             final ExpObservable<ContentNode> observable = Exp.getContentNode(uuid);
-            final ContentNode node = observable.getObservable().toBlocking().first();
-            this.setChildren(node.getChildren());
+            return new ExpObservable<List<ContentNode>>(observable.<List<ContentNode>>flatMap(new Func1<ContentNode, Observable<List<ContentNode>>>() {
+                @Override
+                public Observable<List<ContentNode>> call(ContentNode content) {
+                    ContentNode.this.children = content.children;
+                    return Observable.just(content.children);
+                }
+            }));
         }
 
-        return this.children;
+        return new ExpObservable<List<ContentNode>>(Observable.just(this.children));
     }
 
-    public void setChildren(List<ContentNode> children){
+        public void setChildren(List<ContentNode> children){
         this.children = children;
     }
 

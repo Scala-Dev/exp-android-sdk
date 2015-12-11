@@ -18,11 +18,11 @@ public class ExpObservable<T> {
         this.observable = observable;
     }
 
-    public Observable flatMap(Func1 func){
+    public <R> Observable<R> flatMap(Func1<?, Observable<R>> func){
         return this.observable.flatMap(func);
     }
 
-    public Observable map(Func1 func){
+    public <R> Observable<R> map(Func1<?, Observable<R>> func){
         return this.observable.map(func);
     }
 

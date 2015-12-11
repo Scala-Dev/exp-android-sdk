@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import exp.android.sdk.R;
@@ -49,6 +50,7 @@ public class MainActivity extends ActionBarActivity {
         options.put(LIMIT,"10");
         options.put(SKIP, "0");
         options.put(SORT, "name");
+
         Exp.start(host, user, password, org)
                 .subscribe(new Action1<Boolean>() {
                     @Override
@@ -100,7 +102,7 @@ public class MainActivity extends ActionBarActivity {
                                     @Override
                                     public void onNext(Thing thing) {
                                         Object zones = thing.get("location.zones");
-                                        Log.e("Response", thing.toString());
+                                        Log.i("Response", thing.toString());
                                     }
                                 });
 
@@ -117,7 +119,7 @@ public class MainActivity extends ActionBarActivity {
 
                                     @Override
                                     public void onNext(SearchResults<Experience> resultExperience) {
-                                        Log.e("Response", resultExperience.toString());
+                                        Log.i("Response", resultExperience.toString());
                                     }
                                 });
 
@@ -134,7 +136,7 @@ public class MainActivity extends ActionBarActivity {
 
                                     @Override
                                     public void onNext(SearchResults<Location> resultLocation) {
-                                        Log.e("Response", resultLocation.toString());
+                                        Log.i("Response", resultLocation.toString());
                                     }
                                 });
 
@@ -147,7 +149,42 @@ public class MainActivity extends ActionBarActivity {
 
                                     @Override
                                     public void onNext(ContentNode contentNode) {
-                                        Log.e("Response", contentNode.toString());
+                                        Log.i("Response", contentNode.toString());
+                                        contentNode.getChildren().then(new Subscriber<List<ContentNode>>() {
+
+                                            @Override
+                                            public void onCompleted() {
+                                            }
+
+                                            @Override
+                                            public void onError(Throwable e) {
+                                                Log.e("error", e.toString());
+                                            }
+
+                                            @Override
+                                            public void onNext(List<ContentNode> children) {
+                                                for (ContentNode child : children) {
+                                                    Log.i("child", String.valueOf(child.get("name")));
+                                                    child.getChildren().then(new Subscriber<List<ContentNode>>() {
+                                                        @Override
+                                                        public void onCompleted() {}
+
+                                                        @Override
+                                                        public void onError(Throwable e) {
+                                                            Log.e("error", e.toString());
+                                                        }
+
+                                                        @Override
+                                                        public void onNext(List<ContentNode> grandchildren) {
+                                                            for (ContentNode grandchild : grandchildren) {
+                                                                Log.i("grandchild", String.valueOf(grandchild.get("name")));
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            }
+
+                                        });
                                     }
                                 });
 
@@ -156,11 +193,14 @@ public class MainActivity extends ActionBarActivity {
                                     @Override
                                     public void onCompleted() {}
                                     @Override
-                                    public void onError(Throwable e) {Log.e("error", e.toString());}
+                                    public void onError(Throwable e) {
+                                        e.printStackTrace();
+                                        Log.e("error", e.toString());
+                                    }
 
                                     @Override
                                     public void onNext(SearchResults<ContentNode> contentNodes) {
-                                        Log.e("Response", contentNodes.toString());
+                                        Log.i("Response", contentNodes.toString());
                                     }
                                 });
                     }
