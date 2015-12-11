@@ -3,6 +3,7 @@ package com.scala.exp.android.sdk;
 import com.scala.exp.android.sdk.model.ContentNode;
 import com.scala.exp.android.sdk.model.Device;
 import com.scala.exp.android.sdk.model.Experience;
+import com.scala.exp.android.sdk.model.Feed;
 import com.scala.exp.android.sdk.model.SearchResults;
 import com.scala.exp.android.sdk.model.Token;
 import com.scala.exp.android.sdk.model.Data;
@@ -57,11 +58,19 @@ public interface IExpEndpoint {
         @GET("/api/content")
         Observable<SearchResults<ContentNode>> findContentNodes(@QueryMap Map<String,String> options);
 
-
         @GET("/api/data/{group}/{key}")
         Observable<Data> getData(@Path("group") String group,@Path("key") String key);
 
-        @GET("/api/data/{group}/{key}")
+        @GET("/api/data")
         Observable<SearchResults<Data>> findData(@QueryMap Map<String,String> options);
+
+        @GET("/api/connectors/feeds/{uuid}")
+        Observable<Feed> getFeed(@Path("uuid") String uuid);
+
+        @GET("/api/connectors/feeds")
+        Observable<SearchResults<Feed>> findFeeds(@QueryMap Map<String,String> options);
+
+        @GET("/api/connectors/feeds/{uuid}/data")
+        Observable<Map> getFeedData(@Path("uuid") String uuid);
 
 }

@@ -34,7 +34,7 @@ public class ContentNode extends AbstractModel {
 
     public ExpObservable<List<ContentNode>> getChildren() {
         if (this.children == null) {
-            final String uuid = String.valueOf(this.get(UUID));
+            final String uuid = getString(UUID);
             final ExpObservable<ContentNode> observable = Exp.getContentNode(uuid);
             return new ExpObservable<List<ContentNode>>(observable.<List<ContentNode>>flatMap(new Func1<ContentNode, Observable<List<ContentNode>>>() {
                 @Override
@@ -57,17 +57,17 @@ public class ContentNode extends AbstractModel {
         String url = "";
         switch (this.subtype){
             case APP:
-                String pathApp = (String) this.get(PATH);
+                String pathApp = this.getString(PATH);
                 url = AppSingleton.getInstance().getHost() + API_DELIVERY + pathApp + INDEX_HTML;
                 break;
             case FILE:
-                String pathFile = (String) this.get(PATH);
+                String pathFile = this.getString(PATH);
                 url = AppSingleton.getInstance().getHost() + API_DELIVERY + pathFile;
                 break;
             case FOLDER:
                 break;
             case URL:
-                url = (String) this.get(PATH);
+                url = this.getString(PATH);
                 break;
             case UNKNOW:
                 break;

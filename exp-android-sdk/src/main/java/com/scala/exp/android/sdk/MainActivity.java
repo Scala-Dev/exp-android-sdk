@@ -19,6 +19,7 @@ import exp.android.sdk.R;
 
 import com.scala.exp.android.sdk.channels.IChannel;
 import com.scala.exp.android.sdk.model.Experience;
+import com.scala.exp.android.sdk.model.Feed;
 import com.scala.exp.android.sdk.model.Location;
 import com.scala.exp.android.sdk.model.SearchResults;
 import com.scala.exp.android.sdk.model.Thing;
@@ -140,6 +141,26 @@ public class MainActivity extends ActionBarActivity {
                                     }
                                 });
 
+                        Exp.findFeeds(options)
+                                .then(new Subscriber<SearchResults<Feed>>() {
+                                    @Override
+                                    public void onCompleted() {
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        Log.e("error", e.toString());
+                                    }
+
+                                    @Override
+                                    public void onNext(SearchResults<Feed> feeds) {
+                                        Log.i("Feeds", feeds.toString());
+                                        for (Feed feed : feeds.getResults()) {
+                                            Log.i("Feed", feed.getString("name"));
+                                        }
+                                    }
+                                });
+
                         Exp.getContentNode("d24c6581-f3d2-4d5a-b6b8-e90a4812d7df")
                                 .then(new Subscriber<ContentNode>() {
                                     @Override
@@ -167,7 +188,8 @@ public class MainActivity extends ActionBarActivity {
                                                     Log.i("child", String.valueOf(child.get("name")));
                                                     child.getChildren().then(new Subscriber<List<ContentNode>>() {
                                                         @Override
-                                                        public void onCompleted() {}
+                                                        public void onCompleted() {
+                                                        }
 
                                                         @Override
                                                         public void onError(Throwable e) {

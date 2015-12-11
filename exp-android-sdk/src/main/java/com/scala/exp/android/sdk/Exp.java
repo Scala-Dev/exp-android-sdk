@@ -91,6 +91,30 @@ public class Exp {
     }
 
     /**
+     * Get Feed by UUID
+     * @param uuid
+     * @return
+     */
+    public static ExpObservable<Feed> getFeed(String uuid){
+        Observable<Feed> observable = AppSingleton.getInstance().getEndPoint().getFeed(uuid)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Feed>(observable);
+    }
+
+    /**
+     * Find Feeds by Limit,Skip,Sort
+     * @param options
+     * @return
+     */
+    public static ExpObservable<SearchResults<Feed>> findFeeds(Map<String,String> options){
+        Observable<SearchResults<Feed>> observable = AppSingleton.getInstance().getEndPoint().findFeeds(options)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<SearchResults<Feed>>(observable);
+    }
+
+    /**
      * Get Device by UUID
      * @param uuid
      * @return
