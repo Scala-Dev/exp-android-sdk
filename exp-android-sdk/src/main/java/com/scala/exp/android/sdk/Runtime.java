@@ -29,9 +29,30 @@ public class Runtime extends Exp{
         payload.put(Utils.UUID, uuid);
         String token = Jwts.builder().setHeader(header).setClaims(payload).signWith(SignatureAlgorithm.HS256, secret.getBytes()).compact();
         AppSingleton.getInstance().setToken(token);
-        return  ExpService.init(host,token);
+        return  ExpService.init(host,token).flatMap(new Func1<Boolean, Observable<Boolean>>() {
+            @Override
+            public Observable call(Boolean aBoolean) {
+                socketManager = new SocketManager();
+                return socketManager.startSocket();
+            }
+        });
     }
 
+    protected static Observable<Boolean> startConsumerApp(String host, String uuid, String secret){
+        Map<String,Object> header = new HashMap<String,Object>();
+        header.put(Utils.TYP, Utils.JWT);
+        Map<String,Object> payload = new HashMap<String,Object>();
+        payload.put(Utils.NETWORK_UUID, uuid); // TODO change to CONSUMER_APP_UUID
+        String token = Jwts.builder().setHeader(header).setClaims(payload).signWith(SignatureAlgorithm.HS256, secret.getBytes()).compact();
+        AppSingleton.getInstance().setToken(token);
+        return  ExpService.init(host,token).flatMap(new Func1<Boolean, Observable<Boolean>>() {
+            @Override
+            public Observable call(Boolean aBoolean) {
+                socketManager = new SocketManager();
+                return socketManager.startSocket();
+            }
+        });
+    }
 
 
     /**
@@ -52,8 +73,13 @@ public class Runtime extends Exp{
         }else if(options.get(Utils.DEVICE_UUID)!= null && options.get(Utils.SECRET)!= null){
             observable = start(hostUrl,options.get(Utils.DEVICE_UUID),options.get(Utils.SECRET));
         }else if(options.get(Utils.NETWORK_UUID)!= null && options.get(Utils.API_KEY)!= null){
-            observable = start(hostUrl,options.get(Utils.NETWORK_UUID),options.get(Utils.API_KEY));
+            observable = startConsumerApp(hostUrl, options.get(Utils.NETWORK_UUID), options.get(Utils.API_KEY));
+        }else if(options.get(Utils.CONSUMER_APP_UUID)!= null && options.get(Utils.API_KEY)!= null){
+            observable = startConsumerApp(hostUrl, options.get(Utils.CONSUMER_APP_UUID), options.get(Utils.API_KEY));
+        } else {
+            throw new RuntimeException("Credentials are missing from start call");
         }
+
         return observable;
     }
 
