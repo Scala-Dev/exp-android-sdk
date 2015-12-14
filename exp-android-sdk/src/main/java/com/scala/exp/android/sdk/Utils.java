@@ -4,6 +4,7 @@ package com.scala.exp.android.sdk;
  * Created by Cesar Oyarzun on 11/6/15.
  */
 public class Utils {
+    public static final String CONSUMER_APP_UUID = "consumerAppUuid";
     public static final String MESSAGE = "message";
     public static final String TYPE = "type";
     public static final String REQUEST = "request";
