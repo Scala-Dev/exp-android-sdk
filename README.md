@@ -69,6 +69,8 @@ Network authentication:
 "networkUuid" (required)
 "apiKey" (required)
 
+### Exp.stop()
+Disconnect from EXP and clears your credentials.
 
 # Exp.connection
 ### Exp.connection(name, subscriber)
@@ -96,12 +98,18 @@ There are four channels available:
 - "organization": Messages to/from devices across the organization.
 - "experience": Messages to/from devices in the current experience.
 - "location": Messages to/from devices in the current location.
+There is also the option for Dynamic Channels just by getting the channel with a name.
 
 ### How to get channels
 ```java
 IChannel channelSystem = Exp.getChannel(Utils.SOCKET_CHANNELS.SYSTEM); 
 IChannel channelOrganization = Exp.getChannel(Utils.SOCKET_CHANNELS.ORGANIZATION);
 
+```
+
+### Dynamic Channels
+```java
+IChannel myChannel = Exp.getChannel("myChannel");
 ```
 
 ###  [Channel].fling(uuid)
