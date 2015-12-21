@@ -122,6 +122,11 @@ public class Runtime extends Exp{
                 });
     }
 
-
+    /**
+     * Stop Connection to EXP
+     */
+    public static void stop(){
+        socketManager.disconnect();
+    }
 
 }

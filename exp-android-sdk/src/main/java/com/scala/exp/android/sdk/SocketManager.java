@@ -3,6 +3,7 @@ package com.scala.exp.android.sdk;
 
 import android.util.Log;
 
+import com.scala.exp.android.sdk.channels.CommonChannel;
 import com.scala.exp.android.sdk.channels.ExperienceChannel;
 import com.scala.exp.android.sdk.channels.IChannel;
 import com.scala.exp.android.sdk.channels.LocationChannel;
@@ -42,6 +43,7 @@ public class SocketManager {
     private LocationChannel locationChannel = null;
     private ExperienceChannel experienceChannel = null;
     private Map<String,Subscriber> connection = new HashMap<>();
+    private Map<String,IChannel> channelCache = new HashMap<>();
 
     /**
      * Start Socket Connection
@@ -323,6 +325,24 @@ public class SocketManager {
         return expChannel;
     }
 
+
+    /**
+     * Get Channel from string
+     * @param channel
+     * @return
+     */
+    public IChannel getChannel(String channel){
+        IChannel expChannel = null;
+        if(channelCache.get(channel)!= null){
+            expChannel = channelCache.get(channel);
+        }else{
+            expChannel = new CommonChannel(socket,channel);
+            channelCache.put(channel,expChannel);
+        }
+        return expChannel;
+    }
+
+
     /**
      * Connection subscriber for socket state
      * @param name
@@ -332,4 +352,12 @@ public class SocketManager {
         connection.put(name,subscriber);
     }
 
+    /**
+     * Disconnect EXP clean token
+     */
+    public void disconnect(){
+        socket.disconnect();
+        AppSingleton.getInstance().setToken("");
+        channelCache = new HashMap<>();
+    }
 }
