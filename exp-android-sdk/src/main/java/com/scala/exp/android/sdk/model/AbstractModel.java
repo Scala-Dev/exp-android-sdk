@@ -24,6 +24,25 @@ public abstract class AbstractModel {
         return o;
     }
 
+    public String getString(String path) {
+        final Object obj = get(path);
+        return obj != null ? String.valueOf(obj) : null;
+    }
+
+    public Integer getInteger(String path) {
+        final Object obj = get(path);
+        if (obj instanceof Integer) return (Integer) obj;
+
+        return obj != null ? Integer.valueOf(String.valueOf(obj)) : null;
+    }
+
+    public Boolean getBoolean(String path) {
+        final Object obj = get(path);
+        if (obj instanceof Boolean) return (Boolean) obj;
+
+        return obj != null ? Boolean.valueOf(String.valueOf(obj)) : null;
+    }
+
     public void setProperties(LinkedTreeMap properties) {
         this.properties = properties;
     }

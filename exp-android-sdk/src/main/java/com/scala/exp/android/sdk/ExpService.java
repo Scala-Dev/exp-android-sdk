@@ -7,15 +7,12 @@ package com.scala.exp.android.sdk;
 
 import com.google.gson.GsonBuilder;
 import com.scala.exp.android.sdk.adapters.ContentNodeJsonAdapter;
-import com.scala.exp.android.sdk.adapters.DataJsonAdapter;
-import com.scala.exp.android.sdk.adapters.DeviceJsonAdapter;
-import com.scala.exp.android.sdk.adapters.ExperienceJsonAdapter;
-import com.scala.exp.android.sdk.adapters.LocationJsonAdapter;
-import com.scala.exp.android.sdk.adapters.ThingJsonAdapter;
+import com.scala.exp.android.sdk.adapters.ModelJsonAdapter;
 import com.scala.exp.android.sdk.model.ContentNode;
 import com.scala.exp.android.sdk.model.Data;
 import com.scala.exp.android.sdk.model.Device;
 import com.scala.exp.android.sdk.model.Experience;
+import com.scala.exp.android.sdk.model.Feed;
 import com.scala.exp.android.sdk.model.Location;
 import com.scala.exp.android.sdk.model.Thing;
 import com.squareup.okhttp.Interceptor;
@@ -43,7 +40,7 @@ public final class ExpService {
      * @param tokenExp
      * @return
      */
-    public static Observable init(String host, final String tokenExp)  {
+    public static Observable<Boolean> init(String host, final String tokenExp)  {
 
         AppSingleton.getInstance().setHost(host);
         // Define the interceptor, add authentication headers
@@ -62,12 +59,14 @@ public final class ExpService {
 
         //GSON builder adapter for model
         GsonBuilder gson = new GsonBuilder();
-        gson.registerTypeAdapter(Device.class, new DeviceJsonAdapter());
-        gson.registerTypeAdapter(Thing.class, new ThingJsonAdapter());
-        gson.registerTypeAdapter(Location.class, new LocationJsonAdapter());
+        gson.registerTypeAdapter(Device.class, new ModelJsonAdapter<Device>(Device.class));
+        gson.registerTypeAdapter(Thing.class, new ModelJsonAdapter<Thing>(Thing.class));
+        gson.registerTypeAdapter(Location.class, new ModelJsonAdapter<Location>(Location.class));
+        gson.registerTypeAdapter(Experience.class, new ModelJsonAdapter<Experience>(Experience.class));
+        gson.registerTypeAdapter(Data.class, new ModelJsonAdapter<Data>(Data.class));
+        gson.registerTypeAdapter(Feed.class, new ModelJsonAdapter<Feed>(Feed.class));
         gson.registerTypeAdapter(ContentNode.class, new ContentNodeJsonAdapter());
-        gson.registerTypeAdapter(Data.class, new DataJsonAdapter());
-        gson.registerTypeAdapter(Experience.class, new ExperienceJsonAdapter());
+
         GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson.create());
 
         // Create  REST adapter  API.
@@ -90,15 +89,19 @@ public final class ExpService {
      * @param host
      * @return
      */
-    public static Observable init(String host)  {
+    public static Observable<Boolean> init(String host)  {
 
         AppSingleton.getInstance().setHost(host);
         //GSON builder adapter for model
         GsonBuilder gson = new GsonBuilder();
-        gson.registerTypeAdapter(Device.class, new DeviceJsonAdapter());
-        gson.registerTypeAdapter(Thing.class, new ThingJsonAdapter());
-        gson.registerTypeAdapter(Location.class, new LocationJsonAdapter());
+        gson.registerTypeAdapter(Device.class, new ModelJsonAdapter<Device>(Device.class));
+        gson.registerTypeAdapter(Thing.class, new ModelJsonAdapter<Thing>(Thing.class));
+        gson.registerTypeAdapter(Location.class, new ModelJsonAdapter<Location>(Location.class));
+        gson.registerTypeAdapter(Experience.class, new ModelJsonAdapter<Experience>(Experience.class));
+        gson.registerTypeAdapter(Data.class, new ModelJsonAdapter<Data>(Data.class));
+        gson.registerTypeAdapter(Feed.class, new ModelJsonAdapter<Feed>(Feed.class));
         gson.registerTypeAdapter(ContentNode.class, new ContentNodeJsonAdapter());
+
         GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson.create());
 
         // Create  REST adapter  API.
