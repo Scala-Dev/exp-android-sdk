@@ -286,6 +286,27 @@ public class Exp {
         return socketManager.getChannel(channel);
     }
 
+    /**
+     * Stop EXP connection
+     */
+    public static void stop(){
+         runtime.stop();
+    }
+
+    /**
+     * Get Channel
+     * @param channel
+     * @return
+     */
+    public static IChannel getChannel(String channel){
+        return socketManager.getChannel(channel);
+    }
+
+    /**
+     * Connection to socket manager
+     * @param name
+     * @param subscriber
+     */
     public static void connection(String name,Subscriber subscriber){
         socketManager.connection(name,subscriber);
     }

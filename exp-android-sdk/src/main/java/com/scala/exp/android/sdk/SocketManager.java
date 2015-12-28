@@ -3,6 +3,7 @@ package com.scala.exp.android.sdk;
 
 import android.util.Log;
 
+import com.scala.exp.android.sdk.channels.CommonChannel;
 import com.scala.exp.android.sdk.channels.ExperienceChannel;
 import com.scala.exp.android.sdk.channels.IChannel;
 import com.scala.exp.android.sdk.channels.LocationChannel;
@@ -42,6 +43,7 @@ public class SocketManager {
     private LocationChannel locationChannel = null;
     private ExperienceChannel experienceChannel = null;
     private Map<String,Subscriber> connection = new HashMap<>();
+    private Map<String,IChannel> channelCache = new HashMap<>();
 
     /**
      * Start Socket Connection
@@ -106,7 +108,7 @@ public class SocketManager {
                             }else if(Utils.REQUEST.equalsIgnoreCase(type)){
                                 handleRequest(json, channel);
                             }else if(Utils.BROADCAST.equalsIgnoreCase(type)){
-                                handleBroadCast(json, channel);
+                                handleBroadcast(json, channel);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -142,7 +144,7 @@ public class SocketManager {
      * @param channel
      * @throws JSONException
      */
-    private void handleBroadCast(JSONObject json, String channel) throws JSONException {
+    private void handleBroadcast(JSONObject json, String channel) throws JSONException {
         if(channel == null){
             systemChannel.onBroadCast(json);
             experienceChannel.onBroadCast(json);
@@ -150,20 +152,26 @@ public class SocketManager {
             organizationChannel.onBroadCast(json);
         }else{
             Utils.SOCKET_CHANNELS socket_channels = Utils.getSocketEnum(channel);
-            switch (socket_channels){
-                case SYSTEM:
-                    systemChannel.onBroadCast(json);
-                    break;
-                case ORGANIZATION:
-                    organizationChannel.onBroadCast(json);
-                    break;
-                case LOCATION:
-                    locationChannel.onBroadCast(json);
-                    break;
-                case EXPERIENCE:
-                    experienceChannel.onBroadCast(json);
-                    break;
+            if(socket_channels!=null){
+                switch (socket_channels){
+                    case SYSTEM:
+                        systemChannel.onBroadCast(json);
+                        break;
+                    case ORGANIZATION:
+                        organizationChannel.onBroadCast(json);
+                        break;
+                    case LOCATION:
+                        locationChannel.onBroadCast(json);
+                        break;
+                    case EXPERIENCE:
+                        experienceChannel.onBroadCast(json);
+                        break;
+                }
+            }else if(channelCache.get(channel) != null) {
+                IChannel commonChannel = channelCache.get(channel);
+                commonChannel.onBroadCast(json);
             }
+
         }
     }
 
@@ -181,20 +189,26 @@ public class SocketManager {
             organizationChannel.onRequest(json);
         }else{
             Utils.SOCKET_CHANNELS socket_channels = Utils.getSocketEnum(channel);
-            switch (socket_channels){
-                case SYSTEM:
-                    systemChannel.onRequest(json);
-                    break;
-                case ORGANIZATION:
-                    organizationChannel.onRequest(json);
-                    break;
-                case LOCATION:
-                    locationChannel.onRequest(json);
-                    break;
-                case EXPERIENCE:
-                    experienceChannel.onRequest(json);
-                    break;
+            if( socket_channels != null ){
+                switch (socket_channels){
+                    case SYSTEM:
+                        systemChannel.onRequest(json);
+                        break;
+                    case ORGANIZATION:
+                        organizationChannel.onRequest(json);
+                        break;
+                    case LOCATION:
+                        locationChannel.onRequest(json);
+                        break;
+                    case EXPERIENCE:
+                        experienceChannel.onRequest(json);
+                        break;
+                }
+            }else if( channelCache.get(channel) != null ){
+                IChannel commonChannel = channelCache.get(channel);
+                commonChannel.onRequest(json);
             }
+
         }
     }
 
@@ -212,20 +226,26 @@ public class SocketManager {
             organizationChannel.onResponse(json);
         }else{
             Utils.SOCKET_CHANNELS socket_channels = Utils.getSocketEnum(channel);
-            switch (socket_channels){
-                case SYSTEM:
-                    systemChannel.onResponse(json);
-                    break;
-                case ORGANIZATION:
-                    organizationChannel.onResponse(json);
-                    break;
-                case LOCATION:
-                    locationChannel.onResponse(json);
-                    break;
-                case EXPERIENCE:
-                    experienceChannel.onResponse(json);
-                    break;
+            if( socket_channels != null){
+                switch (socket_channels){
+                    case SYSTEM:
+                        systemChannel.onResponse(json);
+                        break;
+                    case ORGANIZATION:
+                        organizationChannel.onResponse(json);
+                        break;
+                    case LOCATION:
+                        locationChannel.onResponse(json);
+                        break;
+                    case EXPERIENCE:
+                        experienceChannel.onResponse(json);
+                        break;
+                }
+            }else if(channelCache.get(channel)!=null){
+                IChannel commonChannel = channelCache.get(channel);
+                commonChannel.onResponse(json);
             }
+
         }
     }
 
@@ -323,6 +343,24 @@ public class SocketManager {
         return expChannel;
     }
 
+
+    /**
+     * Get Channel from string
+     * @param channel
+     * @return
+     */
+    public IChannel getChannel(String channel){
+        IChannel expChannel = null;
+        if(channelCache.get(channel)!= null){
+            expChannel = channelCache.get(channel);
+        }else{
+            expChannel = new CommonChannel(socket,channel);
+            channelCache.put(channel,expChannel);
+        }
+        return expChannel;
+    }
+
+
     /**
      * Connection subscriber for socket state
      * @param name
@@ -332,4 +370,12 @@ public class SocketManager {
         connection.put(name,subscriber);
     }
 
+    /**
+     * Disconnect EXP clean token
+     */
+    public void disconnect(){
+        socket.disconnect();
+        AppSingleton.getInstance().setToken("");
+        channelCache = new HashMap<>();
+    }
 }
