@@ -23,6 +23,13 @@ import com.scala.exp.android.sdk.model.Feed;
 import com.scala.exp.android.sdk.model.Location;
 import com.scala.exp.android.sdk.model.SearchResults;
 import com.scala.exp.android.sdk.model.Thing;
+import com.shopify.buy.dataprovider.BuyClient;
+import com.shopify.buy.dataprovider.BuyClientFactory;
+import com.shopify.buy.model.Collection;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import rx.Subscriber;
 import rx.functions.Action1;
 
@@ -42,17 +49,54 @@ public class MainActivity extends ActionBarActivity {
     private final String LOG_TAG = MainActivity.class.getSimpleName();
 
 
+    // Constants
+    public static final String BUY_CLIENT_SHOP = "my-shop.myshopify.com";
+    public static final String BUY_CLIENT_API_KEY = "api key goes here";
+    public static final String BUY_CLIENT_CHANNEL = "channel goes here";
+    // Replace BUY_CLIENT_APP_NAME with whatever you like. We suggest
+// using your applications bundle identifier
+    public static final String BUY_CLIENT_APP_NAME = "COM.YOUR.APP.PACKAGE";
+
+    // Easily access an instance of your Buy Client
+    public static BuyClient newInstance() {
+        BuyClient client = BuyClientFactory.getBuyClient(BUY_CLIENT_SHOP,
+                BUY_CLIENT_API_KEY,
+                BUY_CLIENT_CHANNEL,
+                BUY_CLIENT_APP_NAME);
+        return client;
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         AppSingleton.getInstance().setHost(host);
         final Map<String,String> options = new HashMap<>();
-        options.put(LIMIT,"10");
+        options.put(LIMIT, "10");
         options.put(SKIP, "0");
         options.put(SORT, "name");
 
-        Exp.start(host, user, password, org)
+        final Map<String,String> options2 = new HashMap<>();
+        options2.put("host", "https://api-develop.exp.scala.com");
+        options2.put("networkUuid", "8e72c821-4678-4540-9f43-b13f26b168d6");
+        options2.put("apiKey", "40aa4fcee35332714087955793d53d20e830be6f7b7277d35ab32e5045b73aca33dfc6f9f1bb9239efdfa6d048bbb205");
+
+        BuyClient client = newInstance();
+        client.getCollections(new Callback<List<Collection>>() {
+            @Override
+            public void success(List<Collection> collections, Response response) {
+                Log.i(LOG_TAG, collections.toString());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+                Log.e(LOG_TAG, error.toString());
+            }
+        });
+
+        Exp.start(options2)
                 .subscribe(new Action1<Boolean>() {
                     @Override
                     public void call(Boolean o) {

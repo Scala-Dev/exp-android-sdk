@@ -22,9 +22,9 @@ import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
+import retrofit.RequestInterceptor;
+import retrofit.RestAdapter;
+import retrofit.converter.GsonConverter;
 import rx.Observable;
 
 
@@ -44,18 +44,17 @@ public final class ExpService {
 
         AppSingleton.getInstance().setHost(host);
         // Define the interceptor, add authentication headers
-        Interceptor interceptor = new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request newRequest = chain.request().newBuilder().addHeader(AUTHORIZATION, BEARER +tokenExp).build();
-                return chain.proceed(newRequest);
-            }
-        };
-
-        // Add the interceptor to OkHttpClient
-        OkHttpClient client = new OkHttpClient();
-        client.interceptors().add(interceptor);
-
+//        Interceptor interceptor = new Interceptor() {
+//            @Override
+//            public Response intercept(Chain chain) throws IOException {
+//                Request newRequest = chain.request().newBuilder().addHeader(AUTHORIZATION, BEARER +tokenExp).build();
+//                return chain.proceed(newRequest);
+//            }
+//        };
+//
+//        // Add the interceptor to OkHttpClient
+//        OkHttpClient client = new OkHttpClient();
+//        client.interceptors().add(interceptor);
 
         //GSON builder adapter for model
         GsonBuilder gson = new GsonBuilder();
@@ -67,18 +66,34 @@ public final class ExpService {
         gson.registerTypeAdapter(Feed.class, new ModelJsonAdapter<Feed>(Feed.class));
         gson.registerTypeAdapter(ContentNode.class, new ContentNodeJsonAdapter());
 
-        GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson.create());
+//        GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson.create());
+//
+//        // Create  REST adapter  API.
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(host)
+//                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+//                .addConverterFactory(gsonConverterFactory)
+//                .client(client)
+//                .build();
 
-        // Create  REST adapter  API.
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(host)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(gsonConverterFactory)
-                .client(client)
+//        IExpEndpoint expApi = retrofit.create(IExpEndpoint.class);
+
+        RequestInterceptor requestInterceptor = new RequestInterceptor() {
+            @Override
+            public void intercept(RequestInterceptor.RequestFacade request) {
+                request.addHeader(AUTHORIZATION, BEARER +tokenExp);
+            }
+        };
+
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(host)
+                .setRequestInterceptor(requestInterceptor)
+                .setConverter(new GsonConverter(gson.create()))
                 .build();
 
+
         // Create an instance of our RestCall API interface.
-        IExpEndpoint expApi = retrofit.create(IExpEndpoint.class);
+        IExpEndpoint expApi = restAdapter.create(IExpEndpoint.class);
         AppSingleton.getInstance().setEndPoint(expApi);
 
         return Observable.just(true);
@@ -102,20 +117,28 @@ public final class ExpService {
         gson.registerTypeAdapter(Feed.class, new ModelJsonAdapter<Feed>(Feed.class));
         gson.registerTypeAdapter(ContentNode.class, new ContentNodeJsonAdapter());
 
-        GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson.create());
+//        GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson.create());
+//
+//        // Create  REST adapter  API.
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(host)
+//                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+//                .addConverterFactory(gsonConverterFactory)
+//                .build();
+//        // Create an instance of our RestCall API interface.
+//        IExpEndpoint expApi = retrofit.create(IExpEndpoint.class);
 
-        // Create  REST adapter  API.
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(host)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(gsonConverterFactory)
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(host)
+                .setConverter(new GsonConverter(gson.create()))
                 .build();
+
         // Create an instance of our RestCall API interface.
-        IExpEndpoint expApi = retrofit.create(IExpEndpoint.class);
+        IExpEndpoint expApi = restAdapter.create(IExpEndpoint.class);
+
         AppSingleton.getInstance().setEndPoint(expApi);
         return Observable.just(true);
     }
-
 
 
 }
