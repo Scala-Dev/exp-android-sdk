@@ -64,6 +64,7 @@ public class SocketManager {
                 opts.reconnection = false;
                 opts.secure = true;
                 opts.sslContext = sc;
+                opts.query = "token="+AppSingleton.getInstance().getToken();
 
                 socket = IO.socket(AppSingleton.getInstance().getHost(), opts);
 
@@ -377,5 +378,13 @@ public class SocketManager {
         socket.disconnect();
         AppSingleton.getInstance().setToken("");
         channelCache = new HashMap<>();
+    }
+
+    /**
+     * Refresh connection
+     */
+    public void refreshConnection(){
+        socket.close();
+        socket.connect();
     }
 }

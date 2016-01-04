@@ -7,6 +7,7 @@ import com.scala.exp.android.sdk.observer.ExpObservable;
 import org.json.JSONException;
 
 import java.lang.*;
+import java.util.HashMap;
 import java.util.Map;
 
 import rx.Observable;
@@ -31,7 +32,11 @@ public class Exp {
      * @return
      */
     public static Observable<Boolean> start(String host,String uuid,String secret){
-        return  runtime.start(host,uuid,secret);
+        Map<String,String> startOptions = new HashMap<>();
+        startOptions.put("host",host);
+        startOptions.put("deviceUuid",uuid);
+        startOptions.put("secret",secret);
+        return  runtime.start(startOptions);
     }
 
     /**
@@ -42,7 +47,12 @@ public class Exp {
      * @return
      */
     public static Observable<Boolean> start(String host, String username, String password, String organization){
-        return runtime.start(host,username,password,organization);
+        Map<String,String> startOptions = new HashMap<>();
+        startOptions.put("host",host);
+        startOptions.put("username",username);
+        startOptions.put("password",password);
+        startOptions.put("organization",organization);
+        return runtime.start(startOptions);
     }
 
     /**
@@ -59,8 +69,8 @@ public class Exp {
      * @param options
      * @return
      */
-    public static Observable<Token> login(Map<String, String> options){
-        Observable<Token> observable = AppSingleton.getInstance().getEndPoint().login(options)
+    public static Observable<Auth> login(Map<String, String> options){
+        Observable<Auth> observable = AppSingleton.getInstance().getEndPoint().login(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
         return observable;
@@ -251,6 +261,14 @@ public class Exp {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
         return new ExpObservable<SearchResults<Data>>(dataObservable);
+    }
+
+    /**
+     * RefreshToken observable
+     * @return
+     */
+    public static Observable<Auth> refreshToken(){
+        return AppSingleton.getInstance().getEndPoint().refreshToken();
     }
 
     /**
