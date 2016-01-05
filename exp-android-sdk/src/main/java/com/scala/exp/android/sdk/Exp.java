@@ -33,9 +33,9 @@ public class Exp {
      */
     public static Observable<Boolean> start(String host,String uuid,String secret){
         Map<String,String> startOptions = new HashMap<>();
-        startOptions.put("host",host);
-        startOptions.put("deviceUuid",uuid);
-        startOptions.put("secret",secret);
+        startOptions.put(Utils.HOST,host);
+        startOptions.put(Utils.DEVICE_UUID,uuid);
+        startOptions.put(Utils.SECRET,secret);
         return  runtime.start(startOptions);
     }
 
@@ -48,10 +48,10 @@ public class Exp {
      */
     public static Observable<Boolean> start(String host, String username, String password, String organization){
         Map<String,String> startOptions = new HashMap<>();
-        startOptions.put("host",host);
-        startOptions.put("username",username);
-        startOptions.put("password",password);
-        startOptions.put("organization",organization);
+        startOptions.put(Utils.HOST,host);
+        startOptions.put(Utils.USERNAME,username);
+        startOptions.put(Utils.PASSWORD,password);
+        startOptions.put(Utils.ORGANIZATION,organization);
         return runtime.start(startOptions);
     }
 

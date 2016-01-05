@@ -21,20 +21,16 @@ public class Runtime extends Exp{
 
     /**
      * Start with device credentials Host,UUID,Secret
-     * @param consumerApp
+     * @param keyPayload
      * @param uuid
      * @param secret
      * @return String token
      */
-    private static String createToken(String uuid, String secret,boolean consumerApp){
+    private static String createToken(String uuid, String secret,String keyPayload){
         Map<String,Object> header = new HashMap<String,Object>();
         header.put(Utils.TYP, Utils.JWT);
         Map<String,Object> payload = new HashMap<String,Object>();
-        if(consumerApp){
-            payload.put(Utils.CONSUMER_APP_UUID, uuid);
-        }else {
-            payload.put(Utils.UUID, uuid);
-        }
+        payload.put(keyPayload, uuid);
         return Jwts.builder().setHeader(header).setClaims(payload).signWith(SignatureAlgorithm.HS256, secret.getBytes()).compact();
 
     }
@@ -54,16 +50,16 @@ public class Runtime extends Exp{
         if(options.get(Utils.USERNAME)!= null && options.get(Utils.PASSWORD)!= null && options.get(Utils.ORGANIZATION)!= null){
             observable = start_auth(options);
         }else if (options.get(Utils.UUID) != null && options.get(Utils.SECRET) != null) {
-            opts.put("token",createToken(options.get(Utils.UUID), options.get(Utils.SECRET),false));
+            opts.put("token",createToken(options.get(Utils.UUID), options.get(Utils.SECRET),Utils.UUID));
             observable = start_auth(opts);
         } else if (options.get(Utils.DEVICE_UUID) != null && options.get(Utils.SECRET) != null) {
-            opts.put("token",createToken(options.get(Utils.DEVICE_UUID), options.get(Utils.SECRET),false));
+            opts.put("token",createToken(options.get(Utils.DEVICE_UUID), options.get(Utils.SECRET),Utils.UUID));
             observable = start_auth(opts);
         } else if (options.get(Utils.NETWORK_UUID) != null && options.get(Utils.API_KEY) != null) {
-            opts.put("token",createToken(options.get(Utils.NETWORK_UUID), options.get(Utils.API_KEY),true));
+            opts.put("token",createToken(options.get(Utils.NETWORK_UUID), options.get(Utils.API_KEY),Utils.NETWORK_UUID));
             observable = start_auth(opts);
         } else if (options.get(Utils.CONSUMER_APP_UUID) != null && options.get(Utils.API_KEY) != null) {
-            opts.put("token",createToken(options.get(Utils.CONSUMER_APP_UUID), options.get(Utils.API_KEY),true));
+            opts.put("token",createToken(options.get(Utils.CONSUMER_APP_UUID), options.get(Utils.API_KEY),Utils.CONSUMER_APP_UUID));
             observable = start_auth(opts);
         } else {
             throw new RuntimeException("Credentials are missing from start call");
