@@ -1,11 +1,11 @@
 package com.scala.exp.android.sdk;
 
+import com.scala.exp.android.sdk.model.Auth;
 import com.scala.exp.android.sdk.model.ContentNode;
 import com.scala.exp.android.sdk.model.Device;
 import com.scala.exp.android.sdk.model.Experience;
 import com.scala.exp.android.sdk.model.Feed;
 import com.scala.exp.android.sdk.model.SearchResults;
-import com.scala.exp.android.sdk.model.Token;
 import com.scala.exp.android.sdk.model.Data;
 import com.scala.exp.android.sdk.model.Location;
 import com.scala.exp.android.sdk.model.Thing;
@@ -26,7 +26,7 @@ import rx.Observable;
 public interface IExpEndpoint {
 
         @POST("/api/auth/login")
-        Observable<Token> login(@Body Map<String,String> options);
+        Observable<Auth> login(@Body Map<String,String> options);
 
         @GET("/api/things/{uuid}")
         Observable<Thing> getThing(@Path("uuid") String uuid);
@@ -72,5 +72,8 @@ public interface IExpEndpoint {
 
         @GET("/api/connectors/feeds/{uuid}/data")
         Observable<Map> getFeedData(@Path("uuid") String uuid);
+
+        @POST("/api/auth/token")
+        Observable<Auth> refreshToken();
 
 }
