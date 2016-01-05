@@ -536,6 +536,9 @@ The location's UUID.
 ##### location.getZones()
 Return array of Zones Object [Zone].
 
+##### location.getLayoutUrl()
+Return Layout URL if the location has one.
+
 
 ### Zone Object
 ##### zone.uuid
