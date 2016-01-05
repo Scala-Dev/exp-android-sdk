@@ -56,7 +56,7 @@ public class Runtime extends Exp{
             opts.put("token",createToken(options.get(Utils.DEVICE_UUID), options.get(Utils.SECRET),Utils.UUID));
             observable = start_auth(opts);
         } else if (options.get(Utils.NETWORK_UUID) != null && options.get(Utils.API_KEY) != null) {
-            opts.put("token",createToken(options.get(Utils.NETWORK_UUID), options.get(Utils.API_KEY),Utils.NETWORK_UUID));
+            opts.put("token",createToken(options.get(Utils.NETWORK_UUID), options.get(Utils.API_KEY),Utils.CONSUMER_APP_UUID));
             observable = start_auth(opts);
         } else if (options.get(Utils.CONSUMER_APP_UUID) != null && options.get(Utils.API_KEY) != null) {
             opts.put("token",createToken(options.get(Utils.CONSUMER_APP_UUID), options.get(Utils.API_KEY),Utils.CONSUMER_APP_UUID));
