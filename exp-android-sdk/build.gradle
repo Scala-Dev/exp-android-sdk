@@ -18,7 +18,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles '/Users/cesar/Library/Android/sdk/tools/proguard/proguard-android-optimize.txt', 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
         }
     }
