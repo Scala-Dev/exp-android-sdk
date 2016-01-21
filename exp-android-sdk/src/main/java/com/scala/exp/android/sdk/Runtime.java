@@ -1,5 +1,7 @@
 package com.scala.exp.android.sdk;
 
+import android.util.Log;
+
 import com.scala.exp.android.sdk.model.Auth;
 
 import java.math.BigInteger;
@@ -18,7 +20,7 @@ import rx.schedulers.Schedulers;
  * Created by Cesar Oyarzun on 11/2/15.
  */
 public class Runtime extends Exp{
-
+    private static final String LOG_TAG = Runtime.class.getSimpleName();
     /**
      * Start with device credentials Host,UUID,Secret
      * @param keyPayload
@@ -27,11 +29,14 @@ public class Runtime extends Exp{
      * @return String token
      */
     private static String createToken(String uuid, String secret,String keyPayload){
+        Log.d(LOG_TAG, "EXP Create Token: [uuid=" + uuid + "]" + "[secret=" + secret + "]" + "[keyPaload=" + keyPayload + "]");
         Map<String,Object> header = new HashMap<String,Object>();
         header.put(Utils.TYP, Utils.JWT);
         Map<String,Object> payload = new HashMap<String,Object>();
         payload.put(keyPayload, uuid);
-        return Jwts.builder().setHeader(header).setClaims(payload).signWith(SignatureAlgorithm.HS256, secret.getBytes()).compact();
+        String compact = Jwts.builder().setHeader(header).setClaims(payload).signWith(SignatureAlgorithm.HS256, secret.getBytes()).compact();
+        Log.d(LOG_TAG, "EXP Created Token: "+compact);
+        return compact;
 
     }
 
@@ -41,6 +46,7 @@ public class Runtime extends Exp{
      * @return
      */
     public static Observable<Boolean> start(Map<String,String> options){
+        Log.d(LOG_TAG,"EXP start with options "+options);
         Observable<Boolean> observable = null;
         Map<String,String> opts= new HashMap<>();
         String hostUrl = "";
@@ -82,10 +88,11 @@ public class Runtime extends Exp{
                         return Exp.login(options)
                                 .flatMap(new Func1<Auth, Observable<Boolean>>() {
                                     @Override
-                                    public Observable<Boolean> call(Auth token) {
-                                        AppSingleton.getInstance().setToken(token.getToken());
-                                        final BigInteger expiration = token.getExpiration();
-                                        return ExpService.init(AppSingleton.getInstance().getHost(), token.getToken())
+                                    public Observable<Boolean> call(Auth auth) {
+                                        Log.d(LOG_TAG,"EXP login response :"+auth.getToken());
+                                        AppSingleton.getInstance().setToken(auth.getToken());
+                                        final BigInteger expiration = auth.getExpiration();
+                                        return ExpService.init(AppSingleton.getInstance().getHost(), auth.getToken())
                                                 .flatMap(new Func1<Boolean, Observable<Boolean>>() {
                                                     @Override
                                                     public Observable call(Boolean aBoolean) {

@@ -50,7 +50,7 @@ public class SocketManager {
      * @return
      */
     public Observable<Boolean> startSocket() {
-
+        Log.d(LOG_TAG,"Starting EXP Socket Channels...");
         if (socket == null) {
             try {
                 SSLContext sc = SSLContext.getInstance(TLS);
@@ -58,10 +58,11 @@ public class SocketManager {
                 IO.setDefaultSSLContext(sc);
                 HttpsURLConnection.setDefaultHostnameVerifier(new RelaxedHostNameVerifier());
 
+
                 // socket options
                 IO.Options opts = new IO.Options();
                 opts.forceNew = true;
-                opts.reconnection = false;
+                opts.reconnection = true;
                 opts.secure = true;
                 opts.sslContext = sc;
                 opts.query = "token="+AppSingleton.getInstance().getToken();
@@ -77,6 +78,7 @@ public class SocketManager {
                 socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
                     @Override
                     public void call(Object... args) {
+                        Log.d(LOG_TAG,"EXP socket connected");
                         if(connection.containsKey(Utils.ONLINE)){
                             Subscriber subscriber = connection.get(Utils.ONLINE);
                             subscriber.onNext(true);
@@ -87,6 +89,7 @@ public class SocketManager {
                 }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
                     @Override
                     public void call(Object... args) {
+                        Log.d(LOG_TAG,"EXP socket disconnected");
                         if(connection.containsKey(Utils.OFFLINE)){
                             Subscriber subscriber = connection.get(Utils.OFFLINE);
                             subscriber.onNext(true);
@@ -131,10 +134,10 @@ public class SocketManager {
 
         // Connect if disconnected
         if (!socket.connected()) {
-            Log.d(LOG_TAG, "Connecting with Socket...");
+            Log.d(LOG_TAG, "Exp Connecting with Socket...");
             socket.connect();
         } else {
-            Log.d(LOG_TAG, "Socket Connected");
+            Log.d(LOG_TAG, "Exp Socket Connected");
         }
         return Observable.just(true);
     }
@@ -386,5 +389,6 @@ public class SocketManager {
     public void refreshConnection(){
         socket.close();
         socket.connect();
+        Log.d(LOG_TAG,"EXP refresh socket connection");
     }
 }

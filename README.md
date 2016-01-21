@@ -472,6 +472,69 @@ Query for multiple things. Resolves to a SearchResults object containing [Thing 
                 }
             });
 ```
+# LOGGING
+
+Android uses Proguard for packaging Apps, If you want to remove the ExpSwift logs before you publish your app you need to change **build.gradle** under your project and add the file **proguard-android-optimize.txt** under build tpyes proguardFiles, this will activate the proguard rules that you can define in the file **proguard-rules.pro**, in this file you can remove the logs that you want. The configuration should luke like this 
+```xml
+ buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+```
+For removing the logs in your release APK you need to add this line into the file **proguard-rules.pro**
+```xml
+-assumenosideeffects class android.util.Log {
+public static boolean isLoggable(java.lang.String, int);
+public static int v(...);
+public static int i(...);
+public static int w(...);
+public static int d(...);
+public static int e(...);
+}
+```
+Since you're using Exp SDK you need to add some extra configuration for third party library logs, after adding this part in your proguard-rules.pro you need to add this so the minify will work
+```xml
+-optimizations !class/unboxing/enum
+
+-dontwarn android.support.**
+-dontwarn com.scala.exp.**
+-dontwarn com.fasterxml.**
+-dontwarn io.jsonwebtoken.**
+-dontwarn okio.**
+-dontwarn retrofit.**
+-dontwarn rx.internal.util.**
+
+
+# Application classes that will be serialized/deserialized over Gson
+-keep class ph.reggis.FEDT.model.api.** { *; }
+##---------------Begin: proguard configuration for Gson  ----------
+# Gson uses generic type information stored in a class file when working with fields. Proguard
+# removes such information by default, so configure it to keep all of it.
+-keepattributes Signature
+-keepattributes *Annotation*
+
+# Gson specific classes
+-keep class sun.misc.Unsafe { *; }
+
+# Application classes that will be serialized/deserialized over Gson
+-keep class ph.reggis.FEDT.model.api.** { *; }
+
+##---------------End: proguard configuration for Gson  ----------
+
+## RX JAVA Config
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+    long producerIndex;
+    long consumerIndex;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode producerNode;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode consumerNode;
+}
+```
 
 
 # Abstract API Objects
