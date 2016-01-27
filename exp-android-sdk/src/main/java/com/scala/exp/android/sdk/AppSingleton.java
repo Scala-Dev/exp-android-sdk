@@ -12,6 +12,7 @@ public class AppSingleton {
     private static Gson gson = new Gson();
     private static String host = null;
     private static String token = null;
+    private static String hostSocket = null;
 
     protected AppSingleton() {
         // Exists only to defeat instantiation.
@@ -22,6 +23,14 @@ public class AppSingleton {
             instance = new AppSingleton();
         }
         return instance;
+    }
+
+    public String getHostSocket() {
+        return hostSocket;
+    }
+
+    public void setHostSocket(String hostSocket) {
+        AppSingleton.hostSocket = hostSocket;
     }
 
     public String getToken() {

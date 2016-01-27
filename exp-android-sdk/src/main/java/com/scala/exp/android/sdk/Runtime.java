@@ -21,6 +21,7 @@ import rx.schedulers.Schedulers;
  */
 public class Runtime extends Exp{
     private static final String LOG_TAG = Runtime.class.getSimpleName();
+    private static Boolean enableSocket = true;
     /**
      * Start with device credentials Host,UUID,Secret
      * @param keyPayload
@@ -52,6 +53,9 @@ public class Runtime extends Exp{
         String hostUrl = "";
         if(options.get(Utils.HOST)!=null){
             AppSingleton.getInstance().setHost(options.get(Utils.HOST));
+        }
+        if(options.get(Utils.ENABLE_EVENTS)!=null){
+            enableSocket = Boolean.valueOf(options.get(Utils.ENABLE_EVENTS));
         }
         if(options.get(Utils.USERNAME)!= null && options.get(Utils.PASSWORD)!= null && options.get(Utils.ORGANIZATION)!= null){
             observable = start_auth(options);
@@ -89,8 +93,10 @@ public class Runtime extends Exp{
                                 .flatMap(new Func1<Auth, Observable<Boolean>>() {
                                     @Override
                                     public Observable<Boolean> call(Auth auth) {
-                                        Log.d(LOG_TAG,"EXP login response :"+auth.getToken());
+                                        Log.d(LOG_TAG, "EXP login response :" + auth.getToken());
                                         AppSingleton.getInstance().setToken(auth.getToken());
+                                        String hostSocket = auth.getNetworks().get(0).getHost();
+                                        AppSingleton.getInstance().setHostSocket(hostSocket);
                                         final BigInteger expiration = auth.getExpiration();
                                         return ExpService.init(AppSingleton.getInstance().getHost(), auth.getToken())
                                                 .flatMap(new Func1<Boolean, Observable<Boolean>>() {
@@ -113,7 +119,10 @@ public class Runtime extends Exp{
                                                             }
                                                         }).subscribeOn(Schedulers.newThread()).observeOn(Schedulers.newThread()).subscribe();
                                                         socketManager = new SocketManager();
-                                                        return socketManager.startSocket();
+                                                        if(enableSocket){
+                                                            return  socketManager.startSocket();
+                                                        }
+                                                        return Observable.just(true);
                                                     }
                                                 });
                                     }
