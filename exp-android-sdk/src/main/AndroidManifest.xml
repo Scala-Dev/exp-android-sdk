@@ -2,11 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="exp.android.sdk" >
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Remove before create library -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name="com.scala.exp.android.sdk.MainActivity"
             android:label="@string/app_name" >

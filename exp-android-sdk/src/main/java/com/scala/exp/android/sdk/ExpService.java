@@ -19,6 +19,7 @@ import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
 import java.io.IOException;
 
@@ -52,8 +53,13 @@ public final class ExpService {
             }
         };
 
+        //Logging Interceptor
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
         // Add the interceptor to OkHttpClient
         OkHttpClient client = new OkHttpClient();
+        client.interceptors().add(httpLoggingInterceptor);
         client.interceptors().add(interceptor);
 
 

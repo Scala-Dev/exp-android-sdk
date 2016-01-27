@@ -8,6 +8,7 @@ import java.math.BigInteger;
 public class Auth {
     private String token;
     private BigInteger expiration;
+    private Identity identity;
     /**
      *
      * @return
@@ -40,5 +41,13 @@ public class Auth {
      */
     public void setExpiration(BigInteger expiration) {
         this.expiration = expiration;
+    }
+
+    public Identity getIdentity() {
+        return identity;
+    }
+
+    public void setIdentity(Identity identity) {
+        this.identity = identity;
     }
 }
