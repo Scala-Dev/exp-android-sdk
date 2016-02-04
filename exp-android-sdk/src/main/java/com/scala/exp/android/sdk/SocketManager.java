@@ -64,6 +64,7 @@ public class SocketManager {
                 opts.reconnection = false;
                 opts.secure = true;
                 opts.sslContext = sc;
+                opts.query = "token="+AppSingleton.getInstance().getToken();
 
                 socket = IO.socket(AppSingleton.getInstance().getHost(), opts);
 

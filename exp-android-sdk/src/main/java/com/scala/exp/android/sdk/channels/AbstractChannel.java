@@ -70,10 +70,10 @@ public abstract class AbstractChannel implements IChannel {
     }
 
     @Override
-    public void broadcast(Map<String,String> message) {
+    public void broadcast(Map<String,Object> message) {
         message.put(Utils.TYPE,Utils.BROADCAST);
         message.put(Utils.CHANNEL,this.CHANNEL);
-        this.socket.emit(Utils.MESSAGE,message);
+        this.socket.emit(Utils.MESSAGE,new JSONObject(message));
     }
 
     @Override
