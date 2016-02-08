@@ -8,22 +8,41 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.scala.exp.android.sdk.AppSingleton;
+import com.scala.exp.android.sdk.SocketManager;
 import com.scala.exp.android.sdk.Utils;
+import com.scala.exp.android.sdk.model.Data;
+import com.scala.exp.android.sdk.model.Message;
+import com.scala.exp.android.sdk.model.SearchResults;
+import com.scala.exp.android.sdk.observer.ExpObservable;
+
 import io.socket.client.Socket;
+import rx.Observable;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Cesar Oyarzun on 11/16/15.
  */
 public abstract class AbstractChannel implements IChannel {
-    protected Socket socket;
+    protected SocketManager socketManager;
     protected String CHANNEL = "";
+    protected int system = 0;
+    protected int consumerApp = 0;
+    public String channelID = "";
     public Map<String,Subscriber> request = new HashMap<>();
     public Map<String,Subscriber> listeners = new HashMap<>();
     public Map<String,Subscriber> responders = new HashMap<>();
 
     protected void setChannel(String channel){
         this.CHANNEL = channel;
+    }
+    protected void setSystem(int system){
+        this.system = system;
+    }
+    protected void setConsumerApp(int consumerApp){
+        this.consumerApp = consumerApp;
     }
 
     @Override
@@ -66,14 +85,16 @@ public abstract class AbstractChannel implements IChannel {
         message.put(Utils.ID,uuid);
         message.put(Utils.CHANNEL, this.CHANNEL);
         request.put(uuid, callback);
-        socket.emit(Utils.MESSAGE, new JSONObject(message));
+//        socket.emit(Utils.MESSAGE, new JSONObject(message));
     }
 
     @Override
-    public void broadcast(Map<String,String> message) {
-        message.put(Utils.TYPE,Utils.BROADCAST);
-        message.put(Utils.CHANNEL,this.CHANNEL);
-        this.socket.emit(Utils.MESSAGE,message);
+    public void broadcast(String name ,Map<String,String> payload) {
+        Map<String,Object> message = new HashMap<>();
+        message.put(Utils.NAME,name);
+        message.put(Utils.CHANNEL, generateId());
+        message.put(Utils.PAYLOAD,payload);
+        broadCast(message);
     }
 
     @Override
@@ -96,7 +117,27 @@ public abstract class AbstractChannel implements IChannel {
         message.put(Utils.TYPE,Utils.BROADCAST);
         message.put(Utils.CHANNEL,this.CHANNEL);
         message.put(Utils.NAME, Utils.FLING);
-        message.put(Utils.PAYLOAD,mapFling);
-        this.socket.emit(Utils.MESSAGE,new JSONObject(message));
+        message.put(Utils.PAYLOAD, mapFling);
+//        this.socket.emit(Utils.MESSAGE,new JSONObject(message));
+    }
+
+    /**
+     * Get Data by group,key
+     * @param options
+     * @return
+     */
+    public static ExpObservable<Message> broadCast(Map<String,Object> options){
+        Observable<Message> broadcastObservable = AppSingleton.getInstance().getEndPoint().broadCast(options)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Message>(broadcastObservable);
+    }
+
+
+    public String generateId(){
+        if(!channelID.isEmpty()){
+
+        }
+        return channelID;
     }
 }

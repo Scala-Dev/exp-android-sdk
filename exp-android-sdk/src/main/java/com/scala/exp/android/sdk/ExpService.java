@@ -15,17 +15,18 @@ import com.scala.exp.android.sdk.model.Experience;
 import com.scala.exp.android.sdk.model.Feed;
 import com.scala.exp.android.sdk.model.Location;
 import com.scala.exp.android.sdk.model.Thing;
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
 import java.io.IOException;
 
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
+
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 
 

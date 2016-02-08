@@ -1,6 +1,7 @@
 package com.scala.exp.android.sdk.model;
 
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  * Created by Cesar Oyarzun on 1/4/16.
@@ -9,6 +10,7 @@ public class Auth {
     private String token;
     private BigInteger expiration;
     private Identity identity;
+    private List<Network> networks;
     /**
      *
      * @return
@@ -49,5 +51,13 @@ public class Auth {
 
     public void setIdentity(Identity identity) {
         this.identity = identity;
+    }
+
+    public List<Network> getNetworks() {
+        return networks;
+    }
+
+    public void setNetworks(List<Network> networks) {
+        this.networks = networks;
     }
 }

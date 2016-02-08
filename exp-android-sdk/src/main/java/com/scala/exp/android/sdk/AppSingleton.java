@@ -1,6 +1,7 @@
 package com.scala.exp.android.sdk;
 
 import com.google.gson.Gson;
+import com.scala.exp.android.sdk.model.Auth;
 
 /**
  * Created by Cesar Oyarzun on 10/28/15.
@@ -13,6 +14,7 @@ public class AppSingleton {
     private static String host = null;
     private static String token = null;
     private static String hostSocket = null;
+    private static Auth user = null;
 
     protected AppSingleton() {
         // Exists only to defeat instantiation.
@@ -31,6 +33,14 @@ public class AppSingleton {
 
     public void setHostSocket(String hostSocket) {
         AppSingleton.hostSocket = hostSocket;
+    }
+
+    public void setUser(Auth user){
+        AppSingleton.user = user;
+    }
+
+    public Auth getUser(){
+        return AppSingleton.user;
     }
 
     public String getToken() {

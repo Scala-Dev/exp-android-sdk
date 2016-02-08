@@ -65,7 +65,7 @@ public class Exp {
     }
 
     /**
-     * Login observable TODO make this ExpObservable
+     * Login observable
      * @param options
      * @return
      */
@@ -263,6 +263,9 @@ public class Exp {
         return new ExpObservable<SearchResults<Data>>(dataObservable);
     }
 
+
+
+
     /**
      * RefreshToken observable
      * @return
@@ -271,38 +274,9 @@ public class Exp {
         return AppSingleton.getInstance().getEndPoint().refreshToken();
     }
 
-    /**
-     * Get Current Experience from event bus
-     * @param subscriber
-     */
-    public static void getCurrentExperience(Subscriber subscriber){
-        try {
-            socketManager.getCurrentExperience(subscriber);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
-    /**
-     * Get Current Device from event bus
-     * @param subscriber
-     */
-    public static void getCurrentDevice(Subscriber subscriber){
-        try {
-             socketManager.getCurrentDevice(subscriber);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
-    /**
-     * Get Channel
-     * @param channel
-     * @return
-     */
-    public static IChannel getChannel(Utils.SOCKET_CHANNELS channel){
-        return socketManager.getChannel(channel);
-    }
+
 
     /**
      * Stop EXP connection

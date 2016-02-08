@@ -31,6 +31,7 @@ public class Utils {
     public static final String NETWORK_UUID = "networkUuid";
     public static final String API_KEY = "apiKey";
     public static final String HOST = "host";
+    public static final String ENABLE_EVENTS = "enableEvents";
 
 
     public enum SOCKET_CHANNELS {

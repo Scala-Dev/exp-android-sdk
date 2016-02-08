@@ -3,12 +3,9 @@ package com.scala.exp.android.sdk;
 
 import android.util.Log;
 
-import com.scala.exp.android.sdk.channels.CommonChannel;
-import com.scala.exp.android.sdk.channels.ExperienceChannel;
+import com.scala.exp.android.sdk.channels.Channel;
+import com.scala.exp.android.sdk.channels.ChannelFactory;
 import com.scala.exp.android.sdk.channels.IChannel;
-import com.scala.exp.android.sdk.channels.LocationChannel;
-import com.scala.exp.android.sdk.channels.OrganizationChannel;
-import com.scala.exp.android.sdk.channels.SystemChannel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,10 +35,7 @@ public class SocketManager {
     public static final String TLS = "TLS";
     private final String LOG_TAG = SocketManager.class.getSimpleName();
     private Socket socket;
-    private OrganizationChannel organizationChannel = null;
-    private SystemChannel systemChannel = null;
-    private LocationChannel locationChannel = null;
-    private ExperienceChannel experienceChannel = null;
+
     private Map<String,Subscriber> connection = new HashMap<>();
     private Map<String,IChannel> channelCache = new HashMap<>();
 
@@ -67,13 +61,13 @@ public class SocketManager {
                 opts.sslContext = sc;
                 opts.query = "token="+AppSingleton.getInstance().getToken();
 
-                socket = IO.socket(AppSingleton.getInstance().getHost(), opts);
+                socket = IO.socket(AppSingleton.getInstance().getHostSocket(), opts);
 
-                //create channels
-                organizationChannel = new OrganizationChannel(socket);
-                systemChannel = new SystemChannel(socket);
-                locationChannel = new LocationChannel(socket);
-                experienceChannel = new ExperienceChannel(socket);
+//                //create channels
+//                organizationChannel = new OrganizationChannel(socket);
+//                systemChannel = new SystemChannel(socket);
+//                locationChannel = new LocationChannel(socket);
+//                experienceChannel = new ExperienceChannel(socket);
 
                 socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
                     @Override
@@ -100,23 +94,23 @@ public class SocketManager {
                 }).on(Utils.MESSAGE, new Emitter.Listener() {
                     @Override
                     public void call(Object... args) {
-                        final JSONObject json = (JSONObject) args[0];
-                        try {
-                            String type = json.getString(Utils.TYPE);
-                            String channel = null;
-                            if(json.has(Utils.CHANNEL)){
-                                channel = json.getString(Utils.CHANNEL);
-                            }
-                            if(Utils.RESPONSE.equalsIgnoreCase(type)){
-                                handleResponse(json, channel);
-                            }else if(Utils.REQUEST.equalsIgnoreCase(type)){
-                                handleRequest(json, channel);
-                            }else if(Utils.BROADCAST.equalsIgnoreCase(type)){
-                                handleBroadcast(json, channel);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+//                        final JSONObject json = (JSONObject) args[0];
+//                        try {
+//                            String type = json.getString(Utils.TYPE);
+//                            String channel = null;
+//                            if(json.has(Utils.CHANNEL)){
+//                                channel = json.getString(Utils.CHANNEL);
+//                            }
+//                            if(Utils.RESPONSE.equalsIgnoreCase(type)){
+//                                handleResponse(json, channel);
+//                            }else if(Utils.REQUEST.equalsIgnoreCase(type)){
+//                                handleRequest(json, channel);
+//                            }else if(Utils.BROADCAST.equalsIgnoreCase(type)){
+//                                handleBroadcast(json, channel);
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
                     }
                 }).on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
                     @Override
@@ -142,116 +136,116 @@ public class SocketManager {
         return Observable.just(true);
     }
 
-    /**
-     * Handle BroadCast event bus
-     * @param json
-     * @param channel
-     * @throws JSONException
-     */
-    private void handleBroadcast(JSONObject json, String channel) throws JSONException {
-        if(channel == null){
-            systemChannel.onBroadCast(json);
-            experienceChannel.onBroadCast(json);
-            locationChannel.onBroadCast(json);
-            organizationChannel.onBroadCast(json);
-        }else{
-            Utils.SOCKET_CHANNELS socket_channels = Utils.getSocketEnum(channel);
-            if(socket_channels!=null){
-                switch (socket_channels){
-                    case SYSTEM:
-                        systemChannel.onBroadCast(json);
-                        break;
-                    case ORGANIZATION:
-                        organizationChannel.onBroadCast(json);
-                        break;
-                    case LOCATION:
-                        locationChannel.onBroadCast(json);
-                        break;
-                    case EXPERIENCE:
-                        experienceChannel.onBroadCast(json);
-                        break;
-                }
-            }else if(channelCache.get(channel) != null) {
-                IChannel commonChannel = channelCache.get(channel);
-                commonChannel.onBroadCast(json);
-            }
+//    /**
+//     * Handle BroadCast event bus
+//     * @param json
+//     * @param channel
+//     * @throws JSONException
+//     */
+//    private void handleBroadcast(JSONObject json, String channel) throws JSONException {
+//        if(channel == null){
+//            systemChannel.onBroadCast(json);
+//            experienceChannel.onBroadCast(json);
+//            locationChannel.onBroadCast(json);
+//            organizationChannel.onBroadCast(json);
+//        }else{
+//            Utils.SOCKET_CHANNELS socket_channels = Utils.getSocketEnum(channel);
+//            if(socket_channels!=null){
+//                switch (socket_channels){
+//                    case SYSTEM:
+//                        systemChannel.onBroadCast(json);
+//                        break;
+//                    case ORGANIZATION:
+//                        organizationChannel.onBroadCast(json);
+//                        break;
+//                    case LOCATION:
+//                        locationChannel.onBroadCast(json);
+//                        break;
+//                    case EXPERIENCE:
+//                        experienceChannel.onBroadCast(json);
+//                        break;
+//                }
+//            }else if(channelCache.get(channel) != null) {
+//                IChannel commonChannel = channelCache.get(channel);
+//                commonChannel.onBroadCast(json);
+//            }
+//
+//        }
+//    }
 
-        }
-    }
+//    /**
+//     * Handle Request event bus
+//     * @param json
+//     * @param channel
+//     * @throws JSONException
+//     */
+//    private void handleRequest(JSONObject json, String channel) throws JSONException {
+//        if(channel == null){
+//            systemChannel.onRequest(json);
+//            experienceChannel.onRequest(json);
+//            locationChannel.onRequest(json);
+//            organizationChannel.onRequest(json);
+//        }else{
+//            Utils.SOCKET_CHANNELS socket_channels = Utils.getSocketEnum(channel);
+//            if( socket_channels != null ){
+//                switch (socket_channels){
+//                    case SYSTEM:
+//                        systemChannel.onRequest(json);
+//                        break;
+//                    case ORGANIZATION:
+//                        organizationChannel.onRequest(json);
+//                        break;
+//                    case LOCATION:
+//                        locationChannel.onRequest(json);
+//                        break;
+//                    case EXPERIENCE:
+//                        experienceChannel.onRequest(json);
+//                        break;
+//                }
+//            }else if( channelCache.get(channel) != null ){
+//                IChannel commonChannel = channelCache.get(channel);
+//                commonChannel.onRequest(json);
+//            }
+//
+//        }
+//    }
 
-    /**
-     * Handle Request event bus
-     * @param json
-     * @param channel
-     * @throws JSONException
-     */
-    private void handleRequest(JSONObject json, String channel) throws JSONException {
-        if(channel == null){
-            systemChannel.onRequest(json);
-            experienceChannel.onRequest(json);
-            locationChannel.onRequest(json);
-            organizationChannel.onRequest(json);
-        }else{
-            Utils.SOCKET_CHANNELS socket_channels = Utils.getSocketEnum(channel);
-            if( socket_channels != null ){
-                switch (socket_channels){
-                    case SYSTEM:
-                        systemChannel.onRequest(json);
-                        break;
-                    case ORGANIZATION:
-                        organizationChannel.onRequest(json);
-                        break;
-                    case LOCATION:
-                        locationChannel.onRequest(json);
-                        break;
-                    case EXPERIENCE:
-                        experienceChannel.onRequest(json);
-                        break;
-                }
-            }else if( channelCache.get(channel) != null ){
-                IChannel commonChannel = channelCache.get(channel);
-                commonChannel.onRequest(json);
-            }
-
-        }
-    }
-
-    /**
-     * Handle Response event bus
-     * @param json
-     * @param channel
-     * @throws JSONException
-     */
-    private void handleResponse(JSONObject json, String channel) throws JSONException {
-        if(channel == null){
-            systemChannel.onResponse(json);
-            experienceChannel.onResponse(json);
-            locationChannel.onResponse(json);
-            organizationChannel.onResponse(json);
-        }else{
-            Utils.SOCKET_CHANNELS socket_channels = Utils.getSocketEnum(channel);
-            if( socket_channels != null){
-                switch (socket_channels){
-                    case SYSTEM:
-                        systemChannel.onResponse(json);
-                        break;
-                    case ORGANIZATION:
-                        organizationChannel.onResponse(json);
-                        break;
-                    case LOCATION:
-                        locationChannel.onResponse(json);
-                        break;
-                    case EXPERIENCE:
-                        experienceChannel.onResponse(json);
-                        break;
-                }
-            }else if(channelCache.get(channel)!=null){
-                IChannel commonChannel = channelCache.get(channel);
-                commonChannel.onResponse(json);
-            }
-
-        }
-    }
+//    /**
+//     * Handle Response event bus
+//     * @param json
+//     * @param channel
+//     * @throws JSONException
+//     */
+//    private void handleResponse(JSONObject json, String channel) throws JSONException {
+//        if(channel == null){
+//            systemChannel.onResponse(json);
+//            experienceChannel.onResponse(json);
+//            locationChannel.onResponse(json);
+//            organizationChannel.onResponse(json);
+//        }else{
+//            Utils.SOCKET_CHANNELS socket_channels = Utils.getSocketEnum(channel);
+//            if( socket_channels != null){
+//                switch (socket_channels){
+//                    case SYSTEM:
+//                        systemChannel.onResponse(json);
+//                        break;
+//                    case ORGANIZATION:
+//                        organizationChannel.onResponse(json);
+//                        break;
+//                    case LOCATION:
+//                        locationChannel.onResponse(json);
+//                        break;
+//                    case EXPERIENCE:
+//                        experienceChannel.onResponse(json);
+//                        break;
+//                }
+//            }else if(channelCache.get(channel)!=null){
+//                IChannel commonChannel = channelCache.get(channel);
+//                commonChannel.onResponse(json);
+//            }
+//
+//        }
+//    }
 
     /**
      * Trust all Certificates
@@ -299,53 +293,53 @@ public class SocketManager {
         return sc;
     }
 
-    /**
-     * Get current Experience
-     * @param callback
-     * @throws JSONException
-     */
-    public void getCurrentExperience(Subscriber callback) throws JSONException {
-        Map<String,String> message = new HashMap<>();
-        message.put(Utils.TYPE,Utils.REQUEST);
-        message.put(Utils.NAME, Utils.GET_CURRENT_EXPERIENCE);
-        systemChannel.request(message, callback);
-    }
+//    /**
+//     * Get current Experience
+//     * @param callback
+//     * @throws JSONException
+//     */
+//    public void getCurrentExperience(Subscriber callback) throws JSONException {
+//        Map<String,String> message = new HashMap<>();
+//        message.put(Utils.TYPE,Utils.REQUEST);
+//        message.put(Utils.NAME, Utils.GET_CURRENT_EXPERIENCE);
+//        systemChannel.request(message, callback);
+//    }
+//
+//    /**
+//     * Get Current Device
+//     * @param callback
+//     * @throws JSONException
+//     */
+//    public void getCurrentDevice(Subscriber callback) throws JSONException {
+//        Map<String,String> message = new HashMap<>();
+//        message.put(Utils.TYPE, Utils.REQUEST);
+//        message.put(Utils.NAME, Utils.GET_CURRENT_DEVICE);
+//        systemChannel.request(message, callback);
+//    }
 
     /**
-     * Get Current Device
-     * @param callback
-     * @throws JSONException
-     */
-    public void getCurrentDevice(Subscriber callback) throws JSONException {
-        Map<String,String> message = new HashMap<>();
-        message.put(Utils.TYPE, Utils.REQUEST);
-        message.put(Utils.NAME, Utils.GET_CURRENT_DEVICE);
-        systemChannel.request(message, callback);
-    }
-
-    /**
-     * Get Channel from Enum
-     * @param channel
-     * @return
-     */
-    public IChannel getChannel(Utils.SOCKET_CHANNELS channel){
-        IChannel expChannel = null;
-        switch (channel){
-            case SYSTEM:
-                expChannel = this.systemChannel;
-                break;
-            case ORGANIZATION:
-                expChannel = this.organizationChannel;
-                break;
-            case LOCATION:
-                expChannel = this.organizationChannel;
-                break;
-            case EXPERIENCE:
-                expChannel = this.organizationChannel;
-                break;
-        }
-        return expChannel;
-    }
+//     * Get Channel from Enum
+//     * @param channel
+//     * @return
+//     */
+//    public IChannel getChannel(Utils.SOCKET_CHANNELS channel){
+//        IChannel expChannel = null;
+//        switch (channel){
+//            case SYSTEM:
+//                expChannel = this.systemChannel;
+//                break;
+//            case ORGANIZATION:
+//                expChannel = this.organizationChannel;
+//                break;
+//            case LOCATION:
+//                expChannel = this.organizationChannel;
+//                break;
+//            case EXPERIENCE:
+//                expChannel = this.organizationChannel;
+//                break;
+//        }
+//        return expChannel;
+//    }
 
 
     /**
@@ -358,7 +352,8 @@ public class SocketManager {
         if(channelCache.get(channel)!= null){
             expChannel = channelCache.get(channel);
         }else{
-            expChannel = new CommonChannel(socket,channel);
+//            expChannel = new Channel(socket,channel);
+            expChannel = ChannelFactory.createChannel(channel,this,0,1);
             channelCache.put(channel,expChannel);
         }
         return expChannel;

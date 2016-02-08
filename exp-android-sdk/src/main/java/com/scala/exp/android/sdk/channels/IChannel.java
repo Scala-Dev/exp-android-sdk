@@ -16,7 +16,7 @@ public interface IChannel {
     void onRequest(JSONObject request) throws JSONException;
     void onBroadCast(JSONObject broadcast) throws JSONException;
     void request(Map<String,String> message, Subscriber callback) throws JSONException;
-    void broadcast(Map<String,String> message);
+    void broadcast(String name,Map<String,String> message);
     void listen(Map<String,String> message,Subscriber callback);
     void response(Map<String,String> message,Subscriber callback);
     void fling(String uuid);

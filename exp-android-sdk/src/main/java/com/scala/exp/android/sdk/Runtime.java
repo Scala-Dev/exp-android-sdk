@@ -97,6 +97,7 @@ public class Runtime extends Exp{
                                         AppSingleton.getInstance().setToken(auth.getToken());
                                         String hostSocket = auth.getNetworks().get(0).getHost();
                                         AppSingleton.getInstance().setHostSocket(hostSocket);
+                                        AppSingleton.getInstance().setUser(auth);
                                         final BigInteger expiration = auth.getExpiration();
                                         return ExpService.init(AppSingleton.getInstance().getHost(), auth.getToken())
                                                 .flatMap(new Func1<Boolean, Observable<Boolean>>() {
@@ -112,6 +113,7 @@ public class Runtime extends Exp{
                                                                             @Override
                                                                             public Observable<Long> call(Auth auth) {
                                                                                 AppSingleton.getInstance().setToken(auth.getToken());
+                                                                                AppSingleton.getInstance().setUser(auth);
                                                                                 socketManager.refreshConnection();
                                                                                 return refreshTokenAuth(auth);
                                                                             }
@@ -119,10 +121,11 @@ public class Runtime extends Exp{
                                                             }
                                                         }).subscribeOn(Schedulers.newThread()).observeOn(Schedulers.newThread()).subscribe();
                                                         socketManager = new SocketManager();
+                                                        Observable<Boolean> booleanObservable = Observable.just(true);
                                                         if(enableSocket){
-                                                            return  socketManager.startSocket();
+                                                            booleanObservable = socketManager.startSocket();
                                                         }
-                                                        return Observable.just(true);
+                                                        return booleanObservable;
                                                     }
                                                 });
                                     }
@@ -163,6 +166,7 @@ public class Runtime extends Exp{
                             @Override
                             public Observable<Long> call(Auth auth) {
                                 AppSingleton.getInstance().setToken(auth.getToken());
+                                AppSingleton.getInstance().setUser(auth);
                                 socketManager.refreshConnection();
                                 return refreshTokenAuth(auth);
                             }
