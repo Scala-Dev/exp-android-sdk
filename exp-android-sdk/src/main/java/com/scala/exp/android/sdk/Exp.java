@@ -1,16 +1,7 @@
 package com.scala.exp.android.sdk;
 
 import com.scala.exp.android.sdk.channels.IChannel;
-import com.scala.exp.android.sdk.model.Auth;
-import com.scala.exp.android.sdk.model.ContentNode;
-import com.scala.exp.android.sdk.model.Data;
-import com.scala.exp.android.sdk.model.Device;
-import com.scala.exp.android.sdk.model.Experience;
-import com.scala.exp.android.sdk.model.Feed;
-import com.scala.exp.android.sdk.model.Location;
-import com.scala.exp.android.sdk.model.Message;
-import com.scala.exp.android.sdk.model.SearchResults;
-import com.scala.exp.android.sdk.model.Thing;
+import com.scala.exp.android.sdk.model.*;
 import com.scala.exp.android.sdk.observer.ExpObservable;
 
 import java.util.HashMap;

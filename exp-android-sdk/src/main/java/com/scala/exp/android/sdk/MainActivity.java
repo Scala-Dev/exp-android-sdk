@@ -6,7 +6,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.scala.exp.android.sdk.channels.IChannel;
 import com.scala.exp.android.sdk.model.ContentNode;
+import com.scala.exp.android.sdk.model.Experience;
+import com.scala.exp.android.sdk.model.Feed;
+import com.scala.exp.android.sdk.model.Location;
+import com.scala.exp.android.sdk.model.SearchResults;
+import com.scala.exp.android.sdk.model.Thing;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,22 +20,10 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import exp.android.sdk.R;
-
-import com.scala.exp.android.sdk.channels.IChannel;
-import com.scala.exp.android.sdk.model.Experience;
-import com.scala.exp.android.sdk.model.Feed;
-import com.scala.exp.android.sdk.model.Location;
-import com.scala.exp.android.sdk.model.SearchResults;
-import com.scala.exp.android.sdk.model.Thing;
 import rx.Subscriber;
-import rx.functions.Action0;
 import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.subjects.ReplaySubject;
-import rx.subjects.Subject;
 
 
 public class MainActivity extends ActionBarActivity {
