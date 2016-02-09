@@ -95,8 +95,10 @@ public class Runtime extends Exp{
                                     public Observable<Boolean> call(Auth auth) {
                                         Log.d(LOG_TAG, "EXP login response :" + auth.getToken());
                                         AppSingleton.getInstance().setToken(auth.getToken());
-                                        String hostSocket = auth.getNetworks().get(0).getHost();
-                                        AppSingleton.getInstance().setHostSocket(hostSocket);
+                                        if(auth.getNetwork()!=null){
+                                            String hostSocket = auth.getNetwork().getHost();
+                                            AppSingleton.getInstance().setHostSocket(hostSocket);
+                                        }
                                         AppSingleton.getInstance().setUser(auth);
                                         final BigInteger expiration = auth.getExpiration();
                                         return ExpService.init(AppSingleton.getInstance().getHost(), auth.getToken())

@@ -14,10 +14,10 @@ import com.scala.exp.android.sdk.model.Device;
 import com.scala.exp.android.sdk.model.Experience;
 import com.scala.exp.android.sdk.model.Feed;
 import com.scala.exp.android.sdk.model.Location;
+import com.scala.exp.android.sdk.model.Message;
 import com.scala.exp.android.sdk.model.Thing;
 
 import java.io.IOException;
-
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -37,7 +37,7 @@ public final class ExpService {
 
 
     /**
-     * Init connection to Rest client TODO make this ExpObservable
+     * Init connection to Rest client
      * @param host
      * @param tokenExp
      * @return
@@ -59,9 +59,10 @@ public final class ExpService {
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         // Add the interceptor to OkHttpClient
-        OkHttpClient client = new OkHttpClient();
-        client.interceptors().add(httpLoggingInterceptor);
-        client.interceptors().add(interceptor);
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addNetworkInterceptor(httpLoggingInterceptor)
+                .addNetworkInterceptor(interceptor)
+                .build();
 
 
         //GSON builder adapter for model
@@ -72,6 +73,7 @@ public final class ExpService {
         gson.registerTypeAdapter(Experience.class, new ModelJsonAdapter<Experience>(Experience.class));
         gson.registerTypeAdapter(Data.class, new ModelJsonAdapter<Data>(Data.class));
         gson.registerTypeAdapter(Feed.class, new ModelJsonAdapter<Feed>(Feed.class));
+        gson.registerTypeAdapter(Message.class, new ModelJsonAdapter<Message>(Message.class));
         gson.registerTypeAdapter(ContentNode.class, new ContentNodeJsonAdapter());
 
         GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson.create());
@@ -92,7 +94,7 @@ public final class ExpService {
     }
 
     /**
-     * Init rest endpoint without interceptor TODO make this ExpObservable
+     * Init rest endpoint without interceptor
      * @param host
      * @return
      */
@@ -107,6 +109,7 @@ public final class ExpService {
         gson.registerTypeAdapter(Experience.class, new ModelJsonAdapter<Experience>(Experience.class));
         gson.registerTypeAdapter(Data.class, new ModelJsonAdapter<Data>(Data.class));
         gson.registerTypeAdapter(Feed.class, new ModelJsonAdapter<Feed>(Feed.class));
+        gson.registerTypeAdapter(Message.class, new ModelJsonAdapter<Message>(Message.class));
         gson.registerTypeAdapter(ContentNode.class, new ContentNodeJsonAdapter());
 
         GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson.create());

@@ -10,7 +10,7 @@ public class Auth {
     private String token;
     private BigInteger expiration;
     private Identity identity;
-    private List<Network> networks;
+    private Network network;
     /**
      *
      * @return
@@ -53,11 +53,11 @@ public class Auth {
         this.identity = identity;
     }
 
-    public List<Network> getNetworks() {
-        return networks;
+    public Network getNetwork() {
+        return network;
     }
 
-    public void setNetworks(List<Network> networks) {
-        this.networks = networks;
+    public void setNetwork(Network network) {
+        this.network = network;
     }
 }

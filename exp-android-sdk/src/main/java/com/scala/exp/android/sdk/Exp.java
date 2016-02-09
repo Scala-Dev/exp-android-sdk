@@ -1,12 +1,18 @@
 package com.scala.exp.android.sdk;
 
 import com.scala.exp.android.sdk.channels.IChannel;
-import com.scala.exp.android.sdk.model.*;
+import com.scala.exp.android.sdk.model.Auth;
+import com.scala.exp.android.sdk.model.ContentNode;
+import com.scala.exp.android.sdk.model.Data;
+import com.scala.exp.android.sdk.model.Device;
+import com.scala.exp.android.sdk.model.Experience;
+import com.scala.exp.android.sdk.model.Feed;
+import com.scala.exp.android.sdk.model.Location;
+import com.scala.exp.android.sdk.model.Message;
+import com.scala.exp.android.sdk.model.SearchResults;
+import com.scala.exp.android.sdk.model.Thing;
 import com.scala.exp.android.sdk.observer.ExpObservable;
 
-import org.json.JSONException;
-
-import java.lang.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -263,8 +269,17 @@ public class Exp {
         return new ExpObservable<SearchResults<Data>>(dataObservable);
     }
 
-
-
+    /**
+     * Find Experiences by Limit,Skip,Sort
+     * @param options
+     * @return
+     */
+    public static ExpObservable<Message> respond(Map<String,Object> options){
+        Observable<Message> respondObservable = AppSingleton.getInstance().getEndPoint().respond(options)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Message>(respondObservable);
+    }
 
     /**
      * RefreshToken observable
@@ -273,10 +288,6 @@ public class Exp {
     public static Observable<Auth> refreshToken(){
         return AppSingleton.getInstance().getEndPoint().refreshToken();
     }
-
-
-
-
 
     /**
      * Stop EXP connection
@@ -290,8 +301,8 @@ public class Exp {
      * @param channel
      * @return
      */
-    public static IChannel getChannel(String channel){
-        return socketManager.getChannel(channel);
+    public static IChannel getChannel(String channel,int system,int consumerApp){
+        return socketManager.getChannel(channel,system,consumerApp);
     }
 
     /**

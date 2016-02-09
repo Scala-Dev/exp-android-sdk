@@ -79,6 +79,9 @@ public interface IExpEndpoint {
         Observable<Auth> refreshToken();
 
         @POST("/api/networks/current/broadcasts")
-        Observable<Message> broadCast(@Body Map<String,Object> options,@Query("timeout") String timeout);
+        Observable<Message> broadCast(@Body Map<String,Object> options,@Query("timeout") int timeout);
+
+        @POST("/api/networks/current/responses")
+        Observable<Message> respond(@Body Map<String,Object> options);
 
 }

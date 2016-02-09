@@ -32,6 +32,8 @@ public class Utils {
     public static final String API_KEY = "apiKey";
     public static final String HOST = "host";
     public static final String ENABLE_EVENTS = "enableEvents";
+    public static final String SUBSCRIBED = "subscribed";
+
 
 
     public enum SOCKET_CHANNELS {
