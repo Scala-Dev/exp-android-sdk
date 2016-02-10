@@ -265,6 +265,18 @@ public class SocketManager {
     public void refreshConnection(){
         socket.close();
         socket.connect();
+        subscribeChannels();
         Log.d(LOG_TAG,"EXP refresh socket connection");
+    }
+
+    /**
+     * Subscribe channels when there is a refresh connection
+     */
+    public void subscribeChannels(){
+        this.channels = new HashMap<>();
+        this.subscriptionPromise = new HashMap<>();
+        for (String channelKey:channels.keySet()) {
+               subscribe(channelKey);
+        }
     }
 }
