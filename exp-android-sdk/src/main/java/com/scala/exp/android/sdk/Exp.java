@@ -292,7 +292,7 @@ public class Exp {
      * @param channel
      * @return
      */
-    public static IChannel getChannel(String channel,int system,int consumerApp){
+    public static IChannel getChannel(String channel,boolean system,boolean consumerApp){
         return socketManager.getChannel(channel,system,consumerApp);
     }
 

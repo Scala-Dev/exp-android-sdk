@@ -189,6 +189,7 @@ public class SocketManager {
         return observable;
     }
 
+
     /**
      * Host Name Verifier,is set to default true
      */
@@ -225,7 +226,7 @@ public class SocketManager {
      * @param channel
      * @return
      */
-    public IChannel getChannel(String channel,int system,int consumerApp){
+    public IChannel getChannel(String channel,boolean system,boolean consumerApp){
         Channel expChannel = null;
         if(channelCache.get(channel)!= null){
             expChannel = (Channel) channelCache.get(channel);

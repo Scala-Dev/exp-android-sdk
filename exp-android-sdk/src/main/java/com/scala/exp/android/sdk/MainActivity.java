@@ -103,7 +103,7 @@ public class MainActivity extends ActionBarActivity {
                             }
                         };
 
-                        final IChannel channel1 = Exp.getChannel("channel1",0,1);
+                        final IChannel channel1 = Exp.getChannel("channel1",false,true);
                         final Map<String, Object> payload = new HashMap<String, Object>();
 
                         payload.put("cesar", "oyarzun");

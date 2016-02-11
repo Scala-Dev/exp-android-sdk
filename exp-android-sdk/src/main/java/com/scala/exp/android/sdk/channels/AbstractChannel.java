@@ -32,8 +32,8 @@ import rx.subjects.ReplaySubject;
 public abstract class AbstractChannel implements IChannel {
     protected SocketManager socketManager;
     protected String channelName = "";
-    protected int system = 0;
-    protected int consumerApp = 0;
+    protected boolean system = false;
+    protected boolean consumerApp = false;
     public String channelID = "";
     public Map<String,Subscriber> listeners = new HashMap<>();
     private static final String LOG_TAG = AbstractChannel.class.getSimpleName();
@@ -42,10 +42,10 @@ public abstract class AbstractChannel implements IChannel {
     protected void setChannel(String channel){
         this.channelName = channel;
     }
-    protected void setSystem(int system){
+    protected void setSystem(boolean system){
         this.system = system;
     }
-    protected void setConsumerApp(int consumerApp){
+    protected void setConsumerApp(boolean consumerApp){
         this.consumerApp = consumerApp;
     }
 
@@ -126,8 +126,10 @@ public abstract class AbstractChannel implements IChannel {
                List<Object> listOptions= new ArrayList<Object>();
                listOptions.add(organization);
                listOptions.add(this.channelName);
-               listOptions.add(this.system);
-               listOptions.add(this.consumerApp);
+               int systemInt = this.system ? 1 : 0;
+               int consumerAppInt = this.consumerApp ? 1:0;
+               listOptions.add(systemInt);
+               listOptions.add(consumerAppInt);
                Gson gson = new Gson();
                String jsonOptions = gson.toJson(listOptions);
                // encode data on your side using BASE64

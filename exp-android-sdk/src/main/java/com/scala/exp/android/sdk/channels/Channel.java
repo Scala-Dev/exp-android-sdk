@@ -8,7 +8,7 @@ import com.scala.exp.android.sdk.SocketManager;
  */
 public class Channel extends AbstractChannel {
 
-    public Channel(SocketManager socketManager, String channelName,int system,int consumerApp){
+    public Channel(SocketManager socketManager, String channelName,boolean system,boolean consumerApp){
         this.socketManager = socketManager;
         setChannel(channelName);
         setSystem(system);
