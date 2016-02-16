@@ -3,13 +3,11 @@ package com.scala.exp.android.sdk;
 
 import android.util.Log;
 
-import com.scala.exp.android.sdk.channels.CommonChannel;
-import com.scala.exp.android.sdk.channels.ExperienceChannel;
+import com.scala.exp.android.sdk.channels.Channel;
+import com.scala.exp.android.sdk.channels.ChannelFactory;
 import com.scala.exp.android.sdk.channels.IChannel;
-import com.scala.exp.android.sdk.channels.LocationChannel;
-import com.scala.exp.android.sdk.channels.OrganizationChannel;
-import com.scala.exp.android.sdk.channels.SystemChannel;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,15 +17,24 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import javax.net.ssl.*;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import rx.Observable;
 import rx.Subscriber;
+import rx.subjects.ReplaySubject;
 
 
 /**
@@ -38,13 +45,12 @@ public class SocketManager {
     public static final String TLS = "TLS";
     private final String LOG_TAG = SocketManager.class.getSimpleName();
     private Socket socket;
-    private OrganizationChannel organizationChannel = null;
-    private SystemChannel systemChannel = null;
-    private LocationChannel locationChannel = null;
-    private ExperienceChannel experienceChannel = null;
+
     private Map<String,Subscriber> connection = new HashMap<>();
     private Map<String,IChannel> channelCache = new HashMap<>();
-
+    private Map<String,IChannel> channels = new HashMap<>();
+    private List<String> subscription = new ArrayList<>();
+    private Map<String,ReplaySubject> subscriptionPromise = new HashMap<>();
     /**
      * Start Socket Connection
      * @return
@@ -58,7 +64,6 @@ public class SocketManager {
                 IO.setDefaultSSLContext(sc);
                 HttpsURLConnection.setDefaultHostnameVerifier(new RelaxedHostNameVerifier());
 
-
                 // socket options
                 IO.Options opts = new IO.Options();
                 opts.forceNew = true;
@@ -67,13 +72,9 @@ public class SocketManager {
                 opts.sslContext = sc;
                 opts.query = "token="+AppSingleton.getInstance().getToken();
 
-                socket = IO.socket(AppSingleton.getInstance().getHost(), opts);
-
-                //create channels
-                organizationChannel = new OrganizationChannel(socket);
-                systemChannel = new SystemChannel(socket);
-                locationChannel = new LocationChannel(socket);
-                experienceChannel = new ExperienceChannel(socket);
+                socket = IO.socket(AppSingleton.getInstance().getHostSocket(), opts);
+//                socket = IO.socket("http://192.168.30.193:9002", opts);
+//                socket = IO.socket("http://192.168.1.4:9002", opts);
 
                 socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
                     @Override
@@ -89,35 +90,46 @@ public class SocketManager {
                 }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
                     @Override
                     public void call(Object... args) {
-                        Log.d(LOG_TAG,"EXP socket disconnected");
-                        if(connection.containsKey(Utils.OFFLINE)){
+                        Log.d(LOG_TAG, "EXP socket disconnected");
+                        if (connection.containsKey(Utils.OFFLINE)) {
                             Subscriber subscriber = connection.get(Utils.OFFLINE);
                             subscriber.onNext(true);
                             subscriber.onCompleted();
                         }
                     }
 
-                }).on(Utils.MESSAGE, new Emitter.Listener() {
+                }).on(Utils.BROADCAST, new Emitter.Listener() {
                     @Override
                     public void call(Object... args) {
-                        final JSONObject json = (JSONObject) args[0];
+                        Log.d(LOG_TAG,"EXP broadcast =" +args);
+                        JSONObject jsonObject = (JSONObject) args[0];
                         try {
-                            String type = json.getString(Utils.TYPE);
-                            String channel = null;
-                            if(json.has(Utils.CHANNEL)){
-                                channel = json.getString(Utils.CHANNEL);
-                            }
-                            if(Utils.RESPONSE.equalsIgnoreCase(type)){
-                                handleResponse(json, channel);
-                            }else if(Utils.REQUEST.equalsIgnoreCase(type)){
-                                handleRequest(json, channel);
-                            }else if(Utils.BROADCAST.equalsIgnoreCase(type)){
-                                handleBroadcast(json, channel);
+                            String channelId = (String) jsonObject.get("channel");
+                            if(channels.containsKey(channelId)){
+                                IChannel channel = channels.get(channelId);
+                                channel.onBroadCast(jsonObject);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
+
+                }).on(Utils.SUBSCRIBED, new Emitter.Listener() {
+                    @Override
+                    public void call(Object... args) {
+                        Log.d(LOG_TAG,"EXP subscribed ="+args);
+                        final JSONArray json = (JSONArray) args[0];
+                        for(int i = 0 ; i < json.length(); i++){
+                            try {
+                                String idChannel = (String) json.get(i);
+                                ReplaySubject replaySubject = subscriptionPromise.get(idChannel);
+                                replaySubject.onNext(idChannel);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
                 }).on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
                     @Override
                     public void call(Object... args) {Log.d(LOG_TAG, "error: " + args[0].toString());}
@@ -142,116 +154,7 @@ public class SocketManager {
         return Observable.just(true);
     }
 
-    /**
-     * Handle BroadCast event bus
-     * @param json
-     * @param channel
-     * @throws JSONException
-     */
-    private void handleBroadcast(JSONObject json, String channel) throws JSONException {
-        if(channel == null){
-            systemChannel.onBroadCast(json);
-            experienceChannel.onBroadCast(json);
-            locationChannel.onBroadCast(json);
-            organizationChannel.onBroadCast(json);
-        }else{
-            Utils.SOCKET_CHANNELS socket_channels = Utils.getSocketEnum(channel);
-            if(socket_channels!=null){
-                switch (socket_channels){
-                    case SYSTEM:
-                        systemChannel.onBroadCast(json);
-                        break;
-                    case ORGANIZATION:
-                        organizationChannel.onBroadCast(json);
-                        break;
-                    case LOCATION:
-                        locationChannel.onBroadCast(json);
-                        break;
-                    case EXPERIENCE:
-                        experienceChannel.onBroadCast(json);
-                        break;
-                }
-            }else if(channelCache.get(channel) != null) {
-                IChannel commonChannel = channelCache.get(channel);
-                commonChannel.onBroadCast(json);
-            }
 
-        }
-    }
-
-    /**
-     * Handle Request event bus
-     * @param json
-     * @param channel
-     * @throws JSONException
-     */
-    private void handleRequest(JSONObject json, String channel) throws JSONException {
-        if(channel == null){
-            systemChannel.onRequest(json);
-            experienceChannel.onRequest(json);
-            locationChannel.onRequest(json);
-            organizationChannel.onRequest(json);
-        }else{
-            Utils.SOCKET_CHANNELS socket_channels = Utils.getSocketEnum(channel);
-            if( socket_channels != null ){
-                switch (socket_channels){
-                    case SYSTEM:
-                        systemChannel.onRequest(json);
-                        break;
-                    case ORGANIZATION:
-                        organizationChannel.onRequest(json);
-                        break;
-                    case LOCATION:
-                        locationChannel.onRequest(json);
-                        break;
-                    case EXPERIENCE:
-                        experienceChannel.onRequest(json);
-                        break;
-                }
-            }else if( channelCache.get(channel) != null ){
-                IChannel commonChannel = channelCache.get(channel);
-                commonChannel.onRequest(json);
-            }
-
-        }
-    }
-
-    /**
-     * Handle Response event bus
-     * @param json
-     * @param channel
-     * @throws JSONException
-     */
-    private void handleResponse(JSONObject json, String channel) throws JSONException {
-        if(channel == null){
-            systemChannel.onResponse(json);
-            experienceChannel.onResponse(json);
-            locationChannel.onResponse(json);
-            organizationChannel.onResponse(json);
-        }else{
-            Utils.SOCKET_CHANNELS socket_channels = Utils.getSocketEnum(channel);
-            if( socket_channels != null){
-                switch (socket_channels){
-                    case SYSTEM:
-                        systemChannel.onResponse(json);
-                        break;
-                    case ORGANIZATION:
-                        organizationChannel.onResponse(json);
-                        break;
-                    case LOCATION:
-                        locationChannel.onResponse(json);
-                        break;
-                    case EXPERIENCE:
-                        experienceChannel.onResponse(json);
-                        break;
-                }
-            }else if(channelCache.get(channel)!=null){
-                IChannel commonChannel = channelCache.get(channel);
-                commonChannel.onResponse(json);
-            }
-
-        }
-    }
 
     /**
      * Trust all Certificates
@@ -269,6 +172,23 @@ public class SocketManager {
                                        String authType) throws CertificateException {
         }
     } };
+
+
+    /**
+     * Subscribe channels to socket connection
+     * @param channelId
+     * @return
+     */
+    public ReplaySubject<Object> subscribe(final String channelId) {
+        if(!subscription.contains(channelId)){
+            subscription.add(channelId);
+            socket.emit("subscribe",new JSONArray(subscription));
+        }
+        ReplaySubject<Object> observable = ReplaySubject.create();
+        subscriptionPromise.put(channelId,observable);
+        return observable;
+    }
+
 
     /**
      * Host Name Verifier,is set to default true
@@ -299,53 +219,6 @@ public class SocketManager {
         return sc;
     }
 
-    /**
-     * Get current Experience
-     * @param callback
-     * @throws JSONException
-     */
-    public void getCurrentExperience(Subscriber callback) throws JSONException {
-        Map<String,String> message = new HashMap<>();
-        message.put(Utils.TYPE,Utils.REQUEST);
-        message.put(Utils.NAME, Utils.GET_CURRENT_EXPERIENCE);
-        systemChannel.request(message, callback);
-    }
-
-    /**
-     * Get Current Device
-     * @param callback
-     * @throws JSONException
-     */
-    public void getCurrentDevice(Subscriber callback) throws JSONException {
-        Map<String,String> message = new HashMap<>();
-        message.put(Utils.TYPE, Utils.REQUEST);
-        message.put(Utils.NAME, Utils.GET_CURRENT_DEVICE);
-        systemChannel.request(message, callback);
-    }
-
-    /**
-     * Get Channel from Enum
-     * @param channel
-     * @return
-     */
-    public IChannel getChannel(Utils.SOCKET_CHANNELS channel){
-        IChannel expChannel = null;
-        switch (channel){
-            case SYSTEM:
-                expChannel = this.systemChannel;
-                break;
-            case ORGANIZATION:
-                expChannel = this.organizationChannel;
-                break;
-            case LOCATION:
-                expChannel = this.organizationChannel;
-                break;
-            case EXPERIENCE:
-                expChannel = this.organizationChannel;
-                break;
-        }
-        return expChannel;
-    }
 
 
     /**
@@ -353,12 +226,13 @@ public class SocketManager {
      * @param channel
      * @return
      */
-    public IChannel getChannel(String channel){
-        IChannel expChannel = null;
+    public IChannel getChannel(String channel,boolean system,boolean consumerApp){
+        Channel expChannel = null;
         if(channelCache.get(channel)!= null){
-            expChannel = channelCache.get(channel);
+            expChannel = (Channel) channelCache.get(channel);
         }else{
-            expChannel = new CommonChannel(socket,channel);
+            expChannel = (Channel)ChannelFactory.createChannel(channel,this,system,consumerApp);
+            channels.put(expChannel.generateId(),expChannel);
             channelCache.put(channel,expChannel);
         }
         return expChannel;
@@ -380,7 +254,10 @@ public class SocketManager {
     public void disconnect(){
         socket.disconnect();
         AppSingleton.getInstance().setToken("");
+        AppSingleton.getInstance().setHostSocket("");
+        AppSingleton.getInstance().setUser(null);
         channelCache = new HashMap<>();
+        channels = new HashMap<>();
     }
 
     /**
@@ -389,6 +266,18 @@ public class SocketManager {
     public void refreshConnection(){
         socket.close();
         socket.connect();
+        subscribeChannels();
         Log.d(LOG_TAG,"EXP refresh socket connection");
+    }
+
+    /**
+     * Subscribe channels when there is a refresh connection
+     */
+    public void subscribeChannels(){
+        this.channels = new HashMap<>();
+        this.subscriptionPromise = new HashMap<>();
+        for (String channelKey:channels.keySet()) {
+               subscribe(channelKey);
+        }
     }
 }

@@ -4,9 +4,6 @@ import com.scala.exp.android.sdk.channels.IChannel;
 import com.scala.exp.android.sdk.model.*;
 import com.scala.exp.android.sdk.observer.ExpObservable;
 
-import org.json.JSONException;
-
-import java.lang.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,7 +62,7 @@ public class Exp {
     }
 
     /**
-     * Login observable TODO make this ExpObservable
+     * Login observable
      * @param options
      * @return
      */
@@ -264,44 +261,23 @@ public class Exp {
     }
 
     /**
+     * Find Experiences by Limit,Skip,Sort
+     * @param options
+     * @return
+     */
+    public static ExpObservable<Message> respond(Map<String,Object> options){
+        Observable<Message> respondObservable = AppSingleton.getInstance().getEndPoint().respond(options)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Message>(respondObservable);
+    }
+
+    /**
      * RefreshToken observable
      * @return
      */
     public static Observable<Auth> refreshToken(){
         return AppSingleton.getInstance().getEndPoint().refreshToken();
-    }
-
-    /**
-     * Get Current Experience from event bus
-     * @param subscriber
-     */
-    public static void getCurrentExperience(Subscriber subscriber){
-        try {
-            socketManager.getCurrentExperience(subscriber);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Get Current Device from event bus
-     * @param subscriber
-     */
-    public static void getCurrentDevice(Subscriber subscriber){
-        try {
-             socketManager.getCurrentDevice(subscriber);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Get Channel
-     * @param channel
-     * @return
-     */
-    public static IChannel getChannel(Utils.SOCKET_CHANNELS channel){
-        return socketManager.getChannel(channel);
     }
 
     /**
@@ -316,8 +292,8 @@ public class Exp {
      * @param channel
      * @return
      */
-    public static IChannel getChannel(String channel){
-        return socketManager.getChannel(channel);
+    public static IChannel getChannel(String channel,boolean system,boolean consumerApp){
+        return socketManager.getChannel(channel,system,consumerApp);
     }
 
     /**

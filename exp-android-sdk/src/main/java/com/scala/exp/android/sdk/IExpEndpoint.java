@@ -2,21 +2,23 @@ package com.scala.exp.android.sdk;
 
 import com.scala.exp.android.sdk.model.Auth;
 import com.scala.exp.android.sdk.model.ContentNode;
+import com.scala.exp.android.sdk.model.Data;
 import com.scala.exp.android.sdk.model.Device;
 import com.scala.exp.android.sdk.model.Experience;
 import com.scala.exp.android.sdk.model.Feed;
-import com.scala.exp.android.sdk.model.SearchResults;
-import com.scala.exp.android.sdk.model.Data;
 import com.scala.exp.android.sdk.model.Location;
+import com.scala.exp.android.sdk.model.Message;
+import com.scala.exp.android.sdk.model.SearchResults;
 import com.scala.exp.android.sdk.model.Thing;
 
 import java.util.Map;
 
-import retrofit.http.Body;
-import retrofit.http.GET;
-import retrofit.http.POST;
-import retrofit.http.Path;
-import retrofit.http.QueryMap;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -75,5 +77,11 @@ public interface IExpEndpoint {
 
         @POST("/api/auth/token")
         Observable<Auth> refreshToken();
+
+        @POST("/api/networks/current/broadcasts")
+        Observable<Message> broadCast(@Body Map<String,Object> options,@Query("timeout") int timeout);
+
+        @POST("/api/networks/current/responses")
+        Observable<Message> respond(@Body Map<String,Object> options);
 
 }
