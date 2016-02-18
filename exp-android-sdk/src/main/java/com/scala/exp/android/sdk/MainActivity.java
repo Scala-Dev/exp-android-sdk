@@ -6,7 +6,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.scala.exp.android.sdk.channels.IChannel;
 import com.scala.exp.android.sdk.model.ContentNode;
+import com.scala.exp.android.sdk.model.Experience;
+import com.scala.exp.android.sdk.model.Feed;
+import com.scala.exp.android.sdk.model.Location;
+import com.scala.exp.android.sdk.model.SearchResults;
+import com.scala.exp.android.sdk.model.Thing;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,13 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import exp.android.sdk.R;
-
-import com.scala.exp.android.sdk.channels.IChannel;
-import com.scala.exp.android.sdk.model.Experience;
-import com.scala.exp.android.sdk.model.Feed;
-import com.scala.exp.android.sdk.model.Location;
-import com.scala.exp.android.sdk.model.SearchResults;
-import com.scala.exp.android.sdk.model.Thing;
 import rx.Subscriber;
 import rx.functions.Action1;
 
@@ -33,9 +32,14 @@ public class MainActivity extends ActionBarActivity {
     private String uuid = "caffba04-47a4-4575-a9e1-e6cdbce0f7ee";
     private String secret = "6fc5013fa0ea4fffb7ca7263916bd9f214b3d8c9e042d667043b1662916e5e6c4e99f16afb07b340ecee5f6e3ca4fbdb";
     private String user = "cesar.oyarzun@scala.com";
-    private String password = "5715031Com";
-    private String org = "scala";
-    public static final String host = "https://api-develop.exp.scala.com";
+//    private String password = "Com5715031@";
+     private String password = "5715031Com";
+
+    private String org = "";
+//    public static final String host = "https://api.goexp.io";
+
+    public static final String host = "http://192.168.1.4:9000";
+//    public static final String host = "http://192.168.30.193:9000";
     public static final String LIMIT = "limit";
     public static final String SKIP = "skip";
     public static final String SORT = "sort";
@@ -48,46 +52,86 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         AppSingleton.getInstance().setHost(host);
         final Map<String,String> options = new HashMap<>();
-        options.put(LIMIT,"10");
+        options.put(LIMIT, "10");
         options.put(SKIP, "0");
         options.put(SORT, "name");
-
-        Exp.start(host, user, password, org)
+        final Map<String,String> startOptions = new HashMap<>();
+        startOptions.put(Utils.HOST,host);
+        startOptions.put(Utils.USERNAME,user);
+        startOptions.put(Utils.PASSWORD,password);
+        startOptions.put(Utils.ORGANIZATION,org);
+        startOptions.put("enableEvents","true");
+        Log.i(LOG_TAG, "START EXP SDK");
+        Exp.start(startOptions)
                 .subscribe(new Action1<Boolean>() {
                     @Override
                     public void call(Boolean o) {
 
-                       Subscriber currentExperienceSubs = new Subscriber<JSONObject>() {
-                           @Override
-                           public void onCompleted() {}
-                           @Override
-                           public void onError(Throwable e) {Log.d(LOG_TAG, e.toString());}
-                           @Override
-                           public void onNext(JSONObject o) {
-                               try {
-                                   Object target = o.get("target");
-                               } catch (JSONException e) {
-                                   e.printStackTrace();
-                               }
-                               Log.d(LOG_TAG, o.toString());
-                           }
-                       };
+                        Subscriber currentExperienceSubs = new Subscriber<JSONObject>() {
+                            @Override
+                            public void onCompleted() {
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.d(LOG_TAG, e.toString());
+                            }
+
+                            @Override
+                            public void onNext(JSONObject o) {
+                                try {
+                                    Object target = o.get("target");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                Log.d(LOG_TAG, o.toString());
+                            }
+                        };
 
                         Subscriber socketConnection = new Subscriber() {
                             @Override
-                            public void onCompleted() {}
+                            public void onCompleted() {
+                            }
+
                             @Override
-                            public void onError(Throwable e) {}
+                            public void onError(Throwable e) {
+                            }
+
                             @Override
                             public void onNext(Object o) {
                                 Log.d(LOG_TAG, o.toString());
                             }
                         };
-                        Exp.connection(Utils.ONLINE,socketConnection);
-                        Exp.getCurrentExperience(currentExperienceSubs);
 
-                        IChannel channel = Exp.getChannel(Utils.SOCKET_CHANNELS.SYSTEM);
-                        channel.fling("1111");
+                        final IChannel channel1 = Exp.getChannel("channel1",false,true);
+                        final Map<String, Object> payload = new HashMap<String, Object>();
+
+                        payload.put("cesar", "oyarzun");
+                        channel1.listen("hi", new Subscriber() {
+                            @Override
+                            public void onCompleted() {}
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e("Error", e.getMessage());
+                            }
+
+                            @Override
+                            public void onNext(Object o) {
+                                Log.d("REsponse", o.toString());
+                            }
+                        }).subscribe(new Subscriber<Object>() {
+                            @Override
+                            public void onCompleted() {Log.e("ONCOMPLETED", "");}
+                            @Override
+                            public void onError(Throwable e) {Log.e("ERROR", e.getMessage());}
+                            @Override
+                            public void onNext(Object o) {
+                                Log.e("ONNEXT", o.toString());
+                                channel1.broadcast("hi", payload, 2000);
+                            }
+                        });
+
 
                         Exp.getThing("052a2419-0621-45ad-aa03-3747dbfe2b6d")
                                 .then(new Subscriber<Thing>() {
