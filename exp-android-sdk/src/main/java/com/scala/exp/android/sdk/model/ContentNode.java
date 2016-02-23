@@ -62,8 +62,6 @@ public class ContentNode extends AbstractModel {
 
 
     public String getUrl(){
-        String url = null;
-
         String host = AppSingleton.getInstance().getHost();
         String rt = AppSingleton.getInstance().getUser().getRestrictedToken();
         StringBuilder builder = new StringBuilder(host).append(API_DELIVERY);
@@ -73,17 +71,14 @@ public class ContentNode extends AbstractModel {
             switch (this.subtype) {
                 case APP:
                     path = escapePath(getString(PATH));
-                    url = builder.append(path).append(INDEX_HTML).append("?").append(RT).append(rt).toString();
-                    break;
+                    return builder.append(path).append(INDEX_HTML).append("?").append(RT).append(rt).toString();
                 case FILE:
                     path = escapePath(getString(PATH));
-                    url = builder.append(path).append("?").append(RT).append(rt).toString();
-                    break;
+                    return builder.append(path).append("?").append(RT).append(rt).toString();
                 case FOLDER:
                     break;
                 case URL:
-                    url = getString(URL);
-                    break;
+                    return getString(URL);
                 case UNKNOW:
                     break;
             }
@@ -91,7 +86,7 @@ public class ContentNode extends AbstractModel {
             Log.e(LOG_TAG, "Error encoding url", e);
         }
 
-        return url;
+        throw new IllegalStateException("Cannot get url for this subtype.");
     }
 
     private String escapePath(String path) throws UnsupportedEncodingException {
@@ -108,13 +103,18 @@ public class ContentNode extends AbstractModel {
      * @return
      */
     public String getVariantUrl(String name){
-        if(Utils.CONTENT_TYPES.FILE == this.subtype && hasVariant(name)){
+        if(Utils.CONTENT_TYPES.FILE != this.subtype) {
+            throw new IllegalStateException("Cannot get variant url for this subtype.");
+        }
+
+        if (hasVariant(name)){
             String rt = AppSingleton.getInstance().getUser().getRestrictedToken();
             return new StringBuilder(getUrl())
                     .append("?").append(VARIANT).append(name)
                     .append("&").append(RT).append(rt).toString();
         }
-        return null;
+
+        throw new IllegalArgumentException("Variant not found.");
     }
 
     /**
