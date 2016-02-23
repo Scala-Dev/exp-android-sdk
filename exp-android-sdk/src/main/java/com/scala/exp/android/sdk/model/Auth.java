@@ -7,10 +7,29 @@ import java.util.List;
  * Created by Cesar Oyarzun on 1/4/16.
  */
 public class Auth {
+
+    private String restrictedToken;
     private String token;
     private BigInteger expiration;
     private Identity identity;
     private Network network;
+
+    /**
+     *
+     * @return The restrictedToken
+     */
+    public String getRestrictedToken() {
+        return restrictedToken;
+    }
+
+    /**
+     * Sets the restrictedToken (used for read only operations)
+     * @param restrictedToken
+     */
+    public void setRestrictedToken(String restrictedToken) {
+        this.restrictedToken = restrictedToken;
+    }
+
     /**
      *
      * @return

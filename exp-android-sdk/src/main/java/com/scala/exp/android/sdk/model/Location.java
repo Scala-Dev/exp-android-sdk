@@ -9,8 +9,21 @@ import com.scala.exp.android.sdk.Utils;
 
 public class Location extends AbstractModel {
 
+    private static final String API_LOCATION = "/api/locations/";
+    private static final String LAYOUT = "/layout";
+    private static final String RT = "_rt=";
+
     public String getLayoutUrl(){
-        return  AppSingleton.getInstance().getHost()+"/api/locations/"+getString(Utils.UUID)+"/layout";
+        String host = AppSingleton.getInstance().getHost();
+        String rt = AppSingleton.getInstance().getUser().getRestrictedToken();
+
+        StringBuilder builder = new StringBuilder(host)
+                .append(API_LOCATION)
+                .append(getString(Utils.UUID))
+                .append(LAYOUT)
+                .append("?").append(RT).append(rt);
+
+        return  builder.toString();
     }
 
 }
