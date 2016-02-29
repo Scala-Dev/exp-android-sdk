@@ -80,6 +80,8 @@ public class SocketManager {
                     @Override
                     public void call(Object... args) {
                         Log.d(LOG_TAG,"EXP socket connected");
+                        //do subscribe channels
+                        subscribeChannels();
                         if(connection.containsKey(Utils.ONLINE)){
                             Subscriber subscriber = connection.get(Utils.ONLINE);
                             subscriber.onNext(true);
@@ -258,6 +260,8 @@ public class SocketManager {
         AppSingleton.getInstance().setUser(null);
         channelCache = new HashMap<>();
         channels = new HashMap<>();
+        subscription = new ArrayList<>();
+        subscriptionPromise = new HashMap<>();
     }
 
     /**
@@ -274,7 +278,7 @@ public class SocketManager {
      * Subscribe channels when there is a refresh connection
      */
     public void subscribeChannels(){
-        this.channels = new HashMap<>();
+        this.subscription = new ArrayList<>();
         this.subscriptionPromise = new HashMap<>();
         for (String channelKey:channels.keySet()) {
                subscribe(channelKey);
