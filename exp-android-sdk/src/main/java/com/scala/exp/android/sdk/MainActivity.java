@@ -51,16 +51,16 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         AppSingleton.getInstance().setHost(host);
-        final Map<String,String> options = new HashMap<>();
-        options.put(LIMIT, "10");
-        options.put(SKIP, "0");
+        final Map<String,Object> options = new HashMap<>();
+        options.put(LIMIT, 10);
+        options.put(SKIP, 0);
         options.put(SORT, "name");
-        final Map<String,String> startOptions = new HashMap<>();
+        final Map<String,Object> startOptions = new HashMap<>();
         startOptions.put(Utils.HOST,host);
         startOptions.put(Utils.USERNAME,user);
         startOptions.put(Utils.PASSWORD,password);
         startOptions.put(Utils.ORGANIZATION,org);
-        startOptions.put("enableEvents","true");
+        startOptions.put("enableEvents",true);
         Log.i(LOG_TAG, "START EXP SDK");
         Exp.start(startOptions)
                 .subscribe(new Action1<Boolean>() {
