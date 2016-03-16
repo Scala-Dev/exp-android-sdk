@@ -34,7 +34,8 @@ public class Runtime extends Exp{
         Map<String,Object> header = new HashMap<String,Object>();
         header.put(Utils.TYP, Utils.JWT);
         Map<String,Object> payload = new HashMap<String,Object>();
-        payload.put(keyPayload, uuid);
+        payload.put(Utils.UUID, uuid);
+        payload.put(Utils.TYPE, keyPayload);
         String compact = Jwts.builder().setHeader(header).setClaims(payload).signWith(SignatureAlgorithm.HS256, secret.getBytes()).compact();
         Log.d(LOG_TAG, "EXP Created Token: "+compact);
         return compact;
@@ -46,30 +47,33 @@ public class Runtime extends Exp{
      * @param options
      * @return
      */
-    public static Observable<Boolean> start(Map<String,String> options){
+    public static Observable<Boolean> start(Map<String,Object> options){
         Log.d(LOG_TAG,"EXP start with options "+options);
         Observable<Boolean> observable = null;
-        Map<String,String> opts= new HashMap<>();
+        Map<String,Object> opts= new HashMap<>();
         String hostUrl = "";
-        if(options.get(Utils.HOST)!=null){
-            AppSingleton.getInstance().setHost(options.get(Utils.HOST));
+        if(options.get(Utils.HOST) != null){
+            AppSingleton.getInstance().setHost((String) options.get(Utils.HOST));
         }
-        if(options.get(Utils.ENABLE_EVENTS)!=null){
-            enableSocket = Boolean.valueOf(options.get(Utils.ENABLE_EVENTS));
+        if(options.get(Utils.ENABLE_EVENTS) != null){
+            enableSocket = (Boolean) options.get(Utils.ENABLE_EVENTS);
         }
-        if(options.get(Utils.USERNAME)!= null && options.get(Utils.PASSWORD)!= null && options.get(Utils.ORGANIZATION)!= null){
+        if(options.get(Utils.USERNAME) != null && options.get(Utils.PASSWORD) != null && options.get(Utils.ORGANIZATION) != null){
             observable = start_auth(options);
         }else if (options.get(Utils.UUID) != null && options.get(Utils.SECRET) != null) {
-            opts.put("token",createToken(options.get(Utils.UUID), options.get(Utils.SECRET),Utils.UUID));
+            opts.put("token",createToken((String) options.get(Utils.UUID), (String) options.get(Utils.SECRET),Utils.DEVICE));
             observable = start_auth(opts);
         } else if (options.get(Utils.DEVICE_UUID) != null && options.get(Utils.SECRET) != null) {
-            opts.put("token",createToken(options.get(Utils.DEVICE_UUID), options.get(Utils.SECRET),Utils.UUID));
+            opts.put("token",createToken((String) options.get(Utils.DEVICE_UUID), (String) options.get(Utils.SECRET),Utils.DEVICE));
             observable = start_auth(opts);
         } else if (options.get(Utils.NETWORK_UUID) != null && options.get(Utils.API_KEY) != null) {
-            opts.put("token",createToken(options.get(Utils.NETWORK_UUID), options.get(Utils.API_KEY),Utils.CONSUMER_APP_UUID));
+            opts.put("token",createToken((String) options.get(Utils.NETWORK_UUID), (String) options.get(Utils.API_KEY),Utils.CONSUMER_APP));
             observable = start_auth(opts);
         } else if (options.get(Utils.CONSUMER_APP_UUID) != null && options.get(Utils.API_KEY) != null) {
-            opts.put("token",createToken(options.get(Utils.CONSUMER_APP_UUID), options.get(Utils.API_KEY),Utils.CONSUMER_APP_UUID));
+            opts.put("token",createToken((String) options.get(Utils.CONSUMER_APP_UUID), (String) options.get(Utils.API_KEY), Utils.CONSUMER_APP));
+            observable = start_auth(opts);
+        } else if (options.get(Utils.UUID) != null && options.get(Utils.API_KEY) != null) {
+            opts.put("token",createToken((String) options.get(Utils.UUID), (String) options.get(Utils.API_KEY),Utils.CONSUMER_APP));
             observable = start_auth(opts);
         } else {
             throw new RuntimeException("Credentials are missing from start call");
@@ -83,7 +87,7 @@ public class Runtime extends Exp{
      * @param options
      * @return
      */
-    public static Observable<Boolean> start_auth(final Map<String, String> options){
+    public static Observable<Boolean> start_auth(final Map<String, Object> options){
         return ExpService.init(AppSingleton.getInstance().getHost())
                 .flatMap(new Func1<Boolean, Observable<Boolean>>() {
                     @Override

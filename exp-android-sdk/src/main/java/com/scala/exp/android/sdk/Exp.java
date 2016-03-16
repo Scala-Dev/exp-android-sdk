@@ -29,7 +29,7 @@ public class Exp {
      * @return
      */
     public static Observable<Boolean> start(String host,String uuid,String secret){
-        Map<String,String> startOptions = new HashMap<>();
+        Map<String,Object> startOptions = new HashMap<>();
         startOptions.put(Utils.HOST,host);
         startOptions.put(Utils.DEVICE_UUID,uuid);
         startOptions.put(Utils.SECRET,secret);
@@ -44,7 +44,7 @@ public class Exp {
      * @return
      */
     public static Observable<Boolean> start(String host, String username, String password, String organization){
-        Map<String,String> startOptions = new HashMap<>();
+        Map<String,Object> startOptions = new HashMap<>();
         startOptions.put(Utils.HOST,host);
         startOptions.put(Utils.USERNAME,username);
         startOptions.put(Utils.PASSWORD,password);
@@ -57,7 +57,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static Observable<Boolean> start(Map<String,String> options){
+    public static Observable<Boolean> start(Map<String,Object> options){
         return runtime.start(options);
     }
 
@@ -66,7 +66,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static Observable<Auth> login(Map<String, String> options){
+    public static Observable<Auth> login(Map<String, Object> options){
         Observable<Auth> observable = AppSingleton.getInstance().getEndPoint().login(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -90,7 +90,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable<SearchResults<Thing>> findThings(Map<String,String> options){
+    public static ExpObservable<SearchResults<Thing>> findThings(Map<String,Object> options){
         Observable<SearchResults<Thing>> resultThingObservable = AppSingleton.getInstance().getEndPoint().findThings(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -114,7 +114,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable<SearchResults<Feed>> findFeeds(Map<String,String> options){
+    public static ExpObservable<SearchResults<Feed>> findFeeds(Map<String,Object> options){
         Observable<SearchResults<Feed>> observable = AppSingleton.getInstance().getEndPoint().findFeeds(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -138,7 +138,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable<SearchResults<Device>> findDevices(Map<String,String> options){
+    public static ExpObservable<SearchResults<Device>> findDevices(Map<String,Object> options){
         Observable<SearchResults<Device>> deviceObservable = AppSingleton.getInstance().getEndPoint().findDevices(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -162,7 +162,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable<SearchResults<Experience>> findExperiences(Map<String,String> options){
+    public static ExpObservable<SearchResults<Experience>> findExperiences(Map<String,Object> options){
         Observable<SearchResults<Experience>> experienceObservable = AppSingleton.getInstance().getEndPoint().findExperiences(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -186,7 +186,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable<SearchResults<Location>> findLocations(Map<String,String> options){
+    public static ExpObservable<SearchResults<Location>> findLocations(Map<String,Object> options){
         Observable<SearchResults<Location>> locationObservable = AppSingleton.getInstance().getEndPoint().findLocations(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -219,7 +219,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable<SearchResults<ContentNode>> findContentNodes(Map<String,String> options){
+    public static ExpObservable<SearchResults<ContentNode>> findContentNodes(Map<String,Object> options){
         Observable<SearchResults<ContentNode>> contentNodeObservable = AppSingleton.getInstance().getEndPoint().findContentNodes(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -231,7 +231,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable<SearchResults<ContentNode>> findContent(Map<String,String> options){
+    public static ExpObservable<SearchResults<ContentNode>> findContent(Map<String,Object> options){
         return findContentNodes(options);
     }
 
@@ -253,7 +253,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable<SearchResults<Data>> findData(Map<String,String> options){
+    public static ExpObservable<SearchResults<Data>> findData(Map<String,Object> options){
         Observable<SearchResults<Data>> dataObservable = AppSingleton.getInstance().getEndPoint().findData(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());

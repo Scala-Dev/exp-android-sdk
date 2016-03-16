@@ -28,49 +28,49 @@ import rx.Observable;
 public interface IExpEndpoint {
 
         @POST("/api/auth/login")
-        Observable<Auth> login(@Body Map<String,String> options);
+        Observable<Auth> login(@Body Map<String,Object> options);
 
         @GET("/api/things/{uuid}")
         Observable<Thing> getThing(@Path("uuid") String uuid);
 
         @GET("/api/things")
-        Observable<SearchResults<Thing>> findThings(@QueryMap Map<String,String> options);
+        Observable<SearchResults<Thing>> findThings(@QueryMap Map<String,Object> options);
 
         @GET("/api/devices/{uuid}")
         Observable<Device> getDevice(@Path("uuid") String uuid);
 
         @GET("/api/devices")
-        Observable<SearchResults<Device>> findDevices(@QueryMap Map<String,String> options);
+        Observable<SearchResults<Device>> findDevices(@QueryMap Map<String,Object> options);
 
         @GET("/api/experiences/{uuid}")
         Observable<Experience> getExperience(@Path("uuid") String uuid);
 
         @GET("/api/experiences")
-        Observable<SearchResults<Experience>> findExperiences(@QueryMap Map<String,String> options);
+        Observable<SearchResults<Experience>> findExperiences(@QueryMap Map<String,Object> options);
 
         @GET("/api/locations/{uuid}")
         Observable<Location> getLocation(@Path("uuid") String uuid);
 
         @GET("/api/locations")
-        Observable<SearchResults<Location>> findLocations(@QueryMap Map<String,String> options);
+        Observable<SearchResults<Location>> findLocations(@QueryMap Map<String,Object> options);
 
         @GET("/api/content/{uuid}/children")
         Observable<ContentNode> getContentNode(@Path("uuid") String uuid);
 
         @GET("/api/content")
-        Observable<SearchResults<ContentNode>> findContentNodes(@QueryMap Map<String,String> options);
+        Observable<SearchResults<ContentNode>> findContentNodes(@QueryMap Map<String,Object> options);
 
         @GET("/api/data/{group}/{key}")
         Observable<Data> getData(@Path("group") String group,@Path("key") String key);
 
         @GET("/api/data")
-        Observable<SearchResults<Data>> findData(@QueryMap Map<String,String> options);
+        Observable<SearchResults<Data>> findData(@QueryMap Map<String,Object> options);
 
         @GET("/api/connectors/feeds/{uuid}")
         Observable<Feed> getFeed(@Path("uuid") String uuid);
 
         @GET("/api/connectors/feeds")
-        Observable<SearchResults<Feed>> findFeeds(@QueryMap Map<String,String> options);
+        Observable<SearchResults<Feed>> findFeeds(@QueryMap Map<String,Object> options);
 
         @GET("/api/connectors/feeds/{uuid}/data")
         Observable<Map> getFeedData(@Path("uuid") String uuid);
