@@ -5,6 +5,7 @@ package com.scala.exp.android.sdk;
  */
 public class Utils {
     public static final String CONSUMER_APP_UUID = "consumerAppUuid";
+    public static final String CONSUMER_APP = "consumerApp";
     public static final String MESSAGE = "message";
     public static final String TYPE = "type";
     public static final String REQUEST = "request";
@@ -28,6 +29,7 @@ public class Utils {
     public static final String ORGANIZATION = "organization";
     public static final String SECRET = "secret";
     public static final String DEVICE_UUID = "deviceUuid";
+    public static final String DEVICE = "device";
     public static final String NETWORK_UUID = "networkUuid";
     public static final String API_KEY = "apiKey";
     public static final String HOST = "host";
