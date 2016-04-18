@@ -4,9 +4,7 @@ import com.scala.exp.android.sdk.channels.IChannel;
 import com.scala.exp.android.sdk.model.*;
 import com.scala.exp.android.sdk.observer.ExpObservable;
 
-import org.json.JSONException;
-
-import java.lang.*;
+import java.util.HashMap;
 import java.util.Map;
 
 import rx.Observable;
@@ -31,7 +29,11 @@ public class Exp {
      * @return
      */
     public static Observable<Boolean> start(String host,String uuid,String secret){
-        return  runtime.start(host,uuid,secret);
+        Map<String,Object> startOptions = new HashMap<>();
+        startOptions.put(Utils.HOST,host);
+        startOptions.put(Utils.DEVICE_UUID,uuid);
+        startOptions.put(Utils.SECRET,secret);
+        return  runtime.start(startOptions);
     }
 
     /**
@@ -42,7 +44,12 @@ public class Exp {
      * @return
      */
     public static Observable<Boolean> start(String host, String username, String password, String organization){
-        return runtime.start(host,username,password,organization);
+        Map<String,Object> startOptions = new HashMap<>();
+        startOptions.put(Utils.HOST,host);
+        startOptions.put(Utils.USERNAME,username);
+        startOptions.put(Utils.PASSWORD,password);
+        startOptions.put(Utils.ORGANIZATION,organization);
+        return runtime.start(startOptions);
     }
 
     /**
@@ -50,17 +57,17 @@ public class Exp {
      * @param options
      * @return
      */
-    public static Observable<Boolean> start(Map<String,String> options){
+    public static Observable<Boolean> start(Map<String,Object> options){
         return runtime.start(options);
     }
 
     /**
-     * Login observable TODO make this ExpObservable
+     * Login observable
      * @param options
      * @return
      */
-    public static Observable<Token> login(Map<String, String> options){
-        Observable<Token> observable = AppSingleton.getInstance().getEndPoint().login(options)
+    public static Observable<Auth> login(Map<String, Object> options){
+        Observable<Auth> observable = AppSingleton.getInstance().getEndPoint().login(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
         return observable;
@@ -83,7 +90,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable<SearchResults<Thing>> findThings(Map<String,String> options){
+    public static ExpObservable<SearchResults<Thing>> findThings(Map<String,Object> options){
         Observable<SearchResults<Thing>> resultThingObservable = AppSingleton.getInstance().getEndPoint().findThings(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -107,7 +114,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable<SearchResults<Feed>> findFeeds(Map<String,String> options){
+    public static ExpObservable<SearchResults<Feed>> findFeeds(Map<String,Object> options){
         Observable<SearchResults<Feed>> observable = AppSingleton.getInstance().getEndPoint().findFeeds(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -131,7 +138,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable<SearchResults<Device>> findDevices(Map<String,String> options){
+    public static ExpObservable<SearchResults<Device>> findDevices(Map<String,Object> options){
         Observable<SearchResults<Device>> deviceObservable = AppSingleton.getInstance().getEndPoint().findDevices(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -155,7 +162,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable<SearchResults<Experience>> findExperiences(Map<String,String> options){
+    public static ExpObservable<SearchResults<Experience>> findExperiences(Map<String,Object> options){
         Observable<SearchResults<Experience>> experienceObservable = AppSingleton.getInstance().getEndPoint().findExperiences(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -179,7 +186,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable<SearchResults<Location>> findLocations(Map<String,String> options){
+    public static ExpObservable<SearchResults<Location>> findLocations(Map<String,Object> options){
         Observable<SearchResults<Location>> locationObservable = AppSingleton.getInstance().getEndPoint().findLocations(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -212,7 +219,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable<SearchResults<ContentNode>> findContentNodes(Map<String,String> options){
+    public static ExpObservable<SearchResults<ContentNode>> findContentNodes(Map<String,Object> options){
         Observable<SearchResults<ContentNode>> contentNodeObservable = AppSingleton.getInstance().getEndPoint().findContentNodes(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -224,7 +231,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable<SearchResults<ContentNode>> findContent(Map<String,String> options){
+    public static ExpObservable<SearchResults<ContentNode>> findContent(Map<String,Object> options){
         return findContentNodes(options);
     }
 
@@ -246,7 +253,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable<SearchResults<Data>> findData(Map<String,String> options){
+    public static ExpObservable<SearchResults<Data>> findData(Map<String,Object> options){
         Observable<SearchResults<Data>> dataObservable = AppSingleton.getInstance().getEndPoint().findData(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -254,27 +261,30 @@ public class Exp {
     }
 
     /**
-     * Get Current Experience from event bus
-     * @param subscriber
+     * Find Experiences by Limit,Skip,Sort
+     * @param options
+     * @return
      */
-    public static void getCurrentExperience(Subscriber subscriber){
-        try {
-            socketManager.getCurrentExperience(subscriber);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public static ExpObservable<Message> respond(Map<String,Object> options){
+        Observable<Message> respondObservable = AppSingleton.getInstance().getEndPoint().respond(options)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Message>(respondObservable);
     }
 
     /**
-     * Get Current Device from event bus
-     * @param subscriber
+     * RefreshToken observable
+     * @return
      */
-    public static void getCurrentDevice(Subscriber subscriber){
-        try {
-             socketManager.getCurrentDevice(subscriber);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public static Observable<Auth> refreshToken(){
+        return AppSingleton.getInstance().getEndPoint().refreshToken();
+    }
+
+    /**
+     * Stop EXP connection
+     */
+    public static void stop(){
+         runtime.stop();
     }
 
     /**
@@ -282,10 +292,15 @@ public class Exp {
      * @param channel
      * @return
      */
-    public static IChannel getChannel(Utils.SOCKET_CHANNELS channel){
-        return socketManager.getChannel(channel);
+    public static IChannel getChannel(String channel,boolean system,boolean consumerApp){
+        return socketManager.getChannel(channel,system,consumerApp);
     }
 
+    /**
+     * Connection to socket manager
+     * @param name
+     * @param subscriber
+     */
     public static void connection(String name,Subscriber subscriber){
         socketManager.connection(name,subscriber);
     }
