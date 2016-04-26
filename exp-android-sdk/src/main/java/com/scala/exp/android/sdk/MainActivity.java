@@ -291,7 +291,7 @@ public class MainActivity extends ActionBarActivity {
                                 });
 
 
-                        Exp.findContentNodes(options)
+                        Exp.findContent(options)
                                 .then(new Subscriber<SearchResults<Content>>() {
                                     @Override
                                     public void onCompleted() {}
