@@ -198,20 +198,11 @@ public class Exp {
      * @param uuid
      * @return
      */
-    public static ExpObservable<ContentNode> getContentNode(String uuid){
-        Observable<ContentNode> contentNodeObservable = AppSingleton.getInstance().getEndPoint().getContentNode(uuid)
+    public static ExpObservable<Content> getContent(String uuid){
+        Observable<Content> contentNodeObservable = AppSingleton.getInstance().getEndPoint().getContent(uuid)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
-        return new ExpObservable<ContentNode>(contentNodeObservable);
-    }
-
-    /**
-     * Get Content Node by UUID
-     * @param uuid
-     * @return
-     */
-    public static ExpObservable<ContentNode> getContent(String uuid){
-        return getContentNode(uuid);
+        return new ExpObservable<Content>(contentNodeObservable);
     }
 
     /**
@@ -219,21 +210,13 @@ public class Exp {
      * @param options
      * @return
      */
-    public static ExpObservable<SearchResults<ContentNode>> findContentNodes(Map<String,Object> options){
-        Observable<SearchResults<ContentNode>> contentNodeObservable = AppSingleton.getInstance().getEndPoint().findContentNodes(options)
+    public static ExpObservable<SearchResults<Content>> findContent(Map<String,Object> options){
+        Observable<SearchResults<Content>> contentNodeObservable = AppSingleton.getInstance().getEndPoint().findContent(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
-        return new ExpObservable<SearchResults<ContentNode>>(contentNodeObservable);
+        return new ExpObservable<SearchResults<Content>>(contentNodeObservable);
     }
 
-    /**
-     * Find ContentNodes by Limit,Skip,Sort
-     * @param options
-     * @return
-     */
-    public static ExpObservable<SearchResults<ContentNode>> findContent(Map<String,Object> options){
-        return findContentNodes(options);
-    }
 
     /**
      * Get Data by group,key
@@ -261,7 +244,7 @@ public class Exp {
     }
 
     /**
-     * Find Experiences by Limit,Skip,Sort
+     * Respond method to broadcast
      * @param options
      * @return
      */
@@ -303,5 +286,13 @@ public class Exp {
      */
     public static void connection(String name,Subscriber subscriber){
         socketManager.connection(name,subscriber);
+    }
+
+    /**
+     * Return socket connection status
+     * @return
+     */
+    public static boolean isConnected(){
+        return socketManager.isConnected();
     }
 }
