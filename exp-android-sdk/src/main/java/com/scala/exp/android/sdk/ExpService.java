@@ -6,10 +6,12 @@ package com.scala.exp.android.sdk;
 
 
 import com.google.gson.GsonBuilder;
+import com.scala.exp.android.sdk.adapters.ContentJsonAdapter;
 import com.scala.exp.android.sdk.adapters.ContentNodeJsonAdapter;
 import com.scala.exp.android.sdk.adapters.LocationJsonAdapter;
 import com.scala.exp.android.sdk.adapters.ModelJsonAdapter;
 import com.scala.exp.android.sdk.model.Content;
+import com.scala.exp.android.sdk.model.ContentNode;
 import com.scala.exp.android.sdk.model.Data;
 import com.scala.exp.android.sdk.model.Device;
 import com.scala.exp.android.sdk.model.Experience;
@@ -75,7 +77,8 @@ public final class ExpService {
         gson.registerTypeAdapter(Data.class, new ModelJsonAdapter<Data>(Data.class));
         gson.registerTypeAdapter(Feed.class, new ModelJsonAdapter<Feed>(Feed.class));
         gson.registerTypeAdapter(Message.class, new ModelJsonAdapter<Message>(Message.class));
-        gson.registerTypeAdapter(Content.class, new ContentNodeJsonAdapter());
+        gson.registerTypeAdapter(Content.class, new ContentJsonAdapter());
+        gson.registerTypeAdapter(ContentNode.class, new ContentNodeJsonAdapter());
 
         GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson.create());
 
@@ -111,7 +114,8 @@ public final class ExpService {
         gson.registerTypeAdapter(Data.class, new ModelJsonAdapter<Data>(Data.class));
         gson.registerTypeAdapter(Feed.class, new ModelJsonAdapter<Feed>(Feed.class));
         gson.registerTypeAdapter(Message.class, new ModelJsonAdapter<Message>(Message.class));
-        gson.registerTypeAdapter(Content.class, new ContentNodeJsonAdapter());
+        gson.registerTypeAdapter(Content.class, new ContentJsonAdapter());
+        gson.registerTypeAdapter(ContentNode.class, new ContentNodeJsonAdapter());
 
         GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson.create());
 
