@@ -240,7 +240,7 @@ public class MainActivity extends ActionBarActivity {
                                         }
                                     }
                                 });
-
+                        
                         Exp.getContent("d24c6581-f3d2-4d5a-b6b8-e90a4812d7df")
                                 .then(new Subscriber<Content>() {
                                     @Override

@@ -205,8 +205,24 @@ public class Exp {
         return new ExpObservable<Content>(contentNodeObservable);
     }
 
+
     /**
-     * Find ContentNodes by Limit,Skip,Sort
+     * Get Content Node by UUID
+     * @param uuid
+     * @return
+     * @deprecated
+     * Use getContent() instead
+     */
+    @Deprecated
+    public static ExpObservable<ContentNode> getContentNode(String uuid){
+        Observable<ContentNode> contentNodeObservable = AppSingleton.getInstance().getEndPoint().getContentNode(uuid)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<ContentNode>(contentNodeObservable);
+    }
+
+    /**
+     * Find Content by Limit,Skip,Sort
      * @param options
      * @return
      */
@@ -215,6 +231,21 @@ public class Exp {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
         return new ExpObservable<SearchResults<Content>>(contentNodeObservable);
+    }
+
+    /**
+     * Find ContentNodes by Limit,Skip,Sort
+     * @param options
+     * @return
+     * @deprecated
+     * Use findContent() instead
+     */
+    @Deprecated
+    public static ExpObservable<SearchResults<ContentNode>> findContentNodes(Map<String,Object> options){
+        Observable<SearchResults<ContentNode>> contentNodeObservable = AppSingleton.getInstance().getEndPoint().findContentNodes(options)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<SearchResults<ContentNode>>(contentNodeObservable);
     }
 
 
