@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.scala.exp.android.sdk.channels.IChannel;
-import com.scala.exp.android.sdk.model.ContentNode;
+import com.scala.exp.android.sdk.model.Content;
 import com.scala.exp.android.sdk.model.Experience;
 import com.scala.exp.android.sdk.model.Feed;
 import com.scala.exp.android.sdk.model.Location;
@@ -17,6 +17,7 @@ import com.scala.exp.android.sdk.model.Thing;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,12 +34,14 @@ public class MainActivity extends ActionBarActivity {
     private String secret = "6fc5013fa0ea4fffb7ca7263916bd9f214b3d8c9e042d667043b1662916e5e6c4e99f16afb07b340ecee5f6e3ca4fbdb";
     private String user = "cesar.oyarzun@scala.com";
 //    private String password = "Com5715031@";
-     private String password = "5715031Com";
+//     private String password = "5715031Com";
+    private String password = "5715031Com@";
 
     private String org = "";
 //    public static final String host = "https://api.goexp.io";
+    public static final String host =  "https://api-staging.goexp.io";
 
-    public static final String host = "http://192.168.1.4:9000";
+//    public static final String host = "http://192.168.1.4:9000";
 //    public static final String host = "http://192.168.30.193:9000";
     public static final String LIMIT = "limit";
     public static final String SKIP = "skip";
@@ -110,21 +113,25 @@ public class MainActivity extends ActionBarActivity {
                         channel1.listen("hi", new Subscriber() {
                             @Override
                             public void onCompleted() {}
-
                             @Override
                             public void onError(Throwable e) {
                                 Log.e("Error", e.getMessage());
                             }
-
                             @Override
                             public void onNext(Object o) {
                                 Log.d("REsponse", o.toString());
                             }
                         }).subscribe(new Subscriber<Object>() {
                             @Override
-                            public void onCompleted() {Log.e("ONCOMPLETED", "");}
+                            public void onCompleted() {
+                                Log.e("ONCOMPLETED", "");
+                            }
+
                             @Override
-                            public void onError(Throwable e) {Log.e("ERROR", e.getMessage());}
+                            public void onError(Throwable e) {
+                                Log.e("ERROR", e.getMessage());
+                            }
+
                             @Override
                             public void onNext(Object o) {
                                 Log.e("ONNEXT", o.toString());
@@ -132,6 +139,24 @@ public class MainActivity extends ActionBarActivity {
                             }
                         });
 
+                        Exp.getLocation("3fc4609e-805f-4066-8473-4ac25254dce5").then(new Subscriber<Location>() {
+                            @Override
+                            public void onCompleted() {
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                            }
+
+                            @Override
+                            public void onNext(Location location) {
+                                Log.i("Response", location.toString());
+                                ArrayList zones = (ArrayList) location.get("zones");
+                                Object zone1 = zones.get(0);
+                                Log.i("Response", zones.toString());
+                                Log.i("Response", (String) zone1);
+                            }
+                        });
 
                         Exp.getThing("052a2419-0621-45ad-aa03-3747dbfe2b6d")
                                 .then(new Subscriber<Thing>() {
@@ -201,21 +226,32 @@ public class MainActivity extends ActionBarActivity {
                                         Log.i("Feeds", feeds.toString());
                                         for (Feed feed : feeds.getResults()) {
                                             Log.i("Feed", feed.getString("name"));
+                                            feed.getData().then(new Subscriber<Map>() {
+                                                @Override
+                                                public void onCompleted() {}
+                                                @Override
+                                                public void onError(Throwable e) {}
+
+                                                @Override
+                                                public void onNext(Map feedData) {
+
+                                                }
+                                            });
                                         }
                                     }
                                 });
 
-                        Exp.getContentNode("d24c6581-f3d2-4d5a-b6b8-e90a4812d7df")
-                                .then(new Subscriber<ContentNode>() {
+                        Exp.getContent("d24c6581-f3d2-4d5a-b6b8-e90a4812d7df")
+                                .then(new Subscriber<Content>() {
                                     @Override
                                     public void onCompleted() {}
                                     @Override
                                     public void onError(Throwable e) {Log.e("error", e.toString());}
 
                                     @Override
-                                    public void onNext(ContentNode contentNode) {
+                                    public void onNext(Content contentNode) {
                                         Log.i("Response", contentNode.toString());
-                                        contentNode.getChildren().then(new Subscriber<List<ContentNode>>() {
+                                        contentNode.getChildren().then(new Subscriber<List<Content>>() {
 
                                             @Override
                                             public void onCompleted() {
@@ -227,10 +263,10 @@ public class MainActivity extends ActionBarActivity {
                                             }
 
                                             @Override
-                                            public void onNext(List<ContentNode> children) {
-                                                for (ContentNode child : children) {
+                                            public void onNext(List<Content> children) {
+                                                for (Content child : children) {
                                                     Log.i("child", String.valueOf(child.get("name")));
-                                                    child.getChildren().then(new Subscriber<List<ContentNode>>() {
+                                                    child.getChildren().then(new Subscriber<List<Content>>() {
                                                         @Override
                                                         public void onCompleted() {
                                                         }
@@ -241,8 +277,8 @@ public class MainActivity extends ActionBarActivity {
                                                         }
 
                                                         @Override
-                                                        public void onNext(List<ContentNode> grandchildren) {
-                                                            for (ContentNode grandchild : grandchildren) {
+                                                        public void onNext(List<Content> grandchildren) {
+                                                            for (Content grandchild : grandchildren) {
                                                                 Log.i("grandchild", String.valueOf(grandchild.get("name")));
                                                             }
                                                         }
@@ -254,8 +290,9 @@ public class MainActivity extends ActionBarActivity {
                                     }
                                 });
 
+
                         Exp.findContentNodes(options)
-                                .then(new Subscriber<SearchResults<ContentNode>>() {
+                                .then(new Subscriber<SearchResults<Content>>() {
                                     @Override
                                     public void onCompleted() {}
                                     @Override
@@ -265,7 +302,7 @@ public class MainActivity extends ActionBarActivity {
                                     }
 
                                     @Override
-                                    public void onNext(SearchResults<ContentNode> contentNodes) {
+                                    public void onNext(SearchResults<Content> contentNodes) {
                                         Log.i("Response", contentNodes.toString());
                                     }
                                 });
