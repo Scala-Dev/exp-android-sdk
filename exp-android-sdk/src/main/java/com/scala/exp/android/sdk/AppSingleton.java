@@ -14,7 +14,7 @@ public class AppSingleton {
     private static String host = null;
     private static String token = null;
     private static String hostSocket = null;
-    private static Auth user = null;
+    private static Auth auth = null;
 
     protected AppSingleton() {
         // Exists only to defeat instantiation.
@@ -35,12 +35,12 @@ public class AppSingleton {
         AppSingleton.hostSocket = hostSocket;
     }
 
-    public void setUser(Auth user){
-        AppSingleton.user = user;
+    public void setAuth(Auth auth){
+        AppSingleton.auth = auth;
     }
 
-    public Auth getUser(){
-        return AppSingleton.user;
+    public Auth getAuth(){
+        return AppSingleton.auth;
     }
 
     public String getToken() {

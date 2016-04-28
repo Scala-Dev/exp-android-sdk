@@ -36,7 +36,7 @@ public class ContentNode extends AbstractModel {
     private Utils.CONTENT_TYPES subtype = null;
     private List<ContentNode> children = null;
 
-    public Content(Utils.CONTENT_TYPES subtype){
+    public ContentNode(Utils.CONTENT_TYPES subtype){
         this.subtype = subtype;
     }
 
@@ -63,7 +63,7 @@ public class ContentNode extends AbstractModel {
 
     public String getUrl(){
         String host = AppSingleton.getInstance().getHost();
-        String rt = AppSingleton.getInstance().getUser().getRestrictedToken();
+        String rt = AppSingleton.getInstance().getAuth().getRestrictedToken();
         StringBuilder builder = new StringBuilder(host).append(API_DELIVERY);
         String path;
 
@@ -108,7 +108,7 @@ public class ContentNode extends AbstractModel {
         }
 
         if (hasVariant(name)){
-            String rt = AppSingleton.getInstance().getUser().getRestrictedToken();
+            String rt = AppSingleton.getInstance().getAuth().getRestrictedToken();
             return new StringBuilder(getUrl())
                     .append("?").append(VARIANT).append(name)
                     .append("&").append(RT).append(rt).toString();

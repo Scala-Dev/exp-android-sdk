@@ -63,23 +63,18 @@ public class MainActivity extends ActionBarActivity {
         startOptions.put(Utils.USERNAME,user);
         startOptions.put(Utils.PASSWORD,password);
         startOptions.put(Utils.ORGANIZATION,org);
-        startOptions.put("enableEvents",true);
+        startOptions.put(Utils.ENABLE_EVENTS,true);
         Log.i(LOG_TAG, "START EXP SDK");
         Exp.start(startOptions)
-                .subscribe(new Action1<Boolean>() {
+                .subscribe(new Subscriber<Boolean>() {
                     @Override
-                    public void call(Boolean o) {
+                    public void onCompleted() {
 
                         Subscriber currentExperienceSubs = new Subscriber<JSONObject>() {
                             @Override
-                            public void onCompleted() {
-                            }
-
+                            public void onCompleted() {}
                             @Override
-                            public void onError(Throwable e) {
-                                Log.d(LOG_TAG, e.toString());
-                            }
-
+                            public void onError(Throwable e) {Log.d(LOG_TAG, e.toString());}
                             @Override
                             public void onNext(JSONObject o) {
                                 try {
@@ -93,13 +88,9 @@ public class MainActivity extends ActionBarActivity {
 
                         Subscriber socketConnection = new Subscriber() {
                             @Override
-                            public void onCompleted() {
-                            }
-
+                            public void onCompleted() {}
                             @Override
-                            public void onError(Throwable e) {
-                            }
-
+                            public void onError(Throwable e) {}
                             @Override
                             public void onNext(Object o) {
                                 Log.d(LOG_TAG, o.toString());
@@ -114,9 +105,7 @@ public class MainActivity extends ActionBarActivity {
                             @Override
                             public void onCompleted() {}
                             @Override
-                            public void onError(Throwable e) {
-                                Log.e("Error", e.getMessage());
-                            }
+                            public void onError(Throwable e) {Log.e("Error", e.getMessage());}
                             @Override
                             public void onNext(Object o) {
                                 Log.d("REsponse", o.toString());
@@ -306,8 +295,26 @@ public class MainActivity extends ActionBarActivity {
                                         Log.i("Response", contentNodes.toString());
                                     }
                                 });
-                    }
 
+                        Subscriber updateSubscriber = new Subscriber<String>() {
+                            @Override
+                            public void onCompleted() {}
+                            @Override
+                            public void onError(Throwable e) {}
+                            @Override
+                            public void onNext(String o) {
+                                Log.d(LOG_TAG, "UPDATE LOGING");
+                            }
+                        };
+                        Exp.on("update", updateSubscriber);
+                    }
+                    @Override
+                    public void onError(Throwable e) {Log.e("ERROR", e.getMessage());}
+
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        Log.d(LOG_TAG, "ONNEXT");
+                    }
                 });
     }
 

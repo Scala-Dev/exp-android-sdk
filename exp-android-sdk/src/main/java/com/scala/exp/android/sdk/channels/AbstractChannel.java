@@ -120,8 +120,8 @@ public abstract class AbstractChannel implements IChannel {
      */
     public String generateId(){
         if(channelID.isEmpty()){
-           if( AppSingleton.getInstance().getUser()!=null){
-               Auth user = AppSingleton.getInstance().getUser();
+           if( AppSingleton.getInstance().getAuth()!=null){
+               Auth user = AppSingleton.getInstance().getAuth();
                String organization = user.getIdentity().getOrganization();
                List<Object> listOptions= new ArrayList<Object>();
                listOptions.add(organization);

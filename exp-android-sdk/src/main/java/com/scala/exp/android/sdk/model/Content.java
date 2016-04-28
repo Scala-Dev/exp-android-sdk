@@ -62,7 +62,7 @@ public class Content extends AbstractModel {
 
     public String getUrl(){
         String host = AppSingleton.getInstance().getHost();
-        String rt = AppSingleton.getInstance().getUser().getRestrictedToken();
+        String rt = AppSingleton.getInstance().getAuth().getRestrictedToken();
         StringBuilder builder = new StringBuilder(host).append(API_DELIVERY);
         String path;
 
@@ -107,7 +107,7 @@ public class Content extends AbstractModel {
         }
 
         if (hasVariant(name)){
-            String rt = AppSingleton.getInstance().getUser().getRestrictedToken();
+            String rt = AppSingleton.getInstance().getAuth().getRestrictedToken();
             return new StringBuilder(getUrl())
                     .append("?").append(VARIANT).append(name)
                     .append("&").append(RT).append(rt).toString();

@@ -29,35 +29,48 @@ Starts and returns an sdk instance. Can be called multiple times to start multip
 
 ```java
 Exp.start(host, user, password, org)
-                .subscribe(new Action1() {
+                .subscribe(new Subscriber<Boolean>() {
                     @Override
-                    public void call(Object o) {
-                      Log.i("EXP CONNECTED", o.toString());
+                    public void onCompleted() {}
+                    @Override
+                    public void onError(Throwable e) {Log.e("ERROR", e.getMessage());}
+                    @Override
+                    public void onNext(Boolean o) {
+                        Log.i("EXP CONNECTED", o);
                     }
-                }
+                });
 
 # Init exp connection for user with Host,User,Password,Organization.
 Exp.start(host,"cesar.oyarzun1@scala.com","Comm5715031","scala")
-                .subscribe(new Action1() {
+                 .subscribe(new Subscriber<Boolean>() {
                     @Override
-                    public void call(Object o) {
-                      Log.i("EXP CONNECTED", o.toString());
+                    public void onCompleted() {}
+                    @Override
+                    public void onError(Throwable e) {Log.e("ERROR", e.getMessage());}
+                    @Override
+                    public void onNext(Boolean o) {
+                        Log.i("EXP CONNECTED", o);
                     }
-                }
+                });
 
 # Init exp connection for user with options object.
-final Map<String,String> options = new HashMap<>();
-        options.put("host","https://api.exp.scala.com");
-        options.put("username","cesar.oyarzun1@scala.com");
-        options.put("password","Comm5715031");
-        options.put("organization","scala");
+final Map<String,Object> startOptions = new HashMap<>();
+startOptions.put(Utils.HOST,"https://api.exp.scala.com");
+startOptions.put(Utils.USERNAME,"cesar.oyarzun1@scala.com");
+startOptions.put(Utils.PASSWORD,"123456");
+startOptions.put(Utils.ORGANIZATION,"scala);
+startOptions.put(Utils.ENABLE_EVENTS,true);
   Exp.start(options)
-                .subscribe(new Action1() {
+                 .subscribe(new Subscriber<Boolean>() {
                     @Override
-                    public void call(Object o) {
-                      Log.i("EXP CONNECTED", o.toString());
+                    public void onCompleted() {}
+                    @Override
+                    public void onError(Throwable e) {Log.e("ERROR", e.getMessage());}
+                    @Override
+                    public void onNext(Boolean o) {
+                        Log.i("EXP CONNECTED", o);
                     }
-                }
+                });
 ```
 
 ## Stopping the SDK
@@ -69,6 +82,42 @@ Stops all running instance of the sdk, cancels all listeners and network connect
 ```java
 Exp.stop();
 ```
+
+## Authentication
+
+
+**`Exp.getAuth()`**
+
+Returns the current authentication payload. Will be null if not yet authenticated.
+
+```swift
+#GET USERNAME
+Exp.getAuth().getIdentity().getUsername();
+```
+
+**`Exp.on("update",subscriber)`** 
+
+Callback is called when authentication payload is updated.
+
+
+**`Exp.on("error",subscriber)`**
+
+Register a subscriber for when the sdk instance encounters a critical error and cannot continue. The subscriber is called with the error as the first argument. This is generally due to authentication failure.
+
+```java
+Subscriber errorSubscriber = new Subscriber<String>() {
+      @Override
+      public void onCompleted() {}
+      @Override
+      public void onError(Throwable e) {}
+      @Override
+      public void onNext(String o) {
+          Log.d(LOG_TAG, "ERROR SDK");
+      }
+};
+Exp.on("error", errorSubscriber);
+```
+
 
 # Network
 

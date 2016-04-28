@@ -19,7 +19,7 @@ public class Location extends AbstractModel {
 
     public String getLayoutUrl(){
         String host = AppSingleton.getInstance().getHost();
-        String rt = AppSingleton.getInstance().getUser().getRestrictedToken();
+        String rt = AppSingleton.getInstance().getAuth().getRestrictedToken();
 
         StringBuilder builder = new StringBuilder(host)
                 .append(API_LOCATION)

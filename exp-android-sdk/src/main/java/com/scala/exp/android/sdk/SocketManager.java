@@ -258,7 +258,7 @@ public class SocketManager {
         socket.disconnect();
         AppSingleton.getInstance().setToken("");
         AppSingleton.getInstance().setHostSocket("");
-        AppSingleton.getInstance().setUser(null);
+        AppSingleton.getInstance().setAuth(null);
         channelCache = new HashMap<>();
         channels = new HashMap<>();
         subscription = new ArrayList<>();

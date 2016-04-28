@@ -1,5 +1,7 @@
 package com.scala.exp.android.sdk;
 
+import android.util.Log;
+
 import com.scala.exp.android.sdk.channels.IChannel;
 import com.scala.exp.android.sdk.model.*;
 import com.scala.exp.android.sdk.observer.ExpObservable;
@@ -10,6 +12,7 @@ import java.util.Map;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 
@@ -20,6 +23,7 @@ public class Exp {
 
     private static Runtime runtime = new Runtime();
     protected static SocketManager socketManager = new SocketManager();
+    protected static Map<String,Subscriber> authConnection = new HashMap<>();
 
     /**
      ** Start EXP connection
@@ -57,7 +61,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static Observable<Boolean> start(Map<String,Object> options){
+    public static Observable<Boolean> start(Map<String,Object> options) {
         return runtime.start(options);
     }
 
@@ -325,5 +329,22 @@ public class Exp {
      */
     public static boolean isConnected(){
         return socketManager.isConnected();
+    }
+
+    /**
+     * Get Auth object
+     * @return
+     */
+    public static Auth getAuth(){
+        return AppSingleton.getInstance().getAuth();
+    }
+
+    /**
+     * Connection to socket manager
+     * @param name
+     * @param subscriber
+     */
+    public static void on(String name,Subscriber subscriber){
+        authConnection.put(name, subscriber);
     }
 }

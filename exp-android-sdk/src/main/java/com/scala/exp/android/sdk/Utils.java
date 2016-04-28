@@ -35,6 +35,9 @@ public class Utils {
     public static final String HOST = "host";
     public static final String ENABLE_EVENTS = "enableEvents";
     public static final String SUBSCRIBED = "subscribed";
+    public static final String UPDATE = "update";
+    public static final String ERROR = "error";
+
 
 
 
