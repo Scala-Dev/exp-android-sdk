@@ -1,6 +1,7 @@
 package com.scala.exp.android.sdk;
 
 import com.scala.exp.android.sdk.model.Auth;
+import com.scala.exp.android.sdk.model.Content;
 import com.scala.exp.android.sdk.model.ContentNode;
 import com.scala.exp.android.sdk.model.Data;
 import com.scala.exp.android.sdk.model.Device;
@@ -55,7 +56,13 @@ public interface IExpEndpoint {
         Observable<SearchResults<Location>> findLocations(@QueryMap Map<String,Object> options);
 
         @GET("/api/content/{uuid}/children")
+        Observable<Content> getContent(@Path("uuid") String uuid);
+
+        @GET("/api/content/{uuid}/children")
         Observable<ContentNode> getContentNode(@Path("uuid") String uuid);
+
+        @GET("/api/content")
+        Observable<SearchResults<Content>> findContent(@QueryMap Map<String,Object> options);
 
         @GET("/api/content")
         Observable<SearchResults<ContentNode>> findContentNodes(@QueryMap Map<String,Object> options);

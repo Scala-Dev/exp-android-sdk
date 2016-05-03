@@ -13,7 +13,11 @@ import java.util.concurrent.TimeUnit;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import rx.Observable;
+import rx.Subscriber;
+import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.plugins.RxJavaErrorHandler;
+import rx.plugins.RxJavaPlugins;
 import rx.schedulers.Schedulers;
 
 /**
@@ -22,6 +26,8 @@ import rx.schedulers.Schedulers;
 public class Runtime extends Exp{
     private static final String LOG_TAG = Runtime.class.getSimpleName();
     private static Boolean enableSocket = true;
+
+
     /**
      * Start with device credentials Host,UUID,Secret
      * @param keyPayload
@@ -99,11 +105,12 @@ public class Runtime extends Exp{
                                     public Observable<Boolean> call(Auth auth) {
                                         Log.d(LOG_TAG, "EXP login response :" + auth.getToken());
                                         AppSingleton.getInstance().setToken(auth.getToken());
-                                        if(auth.getNetwork()!=null){
+                                        if (auth.getNetwork() != null) {
                                             String hostSocket = auth.getNetwork().getHost();
                                             AppSingleton.getInstance().setHostSocket(hostSocket);
                                         }
-                                        AppSingleton.getInstance().setUser(auth);
+                                        AppSingleton.getInstance().setAuth(auth);
+
                                         final BigInteger expiration = auth.getExpiration();
                                         return ExpService.init(AppSingleton.getInstance().getHost(), auth.getToken())
                                                 .flatMap(new Func1<Boolean, Observable<Boolean>>() {
@@ -111,29 +118,50 @@ public class Runtime extends Exp{
                                                     public Observable call(Boolean aBoolean) {
 
                                                         // refreshToken timeout
-                                                        Observable.timer(getTimeOut(expiration), TimeUnit.SECONDS).flatMap(new Func1<Long, Observable<Long>>() {
-                                                            @Override
-                                                            public Observable<Long> call(Long aLong) {
-                                                                return Exp.refreshToken()
-                                                                        .flatMap(new Func1<Auth, Observable<Long>>() {
-                                                                            @Override
-                                                                            public Observable<Long> call(Auth auth) {
-                                                                                AppSingleton.getInstance().setToken(auth.getToken());
-                                                                                AppSingleton.getInstance().setUser(auth);
-                                                                                socketManager.refreshConnection();
-                                                                                return refreshTokenAuth(auth);
-                                                                            }
-                                                                        });
-                                                            }
-                                                        }).subscribeOn(Schedulers.newThread()).observeOn(Schedulers.newThread()).subscribe();
+                                                        Observable.timer(getTimeOut(expiration), TimeUnit.SECONDS)
+                                                                .flatMap(new Func1<Long, Observable<Long>>() {
+                                                                    @Override
+                                                                    public Observable<Long> call(Long aLong) {
+                                                                        return Exp.refreshToken()
+                                                                                .flatMap(new Func1<Auth, Observable<Long>>() {
+                                                                                    @Override
+                                                                                    public Observable<Long> call(Auth auth) {
+                                                                                        AppSingleton.getInstance().setToken(auth.getToken());
+                                                                                        AppSingleton.getInstance().setAuth(auth);
+                                                                                        socketManager.refreshConnection();
+                                                                                        //callback listen for authConnection
+                                                                                        if (Exp.authConnection.containsKey(Utils.UPDATE)) {
+                                                                                            Subscriber subscriber = authConnection.get(Utils.UPDATE);
+                                                                                            subscriber.onNext(true);
+                                                                                            subscriber.onCompleted();
+                                                                                        }
+                                                                                        return refreshTokenAuth(auth);
+                                                                                    }
+                                                                                });
+                                                                    }
+                                                                }).subscribeOn(Schedulers.newThread())
+                                                                .observeOn(Schedulers.newThread())
+                                                                .subscribe();
                                                         socketManager = new SocketManager();
                                                         Observable<Boolean> booleanObservable = Observable.just(true);
-                                                        if(enableSocket){
+                                                        if (enableSocket) {
                                                             booleanObservable = socketManager.startSocket();
                                                         }
                                                         return booleanObservable;
                                                     }
                                                 });
+                                    }
+                                })
+                                .doOnError(new Action1<Throwable>() {
+                                    @Override
+                                    public void call(Throwable throwable) {
+                                        Log.d(LOG_TAG, "EXP ERROR " + throwable.getLocalizedMessage());
+                                        //callback listen for authConnection
+                                        if (Exp.authConnection.containsKey(Utils.ERROR)) {
+                                            Subscriber subscriber = authConnection.get(Utils.ERROR);
+                                            subscriber.onNext(true);
+                                            subscriber.onCompleted();
+                                        }
                                     }
                                 });
                     }
@@ -172,9 +200,26 @@ public class Runtime extends Exp{
                             @Override
                             public Observable<Long> call(Auth auth) {
                                 AppSingleton.getInstance().setToken(auth.getToken());
-                                AppSingleton.getInstance().setUser(auth);
+                                AppSingleton.getInstance().setAuth(auth);
                                 socketManager.refreshConnection();
+                                //callback listen for authConnection
+                                if(Exp.authConnection.containsKey(Utils.UPDATE)){
+                                    Subscriber subscriber = authConnection.get(Utils.UPDATE);
+                                    subscriber.onNext(true);
+                                    subscriber.onCompleted();
+                                }
                                 return refreshTokenAuth(auth);
+                            }
+                        }).doOnError(new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                Log.d(LOG_TAG, "EXP ERROR " + throwable.getLocalizedMessage());
+                                //callback listen for authConnection
+                                if (Exp.authConnection.containsKey(Utils.ERROR)) {
+                                    Subscriber subscriber = authConnection.get(Utils.ERROR);
+                                    subscriber.onNext(true);
+                                    subscriber.onCompleted();
+                                }
                             }
                         });
             }
