@@ -1,5 +1,7 @@
 package com.scala.exp.android.sdk;
 
+import android.util.Log;
+
 import com.scala.exp.android.sdk.channels.IChannel;
 import com.scala.exp.android.sdk.model.*;
 import com.scala.exp.android.sdk.observer.ExpObservable;
@@ -10,6 +12,7 @@ import java.util.Map;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 
@@ -20,6 +23,7 @@ public class Exp {
 
     private static Runtime runtime = new Runtime();
     protected static SocketManager socketManager = new SocketManager();
+    protected static Map<String,Subscriber> authConnection = new HashMap<>();
 
     /**
      ** Start EXP connection
@@ -57,7 +61,7 @@ public class Exp {
      * @param options
      * @return
      */
-    public static Observable<Boolean> start(Map<String,Object> options){
+    public static Observable<Boolean> start(Map<String,Object> options) {
         return runtime.start(options);
     }
 
@@ -198,6 +202,22 @@ public class Exp {
      * @param uuid
      * @return
      */
+    public static ExpObservable<Content> getContent(String uuid){
+        Observable<Content> contentNodeObservable = AppSingleton.getInstance().getEndPoint().getContent(uuid)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Content>(contentNodeObservable);
+    }
+
+
+    /**
+     * Get Content Node by UUID
+     * @param uuid
+     * @return
+     * @deprecated
+     * Use getContent() instead
+     */
+    @Deprecated
     public static ExpObservable<ContentNode> getContentNode(String uuid){
         Observable<ContentNode> contentNodeObservable = AppSingleton.getInstance().getEndPoint().getContentNode(uuid)
                 .subscribeOn(Schedulers.newThread())
@@ -206,19 +226,25 @@ public class Exp {
     }
 
     /**
-     * Get Content Node by UUID
-     * @param uuid
+     * Find Content by Limit,Skip,Sort
+     * @param options
      * @return
      */
-    public static ExpObservable<ContentNode> getContent(String uuid){
-        return getContentNode(uuid);
+    public static ExpObservable<SearchResults<Content>> findContent(Map<String,Object> options){
+        Observable<SearchResults<Content>> contentNodeObservable = AppSingleton.getInstance().getEndPoint().findContent(options)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<SearchResults<Content>>(contentNodeObservable);
     }
 
     /**
      * Find ContentNodes by Limit,Skip,Sort
      * @param options
      * @return
+     * @deprecated
+     * Use findContent() instead
      */
+    @Deprecated
     public static ExpObservable<SearchResults<ContentNode>> findContentNodes(Map<String,Object> options){
         Observable<SearchResults<ContentNode>> contentNodeObservable = AppSingleton.getInstance().getEndPoint().findContentNodes(options)
                 .subscribeOn(Schedulers.newThread())
@@ -226,14 +252,6 @@ public class Exp {
         return new ExpObservable<SearchResults<ContentNode>>(contentNodeObservable);
     }
 
-    /**
-     * Find ContentNodes by Limit,Skip,Sort
-     * @param options
-     * @return
-     */
-    public static ExpObservable<SearchResults<ContentNode>> findContent(Map<String,Object> options){
-        return findContentNodes(options);
-    }
 
     /**
      * Get Data by group,key
@@ -261,7 +279,7 @@ public class Exp {
     }
 
     /**
-     * Find Experiences by Limit,Skip,Sort
+     * Respond method to broadcast
      * @param options
      * @return
      */
@@ -303,5 +321,30 @@ public class Exp {
      */
     public static void connection(String name,Subscriber subscriber){
         socketManager.connection(name,subscriber);
+    }
+
+    /**
+     * Return socket connection status
+     * @return
+     */
+    public static boolean isConnected(){
+        return socketManager.isConnected();
+    }
+
+    /**
+     * Get Auth object
+     * @return
+     */
+    public static Auth getAuth(){
+        return AppSingleton.getInstance().getAuth();
+    }
+
+    /**
+     * Connection to socket manager
+     * @param name
+     * @param subscriber
+     */
+    public static void on(String name,Subscriber subscriber){
+        authConnection.put(name, subscriber);
     }
 }

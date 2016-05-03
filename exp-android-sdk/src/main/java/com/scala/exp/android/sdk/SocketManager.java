@@ -51,6 +51,7 @@ public class SocketManager {
     private Map<String,IChannel> channels = new HashMap<>();
     private List<String> subscription = new ArrayList<>();
     private Map<String,ReplaySubject> subscriptionPromise = new HashMap<>();
+
     /**
      * Start Socket Connection
      * @return
@@ -257,7 +258,7 @@ public class SocketManager {
         socket.disconnect();
         AppSingleton.getInstance().setToken("");
         AppSingleton.getInstance().setHostSocket("");
-        AppSingleton.getInstance().setUser(null);
+        AppSingleton.getInstance().setAuth(null);
         channelCache = new HashMap<>();
         channels = new HashMap<>();
         subscription = new ArrayList<>();
@@ -283,5 +284,13 @@ public class SocketManager {
         for (String channelKey:channels.keySet()) {
                subscribe(channelKey);
         }
+    }
+
+    /**
+     * Check if socket is connected
+     * @return
+     */
+    public boolean isConnected(){
+        return socket.connected();
     }
 }
