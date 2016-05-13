@@ -359,6 +359,28 @@ Exp.findExperiences(options)
 });
 ```
 
+**`experience.geDevices()`**
+
+Resolves to a SearchResults object containing [Devices](#devices).
+
+```java
+experience.getDevices().then(new Subscriber<SearchResults<Device>>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("error", e.toString());
+            }
+
+            @Override
+            public void onNext(SearchResults<Device> resultDevices) {
+                Log.i("Response", resultDevices.toString());
+            }
+        });
+```
+
 ## Locations
 
 **`Exp.getLocation(uuid)`**
@@ -411,6 +433,8 @@ Returns a url pointing to the location's layout image.
 
 **`location.geDevices()`**
 
+Resolves to a SearchResults object containing [Devices](#devices).
+
 ```java
 location.getDevices().then(new Subscriber<SearchResults<Device>>() {
             @Override
@@ -430,6 +454,8 @@ location.getDevices().then(new Subscriber<SearchResults<Device>>() {
 ```
 
 **`location.geThings()`**
+
+Resolves to a SearchResults object containing [Things](#things).
 
 ```java
 location.geThings().then(new Subscriber<SearchResults<Thing>>() {
