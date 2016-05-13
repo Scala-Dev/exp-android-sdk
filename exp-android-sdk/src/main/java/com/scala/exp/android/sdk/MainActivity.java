@@ -8,11 +8,13 @@ import android.view.MenuItem;
 
 import com.scala.exp.android.sdk.channels.IChannel;
 import com.scala.exp.android.sdk.model.Content;
+import com.scala.exp.android.sdk.model.Device;
 import com.scala.exp.android.sdk.model.Experience;
 import com.scala.exp.android.sdk.model.Feed;
 import com.scala.exp.android.sdk.model.Location;
 import com.scala.exp.android.sdk.model.SearchResults;
 import com.scala.exp.android.sdk.model.Thing;
+import com.scala.exp.android.sdk.model.Zone;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -128,7 +130,7 @@ public class MainActivity extends ActionBarActivity {
                             }
                         });
 
-                        Exp.getLocation("3fc4609e-805f-4066-8473-4ac25254dce5").then(new Subscriber<Location>() {
+                        Exp.getLocation("6d042ccc-ed59-4521-a8fb-b7e6ce198e72").then(new Subscriber<Location>() {
                             @Override
                             public void onCompleted() {
                             }
@@ -139,11 +141,27 @@ public class MainActivity extends ActionBarActivity {
 
                             @Override
                             public void onNext(Location location) {
-                                Log.i("Response", location.toString());
-                                ArrayList zones = (ArrayList) location.get("zones");
-                                Object zone1 = zones.get(0);
-                                Log.i("Response", zones.toString());
-                                Log.i("Response", (String) zone1);
+//                                Log.i("Response", location.toString());
+//                                ArrayList zones = (ArrayList) location.get("zones");
+//                                Object zone1 = zones.get(0);
+//                                Log.i("Response", zones.toString());
+//                                Log.i("Response", (String) zone1);
+                                List<Zone> zones = location.getZones();
+                                location.getDevices().then(new Subscriber<SearchResults<Device>>() {
+                                    @Override
+                                    public void onCompleted() {
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        Log.e("error", e.toString());
+                                    }
+
+                                    @Override
+                                    public void onNext(SearchResults<Device> resultExperience) {
+                                        Log.i("Response", resultExperience.toString());
+                                    }
+                                });
                             }
                         });
 

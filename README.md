@@ -409,6 +409,47 @@ Resolves to an array of [zones](#zones) that are part of this location.
 
 Returns a url pointing to the location's layout image.
 
+**`location.geDevices()`**
+
+```java
+location.getDevices().then(new Subscriber<SearchResults<Device>>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("error", e.toString());
+            }
+
+            @Override
+            public void onNext(SearchResults<Device> resultDevices) {
+                Log.i("Response", resultDevices.toString());
+            }
+        });
+```
+
+**`location.geThings()`**
+
+```java
+location.geThings().then(new Subscriber<SearchResults<Thing>>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("error", e.toString());
+            }
+
+            @Override
+            public void onNext(SearchResults<Thing> resultThings) {
+                Log.i("Response", resultThings.toString());
+            }
+        });
+```
+
+
 ## Zones
 
 **`zone.getKey()`**

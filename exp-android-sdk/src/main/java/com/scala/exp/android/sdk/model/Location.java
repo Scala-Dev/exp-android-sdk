@@ -1,10 +1,14 @@
 package com.scala.exp.android.sdk.model;
 
 import com.scala.exp.android.sdk.AppSingleton;
+import com.scala.exp.android.sdk.Exp;
 import com.scala.exp.android.sdk.Utils;
+import com.scala.exp.android.sdk.observer.ExpObservable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Cesar Oyarzun on 10/28/15.
@@ -38,4 +42,17 @@ public class Location extends AbstractModel {
     public List<Zone> getZones() {
         return zones;
     }
+
+    public ExpObservable<SearchResults<Device>> getDevices(){
+        Map options = new HashMap();
+        options.put(Utils.LOCATION_UUID,getString(Utils.UUID));
+        return Exp.findDevices(options);
+    }
+
+    public ExpObservable<SearchResults<Thing>> getThings(){
+        Map options = new HashMap();
+        options.put(Utils.LOCATION_UUID, getString(Utils.UUID));
+        return Exp.findThings(options);
+    }
+
 }

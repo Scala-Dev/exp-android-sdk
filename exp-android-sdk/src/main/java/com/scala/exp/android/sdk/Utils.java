@@ -37,6 +37,7 @@ public class Utils {
     public static final String SUBSCRIBED = "subscribed";
     public static final String UPDATE = "update";
     public static final String ERROR = "error";
+    public static final String LOCATION_UUID = "location.uuid";
 
 
 
