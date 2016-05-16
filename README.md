@@ -261,6 +261,19 @@ Exp.findDevices(options)
   });
 ```
 
+**`device.getZones()`**
+
+Resolves to an array of [zones](#zones) that are part of this device.
+
+**`device.getLocation()`**
+
+Resolves to an [Location](#locations) that are part of this device.
+
+**`device.getExperience()`**
+
+Resolves to an [Experience](#experiences) that are part of this device.
+
+
 ## Things
 
 **`Exp.getThing(uuid)**`
@@ -310,6 +323,19 @@ Exp.findthings(options)
         }
     });
 ```
+
+**`thing.getZones()`**
+
+Resolves to an array of [zones](#zones) that are part of this device.
+
+**`thing.getLocation()`**
+
+Resolves to an [Location](#locations) that are part of this device.
+
+**`thing.getExperience()`**
+
+Resolves to an [Experience](#experiences) that are part of this device.
+
 
 ## Experiences
 
