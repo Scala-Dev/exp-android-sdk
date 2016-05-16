@@ -15,7 +15,7 @@ public class Experience extends AbstractModel {
 
     public ExpObservable<SearchResults<Device>> getDevices(){
         Map options = new HashMap();
-        options.put(Utils.LOCATION_UUID,getString(Utils.UUID));
+        options.put(Utils.LOCATION_UUID,getUuid());
         return Exp.findDevices(options);
     }
 }
