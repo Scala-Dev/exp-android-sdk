@@ -39,6 +39,7 @@ public class ThingJsonAdapter implements JsonDeserializer<Thing> {
                 for (LinkedTreeMap child : zonesList) {
                     Zone zone = new Zone();
                     zone.setProperties(child);
+                    zone.setLocation(location);
                     zonesArray.add(zone);
                 }
                 thing.setZones(zonesArray);

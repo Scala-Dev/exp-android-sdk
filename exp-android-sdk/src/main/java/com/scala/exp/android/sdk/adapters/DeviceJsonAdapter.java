@@ -39,6 +39,7 @@ public class DeviceJsonAdapter implements JsonDeserializer<Device> {
                 for (LinkedTreeMap child : zonesList) {
                     Zone zone = new Zone();
                     zone.setProperties(child);
+                    zone.setLocation(location);
                     zonesArray.add(zone);
                 }
                 device.setZones(zonesArray);

@@ -15,7 +15,9 @@ import java.util.List;
 
 /**
  * Created by Cesar Oyarzun on 10/30/15.
+ * @deprecated replace by ContentJsonAdapter
  */
+
 public class ContentNodeJsonAdapter implements JsonDeserializer<ContentNode> {
 
     public static final String SUBTYPE = "subtype";

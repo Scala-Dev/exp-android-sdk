@@ -512,6 +512,56 @@ The zone's key.
 
 The zone's name.
 
+**`zone.getDevices()`**
+
+Resolves to an array of [devices](#devices) that are members of this zone.
+
+```java
+zone.getDevices().then(new Subscriber<SearchResults<Device>>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("error", e.toString());
+            }
+
+            @Override
+            public void onNext(SearchResults<Device> resultDevice) {
+                Log.i("Response", resultDevice.toString());
+            }
+        });
+```
+
+**`zone.getThings()`**
+
+Resolves to an array of [things](#things) that are members of this zone.
+
+```java
+zone.getThings().then(new Subscriber<SearchResults<Things>>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("error", e.toString());
+            }
+
+            @Override
+            public void onNext(SearchResults<Things> resultThings) {
+                Log.i("Response", resultThings.toString());
+            }
+        });
+```
+
+**`zone.getLocation()`**
+
+Resolves to the zone's [location](#locations)
+
+
+
 ## Feeds
 
 **`Exp.getFeed(uuid)`**

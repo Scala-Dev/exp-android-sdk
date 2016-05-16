@@ -33,6 +33,7 @@ public class LocationJsonAdapter implements JsonDeserializer<Location> {
             for (LinkedTreeMap child : zonesList) {
                 Zone zone = new Zone();
                 zone.setProperties(child);
+                zone.setLocation(location);
                 zonesArray.add(zone);
             }
             location.setZones(zonesArray);

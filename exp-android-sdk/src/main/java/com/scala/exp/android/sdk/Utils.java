@@ -42,6 +42,7 @@ public class Utils {
     public static final String ZONES = "zones";
     public static final String LOCATION = "location";
     public static final String EXPERIENCE = "experience";
+    public static final String LOCATION_ZONES_KEY = "location.zones.key";
 
 
     public enum SOCKET_CHANNELS {
