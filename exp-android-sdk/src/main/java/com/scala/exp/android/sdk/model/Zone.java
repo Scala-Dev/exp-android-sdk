@@ -1,26 +1,17 @@
 package com.scala.exp.android.sdk.model;
 
+import com.scala.exp.android.sdk.Utils;
+
 /**
  * Created by Cesar Oyarzun on 4/25/16.
  */
-public class Zone {
-
-    private String key;
-    private String name;
-
-    public void setKey(String key) {
-        this.key = key;
-    }
+public class Zone  extends AbstractModel{
 
     public String getKey() {
-        return key;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return getString(Utils.KEY);
     }
 
     public String getName() {
-        return name;
+        return getString(Utils.NAME);
     }
 }

@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 import com.scala.exp.android.sdk.adapters.ContentJsonAdapter;
 import com.scala.exp.android.sdk.adapters.ContentNodeJsonAdapter;
 import com.scala.exp.android.sdk.adapters.LocationJsonAdapter;
+import com.scala.exp.android.sdk.adapters.DeviceJsonAdapter;
 import com.scala.exp.android.sdk.adapters.ModelJsonAdapter;
 import com.scala.exp.android.sdk.model.Content;
 import com.scala.exp.android.sdk.model.ContentNode;
@@ -70,7 +71,7 @@ public final class ExpService {
 
         //GSON builder adapter for model
         GsonBuilder gson = new GsonBuilder();
-        gson.registerTypeAdapter(Device.class, new ModelJsonAdapter<Device>(Device.class));
+        gson.registerTypeAdapter(Device.class, new DeviceJsonAdapter());
         gson.registerTypeAdapter(Thing.class, new ModelJsonAdapter<Thing>(Thing.class));
         gson.registerTypeAdapter(Location.class, new LocationJsonAdapter());
         gson.registerTypeAdapter(Experience.class, new ModelJsonAdapter<Experience>(Experience.class));
@@ -107,7 +108,7 @@ public final class ExpService {
         AppSingleton.getInstance().setHost(host);
         //GSON builder adapter for model
         GsonBuilder gson = new GsonBuilder();
-        gson.registerTypeAdapter(Device.class, new ModelJsonAdapter<Device>(Device.class));
+        gson.registerTypeAdapter(Device.class, new DeviceJsonAdapter());
         gson.registerTypeAdapter(Thing.class, new ModelJsonAdapter<Thing>(Thing.class));
         gson.registerTypeAdapter(Location.class, new LocationJsonAdapter());
         gson.registerTypeAdapter(Experience.class, new ModelJsonAdapter<Experience>(Experience.class));

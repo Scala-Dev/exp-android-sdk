@@ -20,10 +20,6 @@ import java.util.List;
  */
 public class LocationJsonAdapter implements JsonDeserializer<Location> {
 
-    public static final String KEY = "key";
-    public static final String NAME = "name";
-    public static final String ZONES = "zones";
-
     @Override
     public Location deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext
             context) throws JsonParseException {
@@ -31,15 +27,12 @@ public class LocationJsonAdapter implements JsonDeserializer<Location> {
         LinkedTreeMap treeMap = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
         Location location = new Location();
         location.setProperties(treeMap);
-        List<LinkedTreeMap> zonesList = (List<LinkedTreeMap>) treeMap.get(ZONES);
-        List<Zone> zonesArray = new ArrayList<Zone>();
+        List<LinkedTreeMap> zonesList = (List<LinkedTreeMap>) treeMap.get(Utils.ZONES);
         if(zonesList != null && !zonesList.isEmpty()){
+            List<Zone> zonesArray = new ArrayList<Zone>();
             for (LinkedTreeMap child : zonesList) {
-                String key = (String) child.get(KEY);
-                String name = (String) child.get(NAME);
                 Zone zone = new Zone();
-                zone.setKey(key);
-                zone.setName(name);
+                zone.setProperties(child);
                 zonesArray.add(zone);
             }
             location.setZones(zonesArray);

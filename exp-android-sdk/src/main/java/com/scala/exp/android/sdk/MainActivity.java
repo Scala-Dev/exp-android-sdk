@@ -182,6 +182,25 @@ public class MainActivity extends ActionBarActivity {
                                         Log.i("Response", thing.toString());
                                     }
                                 });
+                        Exp.getDevice("31da0638-507e-4ac7-8b66-7fd5a8734a05")
+                                .then(new Subscriber<Device>() {
+                                    @Override
+                                    public void onCompleted() {
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        Log.e("error", e.toString());
+                                    }
+
+                                    @Override
+                                    public void onNext(Device device) {
+                                        Location location = device.getLocation();
+                                        List<Zone> zones = device.getZones();
+                                        Experience experience = device.getExperience();
+                                        Log.i("Response", device.toString());
+                                    }
+                                });
 
                         Exp.findExperiences(options)
                                 .then(new Subscriber<SearchResults<Experience>>() {

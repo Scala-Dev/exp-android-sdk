@@ -38,8 +38,10 @@ public class Utils {
     public static final String UPDATE = "update";
     public static final String ERROR = "error";
     public static final String LOCATION_UUID = "location.uuid";
-
-
+    public static final String KEY = "key";
+    public static final String ZONES = "zones";
+    public static final String LOCATION = "location";
+    public static final String EXPERIENCE = "experience";
 
 
     public enum SOCKET_CHANNELS {

@@ -1,6 +1,7 @@
 package com.scala.exp.android.sdk.model;
 
 import com.google.gson.internal.LinkedTreeMap;
+import com.scala.exp.android.sdk.Utils;
 
 /**
  * Created by Cesar Oyarzun on 10/30/15.
@@ -8,6 +9,7 @@ import com.google.gson.internal.LinkedTreeMap;
 public abstract class AbstractModel {
 
     protected LinkedTreeMap properties = null;
+
 
     public Object get(String path) {
         Object o = null;
@@ -46,4 +48,11 @@ public abstract class AbstractModel {
     public void setProperties(LinkedTreeMap properties) {
         this.properties = properties;
     }
+
+    public String getUuid() {
+        return getString(Utils.UUID);
+    }
+
+
+
 }
