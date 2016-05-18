@@ -212,6 +212,25 @@ payload.put("uuid", "myUuid");
 channel.fling(payload)
 ```
 
+**`channel.identify()`**
+
+Requests that [devices](#devices) listening for this event on this channel visually identify themselves. Implementation is device specific; this is simply a convience method.
+
+```java
+//Start SDK as Device or User
+final Map<String,Object> startOptions = new HashMap<>();
+startOptions.put(Utils.UUID,"bca4adb2-8853-4b1f-966d-2f9bd34c6383");
+startOptions.put(Utils.SECRET,"d76651abb7f6938510cbcdcc6ecb35f29b5a289a809d38da55d0bdf28dc027b625c924fc39d5150802be92e7a9be4f85");
+Exp.start(startOptions)
+
+//Create channel with device uuid
+final IChannel channel1 = Exp.getChannel("8d50e9f6-6a50-487b-9324-714e8b0cb2ee",false,false);
+final Map<String, Object> payload = new HashMap<String, Object>();
+channel1.identify();
+```
+
+
+
 # API
 
 ## Devices
