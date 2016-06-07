@@ -21,7 +21,7 @@ public class Feed extends AbstractModel {
 
     public ExpObservable<Map> getData() {
         final String uuid = getString(Utils.UUID);
-        Observable<Map> observable = AppSingleton.getInstance().getEndPoint().getFeedData(Utils.UUID)
+        Observable<Map> observable = AppSingleton.getInstance().getEndPoint().getFeedData(uuid)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
         return new ExpObservable<Map>(observable);
