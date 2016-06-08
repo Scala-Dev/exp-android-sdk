@@ -37,9 +37,13 @@ public class Utils {
     public static final String SUBSCRIBED = "subscribed";
     public static final String UPDATE = "update";
     public static final String ERROR = "error";
-
-
-
+    public static final String LOCATION_UUID = "location.uuid";
+    public static final String KEY = "key";
+    public static final String ZONES = "zones";
+    public static final String LOCATION = "location";
+    public static final String EXPERIENCE = "experience";
+    public static final String LOCATION_ZONES_KEY = "location.zones.key";
+    public static final String IDENTIFY = "identify";
 
     public enum SOCKET_CHANNELS {
         SYSTEM ("system"),

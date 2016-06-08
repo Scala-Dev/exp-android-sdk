@@ -19,4 +19,5 @@ public interface IChannel {
     void broadcast(String name,Map<String,Object> message,int timeout);
     ReplaySubject<Object> listen(String name, Subscriber callback);
     void fling(Map<String,Object> payload);
+    void identify();
 }

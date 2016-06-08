@@ -93,11 +93,18 @@ public abstract class AbstractChannel implements IChannel {
         message.put(Utils.PAYLOAD, payload);
         broadCast(message,TIMEOUT).then(new Subscriber<Message>() {
             @Override
-            public void onCompleted() {}
+            public void onCompleted() {
+            }
+
             @Override
-            public void onError(Throwable e) {Log.e(LOG_TAG, "EXP Error fling " + e.getMessage());}
+            public void onError(Throwable e) {
+                Log.e(LOG_TAG, "EXP Error fling " + e.getMessage());
+            }
+
             @Override
-            public void onNext(Message message){Log.d(LOG_TAG, "EXP broadcast response" + message);}
+            public void onNext(Message message) {
+                Log.d(LOG_TAG, "EXP broadcast response" + message);
+            }
         });
     }
 
@@ -139,5 +146,20 @@ public abstract class AbstractChannel implements IChannel {
            }
         }
         return channelID;
+    }
+
+    @Override
+    public void identify() {
+        Map<String,Object> message = new HashMap<>();
+        message.put(Utils.CHANNEL,this.channelID);
+        message.put(Utils.NAME, Utils.IDENTIFY);
+        broadCast(message,TIMEOUT).then(new Subscriber<Message>() {
+            @Override
+            public void onCompleted() {}
+            @Override
+            public void onError(Throwable e) {Log.e(LOG_TAG, "EXP Error identify " + e.getMessage());}
+            @Override
+            public void onNext(Message message){Log.d(LOG_TAG, "EXP identify response" + message);}
+        });
     }
 }

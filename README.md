@@ -212,6 +212,25 @@ payload.put("uuid", "myUuid");
 channel.fling(payload)
 ```
 
+**`channel.identify()`**
+
+Requests that [devices](#devices) listening for this event on this channel visually identify themselves. Implementation is device specific; this is simply a convience method.
+
+```java
+//Start SDK as Device or User
+final Map<String,Object> startOptions = new HashMap<>();
+startOptions.put(Utils.UUID,"bca4adb2-8853-4b1f-966d-2f9bd34c6383");
+startOptions.put(Utils.SECRET,"d76651abb7f6938510cbcdcc6ecb35f29b5a289a809d38da55d0bdf28dc027b625c924fc39d5150802be92e7a9be4f85");
+Exp.start(startOptions)
+
+//Create channel with device uuid
+final IChannel channel1 = Exp.getChannel("8d50e9f6-6a50-487b-9324-714e8b0cb2ee",false,false);
+final Map<String, Object> payload = new HashMap<String, Object>();
+channel1.identify();
+```
+
+
+
 # API
 
 ## Devices
@@ -260,6 +279,19 @@ Exp.findDevices(options)
       }
   });
 ```
+
+**`device.getZones()`**
+
+Resolves to an array of [zones](#zones) that are part of this device.
+
+**`device.getLocation()`**
+
+Resolves to an [Location](#locations) that are part of this device.
+
+**`device.getExperience()`**
+
+Resolves to an [Experience](#experiences) that are part of this device.
+
 
 ## Things
 
@@ -311,6 +343,19 @@ Exp.findthings(options)
     });
 ```
 
+**`thing.getZones()`**
+
+Resolves to an array of [zones](#zones) that are part of this device.
+
+**`thing.getLocation()`**
+
+Resolves to an [Location](#locations) that are part of this device.
+
+**`thing.getExperience()`**
+
+Resolves to an [Experience](#experiences) that are part of this device.
+
+
 ## Experiences
 
 
@@ -357,6 +402,28 @@ Exp.findExperiences(options)
                     Log.i("Response", resultExperience.toString());
                 }
 });
+```
+
+**`experience.geDevices()`**
+
+Resolves to a SearchResults object containing [Devices](#devices).
+
+```java
+experience.getDevices().then(new Subscriber<SearchResults<Device>>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("error", e.toString());
+            }
+
+            @Override
+            public void onNext(SearchResults<Device> resultDevices) {
+                Log.i("Response", resultDevices.toString());
+            }
+        });
 ```
 
 ## Locations
@@ -409,6 +476,51 @@ Resolves to an array of [zones](#zones) that are part of this location.
 
 Returns a url pointing to the location's layout image.
 
+**`location.geDevices()`**
+
+Resolves to a SearchResults object containing [Devices](#devices).
+
+```java
+location.getDevices().then(new Subscriber<SearchResults<Device>>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("error", e.toString());
+            }
+
+            @Override
+            public void onNext(SearchResults<Device> resultDevices) {
+                Log.i("Response", resultDevices.toString());
+            }
+        });
+```
+
+**`location.geThings()`**
+
+Resolves to a SearchResults object containing [Things](#things).
+
+```java
+location.geThings().then(new Subscriber<SearchResults<Thing>>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("error", e.toString());
+            }
+
+            @Override
+            public void onNext(SearchResults<Thing> resultThings) {
+                Log.i("Response", resultThings.toString());
+            }
+        });
+```
+
+
 ## Zones
 
 **`zone.getKey()`**
@@ -418,6 +530,56 @@ The zone's key.
 **`zone.getName()`**
 
 The zone's name.
+
+**`zone.getDevices()`**
+
+Resolves to an array of [devices](#devices) that are members of this zone.
+
+```java
+zone.getDevices().then(new Subscriber<SearchResults<Device>>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("error", e.toString());
+            }
+
+            @Override
+            public void onNext(SearchResults<Device> resultDevice) {
+                Log.i("Response", resultDevice.toString());
+            }
+        });
+```
+
+**`zone.getThings()`**
+
+Resolves to an array of [things](#things) that are members of this zone.
+
+```java
+zone.getThings().then(new Subscriber<SearchResults<Things>>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("error", e.toString());
+            }
+
+            @Override
+            public void onNext(SearchResults<Things> resultThings) {
+                Log.i("Response", resultThings.toString());
+            }
+        });
+```
+
+**`zone.getLocation()`**
+
+Resolves to the zone's [location](#locations)
+
+
 
 ## Feeds
 

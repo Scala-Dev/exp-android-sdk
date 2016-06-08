@@ -19,10 +19,8 @@ import rx.schedulers.Schedulers;
  */
 public class Feed extends AbstractModel {
 
-    private static final String UUID = "uuid";
-
     public ExpObservable<Map> getData() {
-        final String uuid = getString(UUID);
+        final String uuid = getString(Utils.UUID);
         Observable<Map> observable = AppSingleton.getInstance().getEndPoint().getFeedData(uuid)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
