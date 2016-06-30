@@ -9,6 +9,7 @@ public class Identity {
     private String organization;
     private String username;
     private String role;
+    private String uuid;
 
     public String getType() {
         return type;
@@ -40,5 +41,13 @@ public class Identity {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

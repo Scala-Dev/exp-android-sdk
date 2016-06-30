@@ -1,5 +1,7 @@
 package com.scala.exp.android.sdk.model;
 
+import android.util.Log;
+
 import com.scala.exp.android.sdk.AppSingleton;
 import com.scala.exp.android.sdk.Exp;
 import com.scala.exp.android.sdk.Utils;
@@ -9,6 +11,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Cesar Oyarzun on 10/28/15.
@@ -55,4 +64,13 @@ public class Location extends AbstractModel {
         return Exp.findThings(options);
     }
 
+    public ExpObservable<Location> getCurrentLocation(){
+        final ExpObservable<Device> observable = Device.getCurrentDevice();
+        return new ExpObservable<Location>(observable.<Location>flatMap(new Func1<Device, Observable<Location>>() {
+            @Override
+            public Observable<Location> call(Device device) {
+                return Observable.just(device.getLocation());
+            }
+        }));
+    }
 }

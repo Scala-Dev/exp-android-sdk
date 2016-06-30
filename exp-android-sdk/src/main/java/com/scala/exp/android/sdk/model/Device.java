@@ -1,6 +1,12 @@
 package com.scala.exp.android.sdk.model;
 
+import com.scala.exp.android.sdk.AppSingleton;
+import com.scala.exp.android.sdk.Exp;
+import com.scala.exp.android.sdk.observer.ExpObservable;
+
 import java.util.List;
+
+import rx.Observable;
 
 /**
  * Created by Cesar Oyarzun on 10/30/15.
@@ -34,5 +40,15 @@ public class Device extends AbstractModel {
 
     public void setExperience(Experience experience) {
         this.experience = experience;
+    }
+
+    public static ExpObservable<Device> getCurrentDevice(){
+        if(AppSingleton.getInstance().getAuth() != null){
+            if(AppSingleton.getInstance().getAuth().getIdentity() != null){
+                String uuid = AppSingleton.getInstance().getAuth().getIdentity().getUuid();
+                return Exp.getDevice(uuid);
+            }
+        }
+        return new ExpObservable<Device>(Observable.just(new Device()));
     }
 }
