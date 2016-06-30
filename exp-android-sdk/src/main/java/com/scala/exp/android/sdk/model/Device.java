@@ -49,6 +49,6 @@ public class Device extends AbstractModel {
                 return Exp.getDevice(uuid);
             }
         }
-        return new ExpObservable<Device>(Observable.just(new Device()));
+        return null;
     }
 }
