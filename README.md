@@ -292,6 +292,10 @@ Resolves to an [Location](#locations) that are part of this device.
 
 Resolves to an [Experience](#experiences) that are part of this device.
 
+**`Device.getCurrentDevice()`**
+
+Resolves to the current Device(#devices) or `null`
+
 
 ## Things
 
@@ -426,6 +430,10 @@ experience.getDevices().then(new Subscriber<SearchResults<Device>>() {
         });
 ```
 
+**`experience.getCurrentExperience()`**
+
+Resolves to the current Experience(#experiences) or `null`
+
 ## Locations
 
 **`Exp.getLocation(uuid)`**
@@ -475,6 +483,10 @@ Resolves to an array of [zones](#zones) that are part of this location.
 **`location.getLayoutUrl()`**
 
 Returns a url pointing to the location's layout image.
+
+**`location.getCurrentLocation()`**
+
+Resolves to the current Location(#locations) or `null`
 
 **`location.geDevices()`**
 
@@ -530,6 +542,10 @@ The zone's key.
 **`zone.getName()`**
 
 The zone's name.
+
+**`zone.getCurrentZones()`**
+
+Resolves to the current zones or an empty array.
 
 **`zone.getDevices()`**
 

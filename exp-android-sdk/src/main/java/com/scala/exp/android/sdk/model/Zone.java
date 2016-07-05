@@ -5,7 +5,11 @@ import com.scala.exp.android.sdk.Utils;
 import com.scala.exp.android.sdk.observer.ExpObservable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * Created by Cesar Oyarzun on 4/25/16.
@@ -51,5 +55,19 @@ public class Zone  extends AbstractModel{
         return Exp.findThings(options);
     }
 
+    public ExpObservable<List<Zone>> getCurrentZones(){
+        final ExpObservable<Device> observable = Device.getCurrentDevice();
+        if(observable!=null){
+            return new ExpObservable<List<Zone>>(observable.<List<Zone>>flatMap(new Func1<Device, Observable<List<Zone>>>() {
+                @Override
+                public Observable<List<Zone>> call(Device device) {
+                    return Observable.just(device.getZones());
+                }
+            }));
+        }else{
+            return null;
+        }
+
+    }
 
 }
