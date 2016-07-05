@@ -42,13 +42,13 @@ public class Device extends AbstractModel {
         this.experience = experience;
     }
 
-    public static ExpObservable<Device> getCurrentDevice(){
+    public static ExpObservable<?> getCurrentDevice(){
         if(AppSingleton.getInstance().getAuth() != null){
             if(AppSingleton.getInstance().getAuth().getIdentity() != null){
                 String uuid = AppSingleton.getInstance().getAuth().getIdentity().getUuid();
                 return Exp.getDevice(uuid);
             }
         }
-        return null;
+        return new ExpObservable<>(Observable.just(null));
     }
 }

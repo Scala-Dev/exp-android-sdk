@@ -25,17 +25,17 @@ public class Experience extends AbstractModel {
     }
 
     public ExpObservable<Experience> getCurrentExperience(){
-        final ExpObservable<Device> observable = Device.getCurrentDevice();
-        if(observable!=null){
+        final ExpObservable<?> observable = Device.getCurrentDevice();
             return new ExpObservable<Experience>(observable.<Experience>flatMap(new Func1<Device, Observable<Experience>>() {
                 @Override
                 public Observable<Experience> call(Device device) {
-                    return Observable.just(device.getExperience());
+                    if(device!=null && device.getExperience()!=null){
+                        return Observable.just(device.getExperience());
+                    }else{
+                        return Observable.just(null);
+                    }
                 }
             }));
-        }else{
-            return null;
-        }
 
     }
 }
