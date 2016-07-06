@@ -56,7 +56,7 @@ public class Zone  extends AbstractModel{
     }
 
     public ExpObservable<List<Zone>> getCurrentZones(){
-        final ExpObservable<?> observable = Device.getCurrentDevice();
+        final ExpObservable<Device> observable = Device.getCurrentDevice();
             return new ExpObservable<List<Zone>>(observable.<List<Zone>>flatMap(new Func1<Device, Observable<List<Zone>>>() {
                 @Override
                 public Observable<List<Zone>> call(Device device) {
