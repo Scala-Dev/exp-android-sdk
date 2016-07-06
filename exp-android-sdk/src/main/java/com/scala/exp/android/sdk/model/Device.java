@@ -44,11 +44,11 @@ public class Device extends AbstractModel {
 
     public static ExpObservable<Device> getCurrentDevice(){
         if(AppSingleton.getInstance().getAuth() != null){
-            if(AppSingleton.getInstance().getAuth().getIdentity() != null){
+            if(AppSingleton.getInstance().getAuth().getIdentity() == null){
                 String uuid = AppSingleton.getInstance().getAuth().getIdentity().getUuid();
                 return Exp.getDevice(uuid);
             }
         }
-        return null;
+        return new ExpObservable<Device>(Observable.<Device>just(null));
     }
 }
