@@ -82,6 +82,9 @@ public interface IExpEndpoint {
         @GET("/api/connectors/feeds/{uuid}/data")
         Observable<Map> getFeedData(@Path("uuid") String uuid);
 
+        @GET("/api/connectors/feeds/{uuid}/data")
+        Observable<Map> getFeedData(@Path("uuid") String uuid,@QueryMap Map<String,Object> options);
+
         @POST("/api/auth/token")
         Observable<Auth> refreshToken();
 
