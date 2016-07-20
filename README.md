@@ -5,7 +5,7 @@
 
 Gradle:
 ```groovy
- compile 'io.goexp:exp-android-sdk:v1.0.1'
+ compile 'io.goexp:exp-android-sdk:v1.0.3'
 ```
 
 Exp Android SDK requires at minimum Java 7 and Android 4.3.
