@@ -5,7 +5,7 @@
 
 Gradle:
 ```groovy
- compile 'io.goexp:exp-android-sdk:v1.0.1'
+ compile 'io.goexp:exp-android-sdk:v1.0.3'
 ```
 
 Exp Android SDK requires at minimum Java 7 and Android 4.3.
@@ -619,7 +619,7 @@ Exp.getFeed("052a2419-0621-45ad-aa03-3747dbfe2b6d")
         });
 ```
 
-**`ExpSwift.findFeeds(params:[String:AnyObject])`**
+**`ExpSwift.findFeeds(params)`**
 
 Query for multiple feeds. Resolves to an array of [Feeds](#feed-object).
 ```java
@@ -649,6 +649,25 @@ The feed's UUID
 Get the feed's data. Resolves to the output of the feed query.
 ```java
 feed.getData().then(new Subscriber<Map>() {
+        @Override
+        public void onCompleted() {}
+        @Override
+        public void onError(Throwable e) {}
+
+        @Override
+        public void onNext(Map feedData) {
+          Log.i("Response", feedData.toString());
+        }
+    });
+```
+
+**`feed.getData(query)`**
+
+Get the feed's dynamic data. Resolves to the output of the feed query, with dynamic parameters.
+```java
+Map<String,Object> query = new HashMap<String, Object>();
+query.put("name","scala");
+feed.getData(query).then(new Subscriber<Map>() {
         @Override
         public void onCompleted() {}
         @Override
