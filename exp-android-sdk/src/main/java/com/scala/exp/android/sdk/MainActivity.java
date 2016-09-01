@@ -252,22 +252,26 @@ public class MainActivity extends ActionBarActivity {
                                         Log.i("Feeds", feeds.toString());
                                         for (Feed feed : feeds.getResults()) {
                                             Log.i("Feed", feed.getString("name"));
-                                            feed.getData().then(new Subscriber<Map>() {
+                                            Map<String,Object> query = new HashMap<String, Object>();
+                                            query.put("name","scala");
+                                            feed.getData(query).then(new Subscriber<Map>() {
                                                 @Override
                                                 public void onCompleted() {}
                                                 @Override
-                                                public void onError(Throwable e) {}
+                                                public void onError(Throwable e) {
+                                                    Log.i("Feed", e.getMessage());
+                                                }
 
                                                 @Override
                                                 public void onNext(Map feedData) {
-
+                                                    Log.i("Feed", feedData.toString());
                                                 }
                                             });
                                         }
                                     }
                                 });
 
-                        Exp.getContent("d24c6581-f3d2-4d5a-b6b8-e90a4812d7df")
+                        Exp.getContent("d1f4debd-00d7-4211-8c8c-2ba00c2e8143")
                                 .then(new Subscriber<Content>() {
                                     @Override
                                     public void onCompleted() {}
@@ -277,42 +281,58 @@ public class MainActivity extends ActionBarActivity {
                                     @Override
                                     public void onNext(Content contentNode) {
                                         Log.i("Response", contentNode.toString());
-                                        contentNode.getChildren().then(new Subscriber<List<Content>>() {
-
+                                        contentNode.getChildren(new HashMap()).then(new Subscriber<SearchResults<Content>>() {
                                             @Override
                                             public void onCompleted() {
+
                                             }
 
                                             @Override
                                             public void onError(Throwable e) {
-                                                Log.e("error", e.toString());
+
                                             }
 
                                             @Override
-                                            public void onNext(List<Content> children) {
-                                                for (Content child : children) {
-                                                    Log.i("child", String.valueOf(child.get("name")));
-                                                    child.getChildren().then(new Subscriber<List<Content>>() {
-                                                        @Override
-                                                        public void onCompleted() {
-                                                        }
-
-                                                        @Override
-                                                        public void onError(Throwable e) {
-                                                            Log.e("error", e.toString());
-                                                        }
-
-                                                        @Override
-                                                        public void onNext(List<Content> grandchildren) {
-                                                            for (Content grandchild : grandchildren) {
-                                                                Log.i("grandchild", String.valueOf(grandchild.get("name")));
-                                                            }
-                                                        }
-                                                    });
-                                                }
+                                            public void onNext(SearchResults<Content> contentSearchResults) {
+                                                Log.i("Response", contentSearchResults.toString());
                                             }
-
                                         });
+//                                        contentNode.getChildren(new HashMap()).then(new Subscriber<List<Content>>() {
+//
+//                                            @Override
+//                                            public void onCompleted() {
+//                                            }
+//
+//                                            @Override
+//                                            public void onError(Throwable e) {
+//                                                Log.e("error", e.toString());
+//                                            }
+//
+//                                            @Override
+//                                            public void onNext(List<Content> children) {
+//                                                for (Content child : children) {
+//                                                    Log.i("child", String.valueOf(child.get("name")));
+//                                                    child.getChildren().then(new Subscriber<List<Content>>() {
+//                                                        @Override
+//                                                        public void onCompleted() {
+//                                                        }
+//
+//                                                        @Override
+//                                                        public void onError(Throwable e) {
+//                                                            Log.e("error", e.toString());
+//                                                        }
+//
+//                                                        @Override
+//                                                        public void onNext(List<Content> grandchildren) {
+//                                                            for (Content grandchild : grandchildren) {
+//                                                                Log.i("grandchild", String.valueOf(grandchild.get("name")));
+//                                                            }
+//                                                        }
+//                                                    });
+//                                                }
+//                                            }
+//
+//                                        });
                                     }
                                 });
 

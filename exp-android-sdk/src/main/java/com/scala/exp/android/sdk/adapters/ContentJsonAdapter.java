@@ -29,18 +29,6 @@ public class ContentJsonAdapter implements JsonDeserializer<Content> {
         String subtype = (String) treeMap.get(SUBTYPE);
         Content contentNode = new Content(Utils.getContentTypeEnum(subtype));
         contentNode.setProperties(treeMap);
-        List<LinkedTreeMap> children = (List<LinkedTreeMap>) treeMap.get(CHILDREN);
-        List<Content> childrenList = new ArrayList<Content>();
-        if(children != null && !children.isEmpty()){
-            for (LinkedTreeMap child : children) {
-                String subtypeChild = (String) child.get(SUBTYPE);
-                Content childContentNode = new Content(Utils.getContentTypeEnum(subtypeChild));
-                childContentNode.setProperties(child);
-                childrenList.add(childContentNode);
-            }
-            contentNode.setChildren(childrenList);
-        }
-        contentNode.setChildren(childrenList);
         return contentNode;
     }
 }

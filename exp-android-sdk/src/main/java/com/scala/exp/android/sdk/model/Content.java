@@ -11,6 +11,7 @@ import com.scala.exp.android.sdk.observer.ExpObservable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
 
 import rx.Observable;
 import rx.functions.Func1;
@@ -30,35 +31,19 @@ public class Content extends AbstractModel {
     private static final String URL = "url";
     private static final String VARIANTS = "variants";
     private static final String VARIANT = "variant=";
-
-
+    public static final String PARENT = "parent";
     private Utils.CONTENT_TYPES subtype = null;
-    private List<Content> children = null;
+
 
     public Content(Utils.CONTENT_TYPES subtype){
         this.subtype = subtype;
     }
 
-    public ExpObservable<List<Content>> getChildren() {
-        if (this.children == null) {
-            final String uuid = getString(Utils.UUID);
-            final ExpObservable<Content> observable = Exp.getContent(uuid);
-            return new ExpObservable<List<Content>>(observable.<List<Content>>flatMap(new Func1<Content, Observable<List<Content>>>() {
-                @Override
-                public Observable<List<Content>> call(Content content) {
-                    Content.this.children = content.children;
-                    return Observable.just(content.children);
-                }
-            }));
-        }
-
-        return new ExpObservable<List<Content>>(Observable.just(this.children));
+    public ExpObservable<SearchResults<Content>> getChildren(Map options) {
+        final String uuid = getString(Utils.UUID);
+        options.put(PARENT, uuid);
+        return Exp.findContent(options);
     }
-
-    public void setChildren(List<Content> children){
-        this.children = children;
-    }
-
 
     public String getUrl(){
         String host = AppSingleton.getInstance().getHost();
