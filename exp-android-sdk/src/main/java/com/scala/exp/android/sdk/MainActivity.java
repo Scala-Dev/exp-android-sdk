@@ -141,11 +141,6 @@ public class MainActivity extends ActionBarActivity {
 
                             @Override
                             public void onNext(Location location) {
-//                                Log.i("Response", location.toString());
-//                                ArrayList zones = (ArrayList) location.get("zones");
-//                                Object zone1 = zones.get(0);
-//                                Log.i("Response", zones.toString());
-//                                Log.i("Response", (String) zone1);
                                 List<Zone> zones = location.getZones();
                                 location.getDevices().then(new Subscriber<SearchResults<Device>>() {
                                     @Override
@@ -297,42 +292,7 @@ public class MainActivity extends ActionBarActivity {
                                                 Log.i("Response", contentSearchResults.toString());
                                             }
                                         });
-//                                        contentNode.getChildren(new HashMap()).then(new Subscriber<List<Content>>() {
-//
-//                                            @Override
-//                                            public void onCompleted() {
-//                                            }
-//
-//                                            @Override
-//                                            public void onError(Throwable e) {
-//                                                Log.e("error", e.toString());
-//                                            }
-//
-//                                            @Override
-//                                            public void onNext(List<Content> children) {
-//                                                for (Content child : children) {
-//                                                    Log.i("child", String.valueOf(child.get("name")));
-//                                                    child.getChildren().then(new Subscriber<List<Content>>() {
-//                                                        @Override
-//                                                        public void onCompleted() {
-//                                                        }
-//
-//                                                        @Override
-//                                                        public void onError(Throwable e) {
-//                                                            Log.e("error", e.toString());
-//                                                        }
-//
-//                                                        @Override
-//                                                        public void onNext(List<Content> grandchildren) {
-//                                                            for (Content grandchild : grandchildren) {
-//                                                                Log.i("grandchild", String.valueOf(grandchild.get("name")));
-//                                                            }
-//                                                        }
-//                                                    });
-//                                                }
-//                                            }
-//
-//                                        });
+
                                     }
                                 });
 
