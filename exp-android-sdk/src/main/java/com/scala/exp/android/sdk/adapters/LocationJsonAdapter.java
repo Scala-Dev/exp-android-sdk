@@ -7,7 +7,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.internal.LinkedTreeMap;
 import com.scala.exp.android.sdk.AppSingleton;
 import com.scala.exp.android.sdk.Utils;
-import com.scala.exp.android.sdk.model.Content;
 import com.scala.exp.android.sdk.model.Location;
 import com.scala.exp.android.sdk.model.Zone;
 
@@ -18,12 +17,16 @@ import java.util.List;
 /**
  * Created by Cesar Oyarzun on 10/30/15.
  */
-public class LocationJsonAdapter implements JsonDeserializer<Location> {
+public class LocationJsonAdapter implements JsonDeserializer<Location>,IExpDeserializer {
 
     @Override
     public Location deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext
             context) throws JsonParseException {
+        return expDeserialzier(json);
+    }
 
+    @Override
+    public Location expDeserialzier(JsonElement json) {
         LinkedTreeMap treeMap = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
         Location location = new Location();
         location.setProperties(treeMap);

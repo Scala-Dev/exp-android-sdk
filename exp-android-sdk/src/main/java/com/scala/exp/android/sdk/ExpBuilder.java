@@ -1,6 +1,7 @@
 package com.scala.exp.android.sdk;
 
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.scala.exp.android.sdk.adapters.ContentJsonAdapter;
 import com.scala.exp.android.sdk.adapters.ContentNodeJsonAdapter;
 import com.scala.exp.android.sdk.adapters.DeviceJsonAdapter;
@@ -45,14 +46,15 @@ public class ExpBuilder {
         gsonBuilder.registerTypeAdapter(Message.class, new ModelJsonAdapter<Message>(Message.class));
         gsonBuilder.registerTypeAdapter(Content.class, new ContentJsonAdapter());
         gsonBuilder.registerTypeAdapter(ContentNode.class, new ContentNodeJsonAdapter());
-        gsonBuilder.registerTypeAdapter(SearchResults.class,new SearchModelJsonAdapter<Content>(Content.class));
-        gsonBuilder.registerTypeAdapter(SearchResults.class,new SearchModelJsonAdapter<Device>(Device.class));
-        gsonBuilder.registerTypeAdapter(SearchResults.class,new SearchModelJsonAdapter<Thing>(Thing.class));
-        gsonBuilder.registerTypeAdapter(SearchResults.class,new SearchModelJsonAdapter<Location>(Location.class));
-        gsonBuilder.registerTypeAdapter(SearchResults.class,new SearchModelJsonAdapter<Experience>(Experience.class));
-        gsonBuilder.registerTypeAdapter(SearchResults.class,new SearchModelJsonAdapter<Data>(Data.class));
-        gsonBuilder.registerTypeAdapter(SearchResults.class,new SearchModelJsonAdapter<Feed>(Feed.class));
-        gsonBuilder.registerTypeAdapter(SearchResults.class,new SearchModelJsonAdapter<Message>(Message.class));
+        gsonBuilder.registerTypeAdapter(new TypeToken<SearchResults<Content>>(){}.getType(),new SearchModelJsonAdapter<Content>(Content.class));
+        gsonBuilder.registerTypeAdapter(new TypeToken<SearchResults<Device>>(){}.getType(),new SearchModelJsonAdapter<Device>(Device.class));
+        gsonBuilder.registerTypeAdapter(new TypeToken<SearchResults<Thing>>(){}.getType(),new SearchModelJsonAdapter<Thing>(Thing.class));
+        gsonBuilder.registerTypeAdapter(new TypeToken<SearchResults<Location>>(){}.getType(),new SearchModelJsonAdapter<Location>(Location.class));
+
+        gsonBuilder.registerTypeAdapter(new TypeToken<SearchResults<Experience>>(){}.getType(),new SearchModelJsonAdapter<Experience>(Experience.class));
+        gsonBuilder.registerTypeAdapter(new TypeToken<SearchResults<Data>>(){}.getType(),new SearchModelJsonAdapter<Data>(Data.class));
+        gsonBuilder.registerTypeAdapter(new TypeToken<SearchResults<Feed>>(){}.getType(),new SearchModelJsonAdapter<Feed>(Feed.class));
+
 
     }
 

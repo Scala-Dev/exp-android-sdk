@@ -19,12 +19,16 @@ import java.util.List;
 /**
  * Created by Cesar Oyarzun on 10/30/15.
  */
-public class ThingJsonAdapter implements JsonDeserializer<Thing> {
+public class ThingJsonAdapter implements JsonDeserializer<Thing>,IExpDeserializer {
 
     @Override
     public Thing deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext
             context) throws JsonParseException {
+        return expDeserialzier(json);
+    }
 
+    @Override
+    public Thing expDeserialzier(JsonElement json) {
         LinkedTreeMap treeMap = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
         Thing thing = new Thing();
         thing.setProperties(treeMap);
@@ -53,4 +57,6 @@ public class ThingJsonAdapter implements JsonDeserializer<Thing> {
         }
         return thing;
     }
+
+
 }

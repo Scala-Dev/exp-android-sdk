@@ -7,14 +7,14 @@ import com.google.gson.JsonParseException;
 import com.google.gson.internal.LinkedTreeMap;
 import com.scala.exp.android.sdk.AppSingleton;
 import com.scala.exp.android.sdk.model.AbstractModel;
-import com.scala.exp.android.sdk.model.Data;
+import com.scala.exp.android.sdk.model.IExpModel;
 
 import java.lang.reflect.Type;
 
 /**
  * Created by Cesar Oyarzun on 10/30/15.
  */
-public class ModelJsonAdapter<T extends AbstractModel> implements JsonDeserializer<T> {
+public class ModelJsonAdapter<T extends AbstractModel> implements JsonDeserializer<T>,IExpDeserializer {
 
     private Class<T> type;
 
@@ -25,10 +25,14 @@ public class ModelJsonAdapter<T extends AbstractModel> implements JsonDeserializ
     @Override
     public T deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext
             context) throws JsonParseException {
+        return (T) expDeserialzier(json);
 
+    }
+
+    @Override
+    public IExpModel expDeserialzier(JsonElement json) {
         try {
             T data = type.newInstance();
-
             LinkedTreeMap treeMap = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
             data.setProperties(treeMap);
             return data;
@@ -40,7 +44,5 @@ public class ModelJsonAdapter<T extends AbstractModel> implements JsonDeserializ
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-
     }
-
 }

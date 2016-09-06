@@ -2,11 +2,12 @@ package com.scala.exp.android.sdk.model;
 
 import com.google.gson.internal.LinkedTreeMap;
 import com.scala.exp.android.sdk.Utils;
+import com.scala.exp.android.sdk.adapters.IExpDeserializer;
 
 /**
  * Created by Cesar Oyarzun on 10/30/15.
  */
-public abstract class AbstractModel {
+public abstract class AbstractModel implements IExpModel{
 
     protected LinkedTreeMap properties = null;
 

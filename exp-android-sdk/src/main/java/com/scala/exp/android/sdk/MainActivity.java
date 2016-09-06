@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import com.scala.exp.android.sdk.channels.IChannel;
 import com.scala.exp.android.sdk.model.Content;
 import com.scala.exp.android.sdk.model.Experience;
+import com.scala.exp.android.sdk.model.Feed;
 import com.scala.exp.android.sdk.model.SearchResults;
 
 import org.json.JSONException;
@@ -223,40 +224,40 @@ public class MainActivity extends ActionBarActivity {
 //                                    }
 //                                });
 //
-//                        Exp.findFeeds(options)
-//                                .then(new Subscriber<SearchResults<Feed>>() {
-//                                    @Override
-//                                    public void onCompleted() {
-//                                    }
-//
-//                                    @Override
-//                                    public void onError(Throwable e) {
-//                                        Log.e("error", e.toString());
-//                                    }
-//
-//                                    @Override
-//                                    public void onNext(SearchResults<Feed> feeds) {
-//                                        Log.i("Feeds", feeds.toString());
-//                                        for (Feed feed : feeds.getResults()) {
+                        Exp.findFeeds(options)
+                                .then(new Subscriber<SearchResults<Feed>>() {
+                                    @Override
+                                    public void onCompleted() {
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        Log.e("error", e.toString());
+                                    }
+
+                                    @Override
+                                    public void onNext(SearchResults<Feed> feeds) {
+                                        Log.i("Feeds", feeds.toString());
+                                        for (Feed feed : feeds.getResults()) {
 //                                            Log.i("Feed", feed.getString("name"));
-//                                            Map<String,Object> query = new HashMap<String, Object>();
-//                                            query.put("name","scala");
-//                                            feed.getData(query).then(new Subscriber<Map>() {
-//                                                @Override
-//                                                public void onCompleted() {}
-//                                                @Override
-//                                                public void onError(Throwable e) {
-//                                                    Log.i("Feed", e.getMessage());
-//                                                }
-//
-//                                                @Override
-//                                                public void onNext(Map feedData) {
-//                                                    Log.i("Feed", feedData.toString());
-//                                                }
-//                                            });
-//                                        }
-//                                    }
-//                                });
+                                            Map<String,Object> query = new HashMap<String, Object>();
+                                            query.put("name","scala");
+                                            feed.getData(query).then(new Subscriber<Map>() {
+                                                @Override
+                                                public void onCompleted() {}
+                                                @Override
+                                                public void onError(Throwable e) {
+                                                    Log.i("Feed", e.getMessage());
+                                                }
+
+                                                @Override
+                                                public void onNext(Map feedData) {
+                                                    Log.i("Feed", feedData.toString());
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
 
                         Exp.getContent("d1f4debd-00d7-4211-8c8c-2ba00c2e8143")
                                 .then(new Subscriber<Content>() {
