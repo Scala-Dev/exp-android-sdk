@@ -29,6 +29,10 @@ public class DeviceJsonAdapter implements JsonDeserializer<Device>,IExpDeseriali
 
     @Override
     public Device expDeserialzier(JsonElement json) {
+        return deserialize(json);
+    }
+
+    public static Device deserialize(JsonElement json){
         LinkedTreeMap treeMap = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
         Device device = new Device();
         device.setProperties(treeMap);

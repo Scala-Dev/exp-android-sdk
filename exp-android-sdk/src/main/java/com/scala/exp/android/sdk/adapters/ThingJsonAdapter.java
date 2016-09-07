@@ -29,6 +29,10 @@ public class ThingJsonAdapter implements JsonDeserializer<Thing>,IExpDeserialize
 
     @Override
     public Thing expDeserialzier(JsonElement json) {
+        return deserialize(json);
+    }
+
+    public static Thing deserialize(JsonElement json){
         LinkedTreeMap treeMap = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
         Thing thing = new Thing();
         thing.setProperties(treeMap);

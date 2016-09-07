@@ -27,6 +27,11 @@ public class LocationJsonAdapter implements JsonDeserializer<Location>,IExpDeser
 
     @Override
     public Location expDeserialzier(JsonElement json) {
+        return deserialize(json);
+    }
+
+
+    public static Location deserialize(JsonElement json){
         LinkedTreeMap treeMap = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
         Location location = new Location();
         location.setProperties(treeMap);

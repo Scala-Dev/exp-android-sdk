@@ -25,10 +25,12 @@ public class ContentJsonAdapter implements JsonDeserializer<Content>,IExpDeseria
         return expDeserialzier(json);
     }
 
-
-
     @Override
     public Content expDeserialzier(JsonElement json) {
+        return deserialize(json);
+    }
+
+    public static Content deserialize(JsonElement json){
         LinkedTreeMap treeMap = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
         String subtype = (String) treeMap.get(SUBTYPE);
         Content contentNode = new Content(Utils.getContentTypeEnum(subtype));

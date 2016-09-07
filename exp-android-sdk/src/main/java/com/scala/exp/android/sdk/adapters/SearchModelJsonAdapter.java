@@ -55,32 +55,28 @@ public class SearchModelJsonAdapter<T extends AbstractModel> implements JsonDese
                 case CONTENT:
                     List<Content> contentArray = new ArrayList<Content>();
                     for (LinkedTreeMap child : results) {
-                        ContentJsonAdapter contentJsonAdapter = new ContentJsonAdapter();
-                        contentArray.add(contentJsonAdapter.expDeserialzier(json));
+                        contentArray.add(ContentJsonAdapter.deserialize(json));
                     }
                     searchResults.setResults((List<T>) contentArray);
                     break;
                 case THING:
                     List<Thing> thingArray = new ArrayList<Thing>();
                     for (LinkedTreeMap child : results) {
-                        ThingJsonAdapter thingJsonAdapter = new ThingJsonAdapter();
-                        thingArray.add(thingJsonAdapter.expDeserialzier(json));
+                        thingArray.add(ThingJsonAdapter.deserialize(json));
                     }
                     searchResults.setResults((List<T>) thingArray);
                     break;
                 case LOCATION:
                     List<Location> locationArray = new ArrayList<Location>();
                     for (LinkedTreeMap child : results) {
-                        LocationJsonAdapter locationJsonAdapter = new LocationJsonAdapter();
-                        locationArray.add(locationJsonAdapter.expDeserialzier(json));
+                        locationArray.add(LocationJsonAdapter.deserialize(json));
                     }
                     searchResults.setResults((List<T>) locationArray);
                     break;
                 case DEVICE:
                     List<Device> deviceArray = new ArrayList<Device>();
                     for (LinkedTreeMap child : results) {
-                        DeviceJsonAdapter deviceJsonAdapter = new DeviceJsonAdapter();
-                        deviceArray.add(deviceJsonAdapter.expDeserialzier(json));
+                        deviceArray.add(DeviceJsonAdapter.deserialize(json));
                     }
                     searchResults.setResults((List<T>) deviceArray);
                     break;
