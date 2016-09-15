@@ -727,7 +727,7 @@ Exp.findData(options)
 
 **`Exp.getContentNode(uuid)`**
 
-Get a content node by UUID. Resolves to a [Content](#content). Note: The UUID value of 'root' will return the contents of the root folder of the current organization.
+Get a content node by UUID. Resolves to a [Content](#content-object). Note: The UUID value of 'root' will return the contents of the root folder of the current organization.
 
 ```java
 Exp.getContent("d24c6581-f3d2-4d5a-b6b8-e90a4812d7df")
@@ -769,7 +769,7 @@ The content's UUID.
 
 **`content.getChildren(options)`**
 
-Resolves to an array of content items children with property total. `params` is a optional object map of query parameters. Array has property `total` which is the total number of items in collection matching the query.
+Resolves to a SearchResults object containing children [Content](#content-object). 
 
 ```java
 Map options = new HashMap();
