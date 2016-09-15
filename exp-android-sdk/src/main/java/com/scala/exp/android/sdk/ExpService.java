@@ -6,21 +6,6 @@ package com.scala.exp.android.sdk;
 
 
 import com.google.gson.GsonBuilder;
-import com.scala.exp.android.sdk.adapters.ContentJsonAdapter;
-import com.scala.exp.android.sdk.adapters.ContentNodeJsonAdapter;
-import com.scala.exp.android.sdk.adapters.LocationJsonAdapter;
-import com.scala.exp.android.sdk.adapters.DeviceJsonAdapter;
-import com.scala.exp.android.sdk.adapters.ModelJsonAdapter;
-import com.scala.exp.android.sdk.adapters.ThingJsonAdapter;
-import com.scala.exp.android.sdk.model.Content;
-import com.scala.exp.android.sdk.model.ContentNode;
-import com.scala.exp.android.sdk.model.Data;
-import com.scala.exp.android.sdk.model.Device;
-import com.scala.exp.android.sdk.model.Experience;
-import com.scala.exp.android.sdk.model.Feed;
-import com.scala.exp.android.sdk.model.Location;
-import com.scala.exp.android.sdk.model.Message;
-import com.scala.exp.android.sdk.model.Thing;
 
 import java.io.IOException;
 
@@ -69,20 +54,9 @@ public final class ExpService {
                 .addNetworkInterceptor(interceptor)
                 .build();
 
-
         //GSON builder adapter for model
-        GsonBuilder gson = new GsonBuilder();
-        gson.registerTypeAdapter(Device.class, new DeviceJsonAdapter());
-        gson.registerTypeAdapter(Thing.class, new ThingJsonAdapter());
-        gson.registerTypeAdapter(Location.class, new LocationJsonAdapter());
-        gson.registerTypeAdapter(Experience.class, new ModelJsonAdapter<Experience>(Experience.class));
-        gson.registerTypeAdapter(Data.class, new ModelJsonAdapter<Data>(Data.class));
-        gson.registerTypeAdapter(Feed.class, new ModelJsonAdapter<Feed>(Feed.class));
-        gson.registerTypeAdapter(Message.class, new ModelJsonAdapter<Message>(Message.class));
-        gson.registerTypeAdapter(Content.class, new ContentJsonAdapter());
-        gson.registerTypeAdapter(ContentNode.class, new ContentNodeJsonAdapter());
-
-        GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson.create());
+        GsonBuilder gsonBuilder = ExpBuilder.getInstance().getGsonBuilder();
+        GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gsonBuilder.create());
 
         // Create  REST adapter  API.
         Retrofit retrofit = new Retrofit.Builder()
@@ -107,19 +81,9 @@ public final class ExpService {
     public static Observable<Boolean> init(String host)  {
 
         AppSingleton.getInstance().setHost(host);
-        //GSON builder adapter for model
-        GsonBuilder gson = new GsonBuilder();
-        gson.registerTypeAdapter(Device.class, new DeviceJsonAdapter());
-        gson.registerTypeAdapter(Thing.class, new ThingJsonAdapter());
-        gson.registerTypeAdapter(Location.class, new LocationJsonAdapter());
-        gson.registerTypeAdapter(Experience.class, new ModelJsonAdapter<Experience>(Experience.class));
-        gson.registerTypeAdapter(Data.class, new ModelJsonAdapter<Data>(Data.class));
-        gson.registerTypeAdapter(Feed.class, new ModelJsonAdapter<Feed>(Feed.class));
-        gson.registerTypeAdapter(Message.class, new ModelJsonAdapter<Message>(Message.class));
-        gson.registerTypeAdapter(Content.class, new ContentJsonAdapter());
-        gson.registerTypeAdapter(ContentNode.class, new ContentNodeJsonAdapter());
-
-        GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gson.create());
+//        //GSON builder adapter for model
+        GsonBuilder gsonBuilder = ExpBuilder.getInstance().getGsonBuilder();
+        GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(gsonBuilder.create());
 
         // Create  REST adapter  API.
         Retrofit retrofit = new Retrofit.Builder()

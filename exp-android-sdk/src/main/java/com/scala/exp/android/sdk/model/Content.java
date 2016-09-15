@@ -11,6 +11,7 @@ import com.scala.exp.android.sdk.observer.ExpObservable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
 
 import rx.Observable;
 import rx.functions.Func1;
@@ -30,8 +31,7 @@ public class Content extends AbstractModel {
     private static final String URL = "url";
     private static final String VARIANTS = "variants";
     private static final String VARIANT = "variant=";
-
-
+    public static final String PARENT = "parent";
     private Utils.CONTENT_TYPES subtype = null;
     private List<Content> children = null;
 
@@ -55,10 +55,11 @@ public class Content extends AbstractModel {
         return new ExpObservable<List<Content>>(Observable.just(this.children));
     }
 
-    public void setChildren(List<Content> children){
-        this.children = children;
+    public ExpObservable<SearchResults<Content>> getChildren(Map options) {
+        final String uuid = getString(Utils.UUID);
+        options.put(PARENT, uuid);
+        return Exp.findContent(options);
     }
-
 
     public String getUrl(){
         String host = AppSingleton.getInstance().getHost();
@@ -134,6 +135,10 @@ public class Content extends AbstractModel {
             }
         }
         return hasVariant;
+    }
+
+    public void setChildren(List<Content> children){
+        this.children = children;
     }
 
 

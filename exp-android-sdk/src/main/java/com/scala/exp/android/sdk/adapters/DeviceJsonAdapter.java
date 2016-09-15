@@ -19,12 +19,20 @@ import java.util.List;
 /**
  * Created by Cesar Oyarzun on 10/30/15.
  */
-public class DeviceJsonAdapter implements JsonDeserializer<Device> {
+public class DeviceJsonAdapter implements JsonDeserializer<Device>,IExpDeserializer {
 
     @Override
     public Device deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext
             context) throws JsonParseException {
+        return expDeserialzier(json);
+    }
 
+    @Override
+    public Device expDeserialzier(JsonElement json) {
+        return deserialize(json);
+    }
+
+    public static Device deserialize(JsonElement json){
         LinkedTreeMap treeMap = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
         Device device = new Device();
         device.setProperties(treeMap);

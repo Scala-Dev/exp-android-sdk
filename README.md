@@ -41,7 +41,7 @@ Exp.start(host, user, password, org)
                 });
 
 # Init exp connection for user with Host,User,Password,Organization.
-Exp.start(host,"cesar.oyarzun1@scala.com","Comm5715031","scala")
+Exp.start(host,"name@scala.com","12345","scala")
                  .subscribe(new Subscriber<Boolean>() {
                     @Override
                     public void onCompleted() {}
@@ -56,7 +56,7 @@ Exp.start(host,"cesar.oyarzun1@scala.com","Comm5715031","scala")
 # Init exp connection for user with options object.
 final Map<String,Object> startOptions = new HashMap<>();
 startOptions.put(Utils.HOST,"https://api.exp.scala.com");
-startOptions.put(Utils.USERNAME,"cesar.oyarzun1@scala.com");
+startOptions.put(Utils.USERNAME,"name@scala.com");
 startOptions.put(Utils.PASSWORD,"123456");
 startOptions.put(Utils.ORGANIZATION,"scala);
 startOptions.put(Utils.ENABLE_EVENTS,true);
@@ -727,7 +727,7 @@ Exp.findData(options)
 
 **`Exp.getContentNode(uuid)`**
 
-Get a content node by UUID. Resolves to a [Content](#content). Note: The UUID value of 'root' will return the contents of the root folder of the current organization.
+Get a content node by UUID. Resolves to a [Content](#content-object). Note: The UUID value of 'root' will return the contents of the root folder of the current organization.
 
 ```java
 Exp.getContent("d24c6581-f3d2-4d5a-b6b8-e90a4812d7df")
@@ -767,13 +767,14 @@ Exp.findContent(options)
 
 The content's UUID.
 
-**`content.getChildren()`**
+**`content.getChildren(options)`**
 
-Get the immediate children of this content node. Resolves to a list of [Content](#content-object).
+Resolves to a SearchResults object containing children [Content](#content-object). 
 
 ```java
-content.getChildren()
-  .then(new Subscriber<List<ContentNode>() {
+Map options = new HashMap();
+content.getChildren(options)
+  .then(new Subscriber<SearchResults<Content>>() {
       @Override
       public void onCompleted() {
       }
@@ -784,10 +785,8 @@ content.getChildren()
       }
 
       @Override
-      public void onNext(List<ContentNode> children) {
-        for (ContentNode child : children) {
-          Log.i("Child", child.get("name"));
-        }
+      public void onNext(<SearchResults<Content>> children) {
+        Log.i("Response", children.toString());
       }
   });
 ```

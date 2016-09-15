@@ -44,6 +44,9 @@ public class Utils {
     public static final String EXPERIENCE = "experience";
     public static final String LOCATION_ZONES_KEY = "location.zones.key";
     public static final String IDENTIFY = "identify";
+    public static final String RESULTS = "results";
+    public static final String TOTAL = "total";
+    public static final String SUBTYPE = "subtype";
 
     public enum SOCKET_CHANNELS {
         SYSTEM ("system"),
