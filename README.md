@@ -5,7 +5,7 @@
 
 Gradle:
 ```groovy
- compile 'io.goexp:exp-android-sdk:v1.0.3'
+ compile 'io.goexp:exp-android-sdk:v1.0.4'
 ```
 
 Exp Android SDK requires at minimum Java 7 and Android 4.3.
@@ -766,6 +766,31 @@ Exp.findContent(options)
 **`content.get("uuid")`**
 
 The content's UUID.
+
+**`content.getChildren()`**
+
+Get the immediate children of this content node. Resolves to a list of [Content](#content-object).
+
+```java
+content.getChildren()
+  .then(new Subscriber<List<ContentNode>() {
+      @Override
+      public void onCompleted() {
+      }
+
+      @Override
+      public void onError(Throwable e) {
+          Log.e("error", e.toString());
+      }
+
+      @Override
+      public void onNext(List<ContentNode> children) {
+        for (ContentNode child : children) {
+          Log.i("Child", child.get("name"));
+        }
+      }
+  });
+```
 
 **`content.getChildren(options)`**
 
