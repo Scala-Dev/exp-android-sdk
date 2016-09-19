@@ -35,9 +35,10 @@ public abstract class AbstractChannel implements IChannel {
     protected boolean system = false;
     protected boolean consumerApp = false;
     public String channelID = "";
-    public Map<String,Subscriber> listeners = new HashMap<>();
+    public Map<String, List<Subscriber>> listeners = new HashMap<>();
     private static final String LOG_TAG = AbstractChannel.class.getSimpleName();
     private static final int TIMEOUT = 2000;
+
 
     protected void setChannel(String channel){
         this.channelName = channel;
@@ -53,19 +54,23 @@ public abstract class AbstractChannel implements IChannel {
     public void onBroadCast(JSONObject response) throws JSONException {
         String name = response.getString(Utils.NAME);
         if(this.listeners.containsKey(name) && this.listeners.get(name)!=null){
-            Subscriber subscriber = this.listeners.get(name);
-            Object payload = response.get(Utils.PAYLOAD);
-            subscriber.onNext(payload);
-            subscriber.onCompleted();
+            List<Subscriber> subscriberList = this.listeners.get(name);
+            for (Subscriber subscriber : subscriberList) {
+                Object payload = response.get(Utils.PAYLOAD);
+                subscriber.onNext(payload);
+                subscriber.onCompleted();
+            }
+
         }
     }
 
     @Override
     public void broadcast(String name ,Map<String,Object> payload,int timeout) {
+        HashMap mapPayload = (HashMap) payload;
         Map<String,Object> message = new HashMap<>();
         message.put(Utils.NAME,name);
         message.put(Utils.CHANNEL, generateId());
-        message.put(Utils.PAYLOAD,payload);
+        message.put(Utils.PAYLOAD,mapPayload.clone());
         broadCast(message,timeout).then(new Subscriber<Message>() {
             @Override
             public void onCompleted() {}
@@ -79,7 +84,8 @@ public abstract class AbstractChannel implements IChannel {
 
     @Override
     public ReplaySubject<Object> listen(String name, Subscriber callback) {
-        listeners.put(name, callback);
+        List<Subscriber> subList = createSubList(name, callback);
+        listeners.put(name, subList);
         return socketManager.subscribe(generateId());
     }
 
@@ -87,10 +93,11 @@ public abstract class AbstractChannel implements IChannel {
 
     @Override
     public void fling(Map<String,Object> payload) {
+        HashMap mapPayload = (HashMap) payload;
         Map<String,Object> message = new HashMap<>();
         message.put(Utils.CHANNEL,this.channelID);
         message.put(Utils.NAME, Utils.FLING);
-        message.put(Utils.PAYLOAD, payload);
+        message.put(Utils.PAYLOAD, mapPayload.clone());
         broadCast(message,TIMEOUT).then(new Subscriber<Message>() {
             @Override
             public void onCompleted() {
@@ -162,4 +169,24 @@ public abstract class AbstractChannel implements IChannel {
             public void onNext(Message message){Log.d(LOG_TAG, "EXP identify response" + message);}
         });
     }
+
+    /**
+     * Create Subscriber list
+     * @param name
+     * @param callback
+     * @return
+     */
+    private List<Subscriber> createSubList(String name, Subscriber callback){
+        List<Subscriber> subscribersList = null;
+        if(this.listeners.containsKey(name) && this.listeners.get(name)!=null){
+            subscribersList = this.listeners.get(name);
+        }else {
+            subscribersList = new ArrayList<>();
+            this.listeners.put(name,subscribersList);
+        }
+        subscribersList.add(callback);
+        return subscribersList;
+    }
+
+
 }
