@@ -66,13 +66,13 @@ public class Location extends AbstractModel {
 
     public ExpObservable<Location> getCurrentLocation(){
         final ExpObservable<Device> observable = Device.getCurrentDevice();
-            return new ExpObservable<Location>(observable.<Location>flatMap(new Func1<Device, Observable<Location>>() {
+            return new ExpObservable<Location>(observable.<Location>flatMapExp(new Func1<Device, ExpObservable<Location>>() {
                 @Override
-                public Observable<Location> call(Device device) {
+                public ExpObservable<Location> call(Device device) {
                     if(device!=null && device.getLocation()!=null){
-                        return Observable.just(device.getLocation());
+                        return device.getLocation();
                     }else {
-                        return Observable.just(null);
+                        return new ExpObservable<Location>(Observable.<Location>empty());
                     }
                 }
             }));

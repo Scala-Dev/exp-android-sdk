@@ -22,6 +22,10 @@ public class ExpObservable<T> {
         return this.observable.flatMap(func);
     }
 
+    public <R> Observable<R> flatMapExp(Func1<?, ExpObservable<R>> func){
+        return this.observable.flatMap(func);
+    }
+
     public <R> Observable<R> map(Func1<?, Observable<R>> func){
         return this.observable.map(func);
     }

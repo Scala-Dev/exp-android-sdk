@@ -288,9 +288,47 @@ Resolves to an array of [zones](#zones) that are part of this device.
 
 Resolves to an [Location](#locations) that are part of this device.
 
+```java
+device.getLocation().then(new Subscriber<Location>() {
+    @Override
+    public void onCompleted() {
+
+    }
+
+    @Override
+    public void onError(Throwable e) {
+        Log.e("error", e.toString());
+    }
+
+    @Override
+    public void onNext(Location location) {
+        Log.i("Response", location.toString());
+    }
+});
+```
+
 **`device.getExperience()`**
 
 Resolves to an [Experience](#experiences) that are part of this device.
+
+```java
+device.getExperience().then(new Subscriber<Experience>() {
+    @Override
+    public void onCompleted() {
+
+    }
+
+    @Override
+    public void onError(Throwable e) {
+        Log.e("error", e.toString());
+    }
+
+    @Override
+    public void onNext(Experience experience) {
+        Log.i("Response", experience.toString());
+    }
+});
+```
 
 **`Device.getCurrentDevice()`**
 
