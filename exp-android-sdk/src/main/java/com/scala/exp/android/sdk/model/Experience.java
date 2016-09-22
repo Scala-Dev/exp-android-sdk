@@ -18,6 +18,8 @@ import rx.functions.Func1;
 public class Experience extends AbstractModel {
 
 
+    public static final String EXPERIENCE_UUID = "experience.uuid";
+
     public ExpObservable<SearchResults<Device>> getDevices(){
         Map options = new HashMap();
         options.put(Utils.LOCATION_UUID,getUuid());
@@ -29,9 +31,9 @@ public class Experience extends AbstractModel {
             return new ExpObservable<Experience>(observable.<Experience>flatMapExp(new Func1<Device, ExpObservable<Experience>>() {
                 @Override
                 public ExpObservable<Experience> call(Device device) {
-                    if(device!=null && device.getExperience()!=null){
+                    if (device != null && device.get(EXPERIENCE_UUID) != null) {
                         return device.getExperience();
-                    }else{
+                    } else {
                         return new ExpObservable<Experience>(Observable.<Experience>empty());
                     }
                 }
