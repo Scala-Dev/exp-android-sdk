@@ -25,8 +25,14 @@ public class Device extends AbstractModel {
         return zones;
     }
 
-    public Location getLocation() {
-        return location;
+    public ExpObservable<Location> getLocation() {
+        ExpObservable<Location> expObs= null;
+        if(this.location!=null && this.location.getUuid()!=null){
+            expObs =Exp.getLocation(this.location.getUuid());
+        }else{
+            expObs = new ExpObservable<Location>(Observable.<Location>empty());
+        }
+        return expObs;
     }
 
     public void setLocation(Location location) {
@@ -34,8 +40,14 @@ public class Device extends AbstractModel {
     }
 
 
-    public Experience getExperience() {
-        return experience;
+    public ExpObservable<Experience> getExperience() {
+        ExpObservable<Experience> expObs= null;
+        if(this.experience!=null && this.experience.getUuid()!=null){
+            expObs =Exp.getExperience(this.experience.getUuid());
+        }else{
+            expObs = new ExpObservable<Experience>(Observable.<Experience>empty());
+        }
+        return expObs;
     }
 
     public void setExperience(Experience experience) {

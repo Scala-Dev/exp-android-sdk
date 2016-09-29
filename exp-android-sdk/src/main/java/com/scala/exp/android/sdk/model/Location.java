@@ -28,6 +28,7 @@ public class Location extends AbstractModel {
     private static final String API_LOCATION = "/api/locations/";
     private static final String LAYOUT = "/layout";
     private static final String RT = "_rt=";
+    public static final String LOCATION_UUID = "location.uuid";
     private List<Zone> zones;
 
     public String getLayoutUrl(){
@@ -66,18 +67,15 @@ public class Location extends AbstractModel {
 
     public ExpObservable<Location> getCurrentLocation(){
         final ExpObservable<Device> observable = Device.getCurrentDevice();
-            return new ExpObservable<Location>(observable.<Location>flatMap(new Func1<Device, Observable<Location>>() {
+            return new ExpObservable<Location>(observable.<Location>flatMapExp(new Func1<Device, ExpObservable<Location>>() {
                 @Override
-                public Observable<Location> call(Device device) {
-                    if(device!=null && device.getLocation()!=null){
-                        return Observable.just(device.getLocation());
-                    }else {
-                        return Observable.just(null);
+                public ExpObservable<Location> call(Device device) {
+                    if (device != null && device.get(LOCATION_UUID) != null) {
+                        return device.getLocation();
+                    } else {
+                        return new ExpObservable<Location>(Observable.<Location>empty());
                     }
                 }
             }));
-
-
-
     }
 }

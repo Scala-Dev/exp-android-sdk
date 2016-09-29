@@ -7,15 +7,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.scala.exp.android.sdk.channels.IChannel;
-import com.scala.exp.android.sdk.model.Content;
+import com.scala.exp.android.sdk.model.Device;
 import com.scala.exp.android.sdk.model.Experience;
-import com.scala.exp.android.sdk.model.Feed;
+import com.scala.exp.android.sdk.model.Location;
 import com.scala.exp.android.sdk.model.SearchResults;
+import com.scala.exp.android.sdk.model.Zone;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import exp.android.sdk.R;
@@ -64,6 +66,7 @@ public class MainActivity extends ActionBarActivity {
                 .subscribe(new Subscriber<Boolean>() {
                     @Override
                     public void onCompleted() {
+                        Log.e("ONCOMPLETED", "");
 
                         Subscriber currentExperienceSubs = new Subscriber<JSONObject>() {
                             @Override
@@ -120,6 +123,37 @@ public class MainActivity extends ActionBarActivity {
                             public void onNext(Object o) {
                                 Log.e("ONNEXT", o.toString());
                                 channel1.broadcast("hi", payload, 2000);
+                            }
+                        });
+
+                        Exp.getDevice("56646998-ac61-48c2-a245-5c9c746f180b").then(new Subscriber<Device>() {
+                            @Override
+                            public void onCompleted() {}
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(Device device) {
+                                Log.i("Response", device.toString());
+                                device.getExperience().then(new Subscriber<Experience>() {
+                                    @Override
+                                    public void onCompleted() {
+
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        Log.e("error", e.toString());
+                                    }
+
+                                    @Override
+                                    public void onNext(Experience experience) {
+                                        Log.i("Response", experience.toString());
+                                    }
+                                });
                             }
                         });
 
@@ -224,95 +258,95 @@ public class MainActivity extends ActionBarActivity {
 //                                    }
 //                                });
 //
-                        Exp.findFeeds(options)
-                                .then(new Subscriber<SearchResults<Feed>>() {
-                                    @Override
-                                    public void onCompleted() {
-                                    }
+//                        Exp.findFeeds(options)
+//                                .then(new Subscriber<SearchResults<Feed>>() {
+//                                    @Override
+//                                    public void onCompleted() {
+//                                    }
+//
+//                                    @Override
+//                                    public void onError(Throwable e) {
+//                                        Log.e("error", e.toString());
+//                                    }
+//
+//                                    @Override
+//                                    public void onNext(SearchResults<Feed> feeds) {
+//                                        Log.i("Feeds", feeds.toString());
+//                                        for (Feed feed : feeds.getResults()) {
+////                                            Log.i("Feed", feed.getString("name"));
+//                                            Map<String,Object> query = new HashMap<String, Object>();
+//                                            query.put("name","scala");
+//                                            feed.getData(query).then(new Subscriber<Map>() {
+//                                                @Override
+//                                                public void onCompleted() {}
+//                                                @Override
+//                                                public void onError(Throwable e) {
+//                                                    Log.i("Feed", e.getMessage());
+//                                                }
+//
+//                                                @Override
+//                                                public void onNext(Map feedData) {
+//                                                    Log.i("Feed", feedData.toString());
+//                                                }
+//                                            });
+//                                        }
+//                                    }
+//                                });
+//
+//                        Exp.getContent("d1f4debd-00d7-4211-8c8c-2ba00c2e8143")
+//                                .then(new Subscriber<Content>() {
+//                                    @Override
+//                                    public void onCompleted() {}
+//                                    @Override
+//                                    public void onError(Throwable e) {Log.e("error", e.toString());}
+//
+//                                    @Override
+//                                    public void onNext(final Content contentNode) {
+//                                        Log.i("Response", contentNode.toString());
+////                                        Map options = new HashMap();
+////                                        options.put("subtype","folder");
+//                                        contentNode.getChildren(new HashMap()).then(new Subscriber<SearchResults<Content>>() {
+//                                            @Override
+//                                            public void onCompleted() {
+//
+//                                            }
+//
+//                                            @Override
+//                                            public void onError(Throwable e) {
+//
+//                                            }
+//
+//                                            @Override
+//                                            public void onNext(SearchResults<Content> contentSearchResults) {
+//                                                Log.i("Response", contentSearchResults.toString());
+//                                                for (Content child : contentSearchResults) {
+//                                                    Log.i("Response", child.toString());
+//                                                }
+//                                            }
+//                                        });
+//
+//                                    }
+//                                });
 
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        Log.e("error", e.toString());
-                                    }
-
-                                    @Override
-                                    public void onNext(SearchResults<Feed> feeds) {
-                                        Log.i("Feeds", feeds.toString());
-                                        for (Feed feed : feeds.getResults()) {
-//                                            Log.i("Feed", feed.getString("name"));
-                                            Map<String,Object> query = new HashMap<String, Object>();
-                                            query.put("name","scala");
-                                            feed.getData(query).then(new Subscriber<Map>() {
-                                                @Override
-                                                public void onCompleted() {}
-                                                @Override
-                                                public void onError(Throwable e) {
-                                                    Log.i("Feed", e.getMessage());
-                                                }
-
-                                                @Override
-                                                public void onNext(Map feedData) {
-                                                    Log.i("Feed", feedData.toString());
-                                                }
-                                            });
-                                        }
-                                    }
-                                });
-
-                        Exp.getContent("d1f4debd-00d7-4211-8c8c-2ba00c2e8143")
-                                .then(new Subscriber<Content>() {
-                                    @Override
-                                    public void onCompleted() {}
-                                    @Override
-                                    public void onError(Throwable e) {Log.e("error", e.toString());}
-
-                                    @Override
-                                    public void onNext(final Content contentNode) {
-                                        Log.i("Response", contentNode.toString());
-//                                        Map options = new HashMap();
-//                                        options.put("subtype","folder");
-                                        contentNode.getChildren(new HashMap()).then(new Subscriber<SearchResults<Content>>() {
-                                            @Override
-                                            public void onCompleted() {
-
-                                            }
-
-                                            @Override
-                                            public void onError(Throwable e) {
-
-                                            }
-
-                                            @Override
-                                            public void onNext(SearchResults<Content> contentSearchResults) {
-                                                Log.i("Response", contentSearchResults.toString());
-                                                for (Content child : contentSearchResults) {
-                                                    Log.i("Response", child.toString());
-                                                }
-                                            }
-                                        });
-
-                                    }
-                                });
-
-                        Exp.findExperiences(options)
-                                .then(new Subscriber<SearchResults<Experience>>() {
-                                    @Override
-                                    public void onCompleted() {
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        Log.e("error", e.toString());
-                                    }
-
-                                    @Override
-                                    public void onNext(SearchResults<Experience> resultExperience) {
-                                        Log.i("Response", resultExperience.toString());
-                                        for (Experience child : resultExperience) {
-                                            Log.i("Response", child.toString());
-                                        }
-                                    }
-                                });
+//                        Exp.findExperiences(options)
+//                                .then(new Subscriber<SearchResults<Experience>>() {
+//                                    @Override
+//                                    public void onCompleted() {
+//                                    }
+//
+//                                    @Override
+//                                    public void onError(Throwable e) {
+//                                        Log.e("error", e.toString());
+//                                    }
+//
+//                                    @Override
+//                                    public void onNext(SearchResults<Experience> resultExperience) {
+//                                        Log.i("Response", resultExperience.toString());
+//                                        for (Experience child : resultExperience) {
+//                                            Log.i("Response", child.toString());
+//                                        }
+//                                    }
+//                                });
 
 
 //                        Exp.findContent(options)
