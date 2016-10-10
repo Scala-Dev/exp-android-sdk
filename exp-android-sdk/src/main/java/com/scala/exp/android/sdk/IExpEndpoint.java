@@ -55,7 +55,7 @@ public interface IExpEndpoint {
         @GET("/api/locations")
         Observable<SearchResults<Location>> findLocations(@QueryMap Map<String,Object> options);
 
-        @GET("/api/content/{uuid}/children")
+        @GET("/api/content/{uuid}")
         Observable<Content> getContent(@Path("uuid") String uuid);
 
         @GET("/api/content/{uuid}/children")

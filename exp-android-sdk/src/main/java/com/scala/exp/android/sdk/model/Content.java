@@ -10,6 +10,7 @@ import com.scala.exp.android.sdk.observer.ExpObservable;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,20 +40,11 @@ public class Content extends AbstractModel {
         this.subtype = subtype;
     }
 
-    public ExpObservable<List<Content>> getChildren() {
-        if (this.children == null) {
-            final String uuid = getString(Utils.UUID);
-            final ExpObservable<Content> observable = Exp.getContent(uuid);
-            return new ExpObservable<List<Content>>(observable.<List<Content>>flatMap(new Func1<Content, Observable<List<Content>>>() {
-                @Override
-                public Observable<List<Content>> call(Content content) {
-                    Content.this.children = content.children;
-                    return Observable.just(content.children);
-                }
-            }));
-        }
-
-        return new ExpObservable<List<Content>>(Observable.just(this.children));
+    public ExpObservable<SearchResults<Content>> getChildren() {
+        Map options = new HashMap();
+        final String uuid = getString(Utils.UUID);
+        options.put(PARENT, uuid);
+        return Exp.findContent(options);
     }
 
     public ExpObservable<SearchResults<Content>> getChildren(Map options) {
