@@ -1,7 +1,6 @@
 package com.scala.exp.android.sdk.adapters;
 
 import com.google.gson.JsonElement;
-import com.scala.exp.android.sdk.model.AbstractModel;
 import com.scala.exp.android.sdk.model.IExpModel;
 
 /**

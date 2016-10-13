@@ -16,8 +16,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.plugins.RxJavaErrorHandler;
-import rx.plugins.RxJavaPlugins;
 import rx.schedulers.Schedulers;
 
 /**
@@ -35,7 +33,7 @@ public class Runtime extends Exp{
      * @param secret
      * @return String token
      */
-    private static String createToken(String uuid, String secret,String keyPayload){
+    private static String createToken(String uuid, String secret, String keyPayload){
         Log.d(LOG_TAG, "EXP Create Token: [uuid=" + uuid + "]" + "[secret=" + secret + "]" + "[keyPaload=" + keyPayload + "]");
         Map<String,Object> header = new HashMap<String,Object>();
         header.put(Utils.TYP, Utils.JWT);

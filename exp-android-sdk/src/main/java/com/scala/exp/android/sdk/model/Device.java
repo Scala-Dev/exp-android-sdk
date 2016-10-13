@@ -28,7 +28,7 @@ public class Device extends AbstractModel {
     public ExpObservable<Location> getLocation() {
         ExpObservable<Location> expObs= null;
         if(this.location!=null && this.location.getUuid()!=null){
-            expObs =Exp.getLocation(this.location.getUuid());
+            expObs = Exp.getLocation(this.location.getUuid());
         }else{
             expObs = new ExpObservable<Location>(Observable.<Location>empty());
         }
@@ -43,7 +43,7 @@ public class Device extends AbstractModel {
     public ExpObservable<Experience> getExperience() {
         ExpObservable<Experience> expObs= null;
         if(this.experience!=null && this.experience.getUuid()!=null){
-            expObs =Exp.getExperience(this.experience.getUuid());
+            expObs = Exp.getExperience(this.experience.getUuid());
         }else{
             expObs = new ExpObservable<Experience>(Observable.<Experience>empty());
         }

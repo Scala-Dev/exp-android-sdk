@@ -1,7 +1,6 @@
 package com.scala.exp.android.sdk.model;
 
 import java.math.BigInteger;
-import java.util.List;
 
 /**
  * Created by Cesar Oyarzun on 1/4/16.

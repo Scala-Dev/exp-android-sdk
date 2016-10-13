@@ -71,7 +71,7 @@ public class SocketManager {
                 opts.reconnection = true;
                 opts.secure = true;
                 opts.sslContext = sc;
-                opts.query = "token="+AppSingleton.getInstance().getToken();
+                opts.query = "token="+ AppSingleton.getInstance().getToken();
 
                 socket = IO.socket(AppSingleton.getInstance().getHostSocket(), opts);
 //                socket = IO.socket("http://192.168.30.193:9002", opts);
@@ -135,7 +135,8 @@ public class SocketManager {
 
                 }).on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
                     @Override
-                    public void call(Object... args) {Log.d(LOG_TAG, "error: " + args[0].toString());}
+                    public void call(Object... args) {
+                        Log.d(LOG_TAG, "error: " + args[0].toString());}
 
                 });
             } catch (URISyntaxException e) {
@@ -229,7 +230,7 @@ public class SocketManager {
      * @param channel
      * @return
      */
-    public IChannel getChannel(String channel,boolean system,boolean consumerApp){
+    public IChannel getChannel(String channel, boolean system, boolean consumerApp){
         Channel expChannel = null;
         if(channelCache.get(channel)!= null){
             expChannel = (Channel) channelCache.get(channel);
@@ -247,7 +248,7 @@ public class SocketManager {
      * @param name
      * @param subscriber
      */
-    public void connection(String name,Subscriber subscriber){
+    public void connection(String name, Subscriber subscriber){
         connection.put(name,subscriber);
     }
 

@@ -1,7 +1,5 @@
 package com.scala.exp.android.sdk.model;
 
-import android.util.Log;
-
 import com.scala.exp.android.sdk.Exp;
 import com.scala.exp.android.sdk.Utils;
 import com.scala.exp.android.sdk.observer.ExpObservable;

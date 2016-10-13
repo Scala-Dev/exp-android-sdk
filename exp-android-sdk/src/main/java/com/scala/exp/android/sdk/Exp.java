@@ -1,7 +1,5 @@
 package com.scala.exp.android.sdk;
 
-import android.util.Log;
-
 import com.scala.exp.android.sdk.channels.IChannel;
 import com.scala.exp.android.sdk.model.*;
 import com.scala.exp.android.sdk.observer.ExpObservable;
@@ -12,7 +10,6 @@ import java.util.Map;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 
@@ -32,7 +29,7 @@ public class Exp {
      * @param secret
      * @return
      */
-    public static Observable<Boolean> start(String host,String uuid,String secret){
+    public static Observable<Boolean> start(String host, String uuid, String secret){
         Map<String,Object> startOptions = new HashMap<>();
         startOptions.put(Utils.HOST,host);
         startOptions.put(Utils.DEVICE_UUID,uuid);
@@ -259,7 +256,7 @@ public class Exp {
      * @param key
      * @return
      */
-    public static ExpObservable<Data> getData(String group,String key){
+    public static ExpObservable<Data> getData(String group, String key){
         Observable<Data> dataObservable = AppSingleton.getInstance().getEndPoint().getData(group, key)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -310,7 +307,7 @@ public class Exp {
      * @param channel
      * @return
      */
-    public static IChannel getChannel(String channel,boolean system,boolean consumerApp){
+    public static IChannel getChannel(String channel, boolean system, boolean consumerApp){
         return socketManager.getChannel(channel,system,consumerApp);
     }
 
@@ -319,7 +316,7 @@ public class Exp {
      * @param name
      * @param subscriber
      */
-    public static void connection(String name,Subscriber subscriber){
+    public static void connection(String name, Subscriber subscriber){
         socketManager.connection(name,subscriber);
     }
 
@@ -344,7 +341,7 @@ public class Exp {
      * @param name
      * @param subscriber
      */
-    public static void on(String name,Subscriber subscriber){
+    public static void on(String name, Subscriber subscriber){
         authConnection.put(name, subscriber);
     }
 }

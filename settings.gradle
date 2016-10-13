@@ -1,1 +1,1 @@
-include ':exp-android-sdk'
+include ':app', ':exp-android-sdk'

@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.4.2/ceb72830d95c512b4b300a38f29febc85bdf6e4b/jackson-core-2.4.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="ceb72830d95c512b4b300a38f29febc85bdf6e4b">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/jackson-core-2.4.2_9902fc911927c78138cf4539cb18fcfb4a9a3dc4/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/io.socket/engine.io-client/0.7.0/c1b1d30e2d2231b2eae1438a44943a409b976dac/engine.io-client-0.7.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="c1b1d30e2d2231b2eae1438a44943a409b976dac">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/engine.io-client-0.7.0_460769610a353ed8937377bd4edb42b3b34c5c60/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/TestProjectJcenter/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="61c4d757bf2a9737d6b9df715d4ca7f6096a849e">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_997d626304be1571091cc01b57b538d55e12b3a9/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/io.reactivex/rxjava/1.1.0/748f0546d5c3c27f1aef07270ffea0c45f0c42a4/rxjava-1.1.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="748f0546d5c3c27f1aef07270ffea0c45f0c42a4">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/rxjava-1.1.0_3688fc60c3f22a5e6cba23e442a96914cafe7a9e/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.1.1/support-annotations-23.1.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="8d680ba5a623724d1fb0e81c36a790f023a6cede">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-23.1.1_0b0f3d87cda843acef31f7f404a99d98f1f25c46/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/TestProjectJcenter/app/build/intermediates/exploded-aar/io.reactivex/rxandroid/1.1.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="d4c4b83de2f6412072d2a29b1b7a5b03edaad5ff">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/io.reactivex-rxandroid-1.1.0_355c833a88c96640dee074291080e03d1b54c09e/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.6.0/98476622f10715998eacf9240d6b479f12c66143/okio-1.6.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="98476622f10715998eacf9240d6b479f12c66143">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/okio-1.6.0_5c79c14cbb3b5a201af5cd3be72e10c4696c26b4/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp-ws/3.0.1/bd9b51a0188fc8f14bf840a0d326755545206116/okhttp-ws-3.0.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="bd9b51a0188fc8f14bf840a0d326755545206116">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/okhttp-ws-3.0.1_78be97800fd560637516c84dac310516ec421c41/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.4.2/8e31266a272ad25ac4c089734d93e8d811652c1f/jackson-databind-2.4.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="8e31266a272ad25ac4c089734d93e8d811652c1f">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/jackson-databind-2.4.2_0c211580d01feed5a9bb84a00ac53e1fbf95fc70/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/exp-android-sdk-55/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="5c5699834e9722f1c288fea2de82725d078ba127">
+        <dex dex="/Users/cesar/exp-android-sdk-55/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-23.1.1_020cfd4a44c8cce33359e441c1259a8ef983208b/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/TestProjectJcenter/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars/libs/internal_impl-23.1.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="a4de9c81ae239414e1ed0f86441b02abaf29bca9">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-23.1.1_0aaa6d48b8edb0baf8d27270169ac13673ec6fc6/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.1.1/fc4723b92bc802625a05395d98ed4245e2d489b6/okhttp-3.1.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="fc4723b92bc802625a05395d98ed4245e2d489b6">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/okhttp-3.1.1_c2c03dd5ce031b229a2c80453e858fd0fec1dbd6/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.4.0/d6a66c7a5f01cf500377bd669507a08cfeba882a/jackson-annotations-2.4.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="d6a66c7a5f01cf500377bd669507a08cfeba882a">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/jackson-annotations-2.4.0_b57020fd2c6280fee81412e886c39894b16ac15d/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/adapter-rxjava/2.0.0-beta4/bd49baf667542c7d06f71e598bdee7fe57272013/adapter-rxjava-2.0.0-beta4.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="bd49baf667542c7d06f71e598bdee7fe57272013">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/adapter-rxjava-2.0.0-beta4_80e692d0386fcc0c413a656b1f69ef004a338ef3/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/exp-android-sdk-55/app/build/intermediates/exploded-aar/io.reactivex/rxandroid/1.1.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="d4c4b83de2f6412072d2a29b1b7a5b03edaad5ff">
+        <dex dex="/Users/cesar/exp-android-sdk-55/app/build/intermediates/transforms/dex/debug/folders/1000/10/io.reactivex-rxandroid-1.1.0_d4c0796352e789b4bf55188bea4899898dd13510/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/exp-android-sdk-55/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="4a03fde468631acc76bafbe958da3314b08725ef">
+        <dex dex="/Users/cesar/exp-android-sdk-55/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_33cb2bcc93b7a2c639d3a35e5f1c3925cab4aa99/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/exp-android-sdk-55/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="6cbc7773921fcfedbe55657578f0cbfe614778dc">
+        <dex dex="/Users/cesar/exp-android-sdk-55/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-23.1.1_aa0c942a6f1f3870621cb83e8c5cfc00d7256173/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/exp-android-sdk-55/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="09521ffd4ceb713484f51f42372963ba2ec84b6c">
+        <dex dex="/Users/cesar/exp-android-sdk-55/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_7f4cf75360040769ee8f1aad709076fa314e8b4a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/exp-android-sdk-55/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars/libs/internal_impl-23.1.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="a4de9c81ae239414e1ed0f86441b02abaf29bca9">
+        <dex dex="/Users/cesar/exp-android-sdk-55/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-23.1.1_79bbb4fa008183292d66c2ed9e9e92a69b01424a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/converter-gson/2.0.0-beta4/de5935a367ba5e343e9df786ac8fc0c7d52b5f0c/converter-gson-2.0.0-beta4.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="de5935a367ba5e343e9df786ac8fc0c7d52b5f0c">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/converter-gson-2.0.0-beta4_adab4e7a74cdfe5d7ae73b84029f717eebc138df/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/TestProjectJcenter/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="6cbc7773921fcfedbe55657578f0cbfe614778dc">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-23.1.1_72d2fb35f2f4bad1553ccda515be9f712dc46f60/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/io.jsonwebtoken/jjwt/0.6.0/3c8a7897b9ca31c83d3dd364be7f75ce5cd417d7/jjwt-0.6.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="3c8a7897b9ca31c83d3dd364be7f75ce5cd417d7">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/jjwt-0.6.0_54ce5e99105cfa9e0e27a7fd99fb44c897003037/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/logging-interceptor/3.1.1/2336b2018cd70df8d96a4a07e9425171c054e10f/logging-interceptor-3.1.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="2336b2018cd70df8d96a4a07e9425171c054e10f">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/logging-interceptor-3.1.1_f3e56b3c92669bf29453185550ba60d7ddfc41be/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/io.socket/socket.io-client/0.7.0/ce278c97bc9f74c7945d647f6d441d6013163362/socket.io-client-0.7.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="ce278c97bc9f74c7945d647f6d441d6013163362">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/socket.io-client-0.7.0_1612dc40527237f726d8f01b0c7071450f772558/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/retrofit/2.0.0-beta4/739e00dea1f0ac04fdb9b6160d667e23cc50a791/retrofit-2.0.0-beta4.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="739e00dea1f0ac04fdb9b6160d667e23cc50a791">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/retrofit-2.0.0-beta4_1c4f7ba4fbaae9bd8f97113e7396e4de239e5c53/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.4/695b63d702f505b9b916e02272e3b6381bade7f/gson-2.4.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="0695b63d702f505b9b916e02272e3b6381bade7f">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/gson-2.4_2e77c08dd8c8fa6a1f6c368280e8e06fafa48ca6/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/TestProjectJcenter/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="0c53eb3b67691a189721648e88c53f411944591a">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_979c96ba660226ddf5db9cc68423f3945db6215d/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cesar/TestProjectJcenter/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="5c5699834e9722f1c288fea2de82725d078ba127">
+        <dex dex="/Users/cesar/TestProjectJcenter/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-23.1.1_e0c5d15c3d929ee0e8650859ee9dff9c221511b6/classes.dex" />
+    </item>
+
+</items>
