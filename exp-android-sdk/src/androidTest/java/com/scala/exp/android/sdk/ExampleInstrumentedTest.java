@@ -21,6 +21,5 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("exp.scala.com.mylibrary.test", appContext.getPackageName());
     }
 }

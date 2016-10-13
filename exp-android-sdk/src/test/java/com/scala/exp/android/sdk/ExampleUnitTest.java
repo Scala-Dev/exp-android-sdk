@@ -1,4 +1,4 @@
-package exp.scala.com.mylibrary;
+package com.scala.exp.android.sdk;
 
 import org.junit.Test;
 
