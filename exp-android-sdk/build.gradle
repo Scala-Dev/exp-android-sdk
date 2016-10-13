@@ -92,16 +92,11 @@ install {
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     classifier = 'sources'
-//    exclude '**/BuildConfig.java'
-//    exclude '**/R.java'
 }
 
 task javadoc(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    // Exclude generated files
-//    exclude '**/BuildConfig.java'
-//    exclude '**/R.java'
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
