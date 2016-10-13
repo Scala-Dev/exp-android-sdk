@@ -53,6 +53,10 @@ public abstract class AbstractModel implements IExpModel {
         return getString(Utils.UUID);
     }
 
+    @Override
+    public String toString() {
+        return this.properties.toString();
+    }
 
 
 }
