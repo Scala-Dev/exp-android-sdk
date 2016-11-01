@@ -2,6 +2,9 @@ package com.scala.exp.android.sdk.model;
 
 import com.google.gson.internal.LinkedTreeMap;
 import com.scala.exp.android.sdk.Utils;
+import com.scala.exp.android.sdk.channels.IChannel;
+
+import java.util.Map;
 
 /**
  * Created by Cesar Oyarzun on 10/30/15.
@@ -59,4 +62,7 @@ public abstract class AbstractModel implements IExpModel {
     }
 
 
+    public void fling(IChannel channel, Map payload){
+        channel.fling(payload);
+    }
 }
