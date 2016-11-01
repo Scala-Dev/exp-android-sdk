@@ -65,4 +65,8 @@ public abstract class AbstractModel implements IExpModel {
     public void fling(IChannel channel, Map payload){
         channel.fling(payload);
     }
+
+    public Map getDocument(){
+        return this.properties;
+    }
 }
