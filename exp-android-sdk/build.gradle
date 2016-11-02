@@ -4,7 +4,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven'
 
-version = "v1.0.5"
+version = "v1.0.4-dragon"
 
 android {
     compileSdkVersion 23
@@ -34,15 +34,18 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
-    compile 'com.squareup.okhttp3:okhttp:3.1.1'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.1.1'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
-    compile 'io.jsonwebtoken:jjwt:0.6.0'
-    compile 'io.reactivex:rxandroid:1.1.0'
-    compile 'io.socket:socket.io-client:0.7.0'
-    compile 'io.reactivex:rxjava:1.1.0'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile 'io.jsonwebtoken:jjwt:0.7.0'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.2.1'
+    compile ('io.socket:socket.io-client:0.8.1') {
+        exclude group: 'org.json', module: 'json'
+    }
+
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.1', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
