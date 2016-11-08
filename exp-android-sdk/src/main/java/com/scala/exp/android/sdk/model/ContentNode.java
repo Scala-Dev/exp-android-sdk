@@ -14,7 +14,6 @@ import java.util.List;
 
 import rx.Observable;
 import rx.functions.Func1;
-import rx.observables.BlockingObservable;
 
 /**
  * Created by Cesar Oyarzun on 10/30/15.

@@ -14,8 +14,7 @@
 # class:
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
-#
-
+#}
 
 -assumenosideeffects class android.util.Log {
 public static boolean isLoggable(java.lang.String, int);
@@ -35,7 +34,7 @@ public static int e(...);
 -dontwarn rx.internal.util.**
 -dontwarn com.scala.exp.**
 
-
+-keep class com.scala.exp.** {*;}
 
 # Application classes that will be serialized/deserialized over Gson
 -keep class ph.reggis.FEDT.model.api.** { *; }

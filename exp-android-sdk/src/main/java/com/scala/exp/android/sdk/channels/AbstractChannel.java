@@ -65,7 +65,7 @@ public abstract class AbstractChannel implements IChannel {
     }
 
     @Override
-    public void broadcast(String name ,Map<String,Object> payload,int timeout) {
+    public void broadcast(String name , Map<String,Object> payload, int timeout) {
         HashMap mapPayload = (HashMap) payload;
         Map<String,Object> message = new HashMap<>();
         message.put(Utils.NAME,name);
@@ -75,9 +75,11 @@ public abstract class AbstractChannel implements IChannel {
             @Override
             public void onCompleted() {}
             @Override
-            public void onError(Throwable e) {Log.e(LOG_TAG, "EXP Error broadcast " + e.getMessage());}
+            public void onError(Throwable e) {
+                Log.e(LOG_TAG, "EXP Error broadcast " + e.getMessage());}
             @Override
-            public void onNext(Message message) {Log.d(LOG_TAG, "EXP broadcast response" + message);}
+            public void onNext(Message message) {
+                Log.d(LOG_TAG, "EXP broadcast response" + message);}
         });
 
     }
@@ -120,7 +122,7 @@ public abstract class AbstractChannel implements IChannel {
      * @param options,timeout
      * @return
      */
-    private static ExpObservable<Message> broadCast(Map<String,Object> options,int timeout){
+    private static ExpObservable<Message> broadCast(Map<String,Object> options, int timeout){
         Observable<Message> broadcastObservable = AppSingleton.getInstance().getEndPoint().broadCast(options,timeout)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -164,9 +166,11 @@ public abstract class AbstractChannel implements IChannel {
             @Override
             public void onCompleted() {}
             @Override
-            public void onError(Throwable e) {Log.e(LOG_TAG, "EXP Error identify " + e.getMessage());}
+            public void onError(Throwable e) {
+                Log.e(LOG_TAG, "EXP Error identify " + e.getMessage());}
             @Override
-            public void onNext(Message message){Log.d(LOG_TAG, "EXP identify response" + message);}
+            public void onNext(Message message){
+                Log.d(LOG_TAG, "EXP identify response" + message);}
         });
     }
 

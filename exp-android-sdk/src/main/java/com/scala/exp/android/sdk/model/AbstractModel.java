@@ -2,12 +2,14 @@ package com.scala.exp.android.sdk.model;
 
 import com.google.gson.internal.LinkedTreeMap;
 import com.scala.exp.android.sdk.Utils;
-import com.scala.exp.android.sdk.adapters.IExpDeserializer;
+import com.scala.exp.android.sdk.channels.IChannel;
+
+import java.util.Map;
 
 /**
  * Created by Cesar Oyarzun on 10/30/15.
  */
-public abstract class AbstractModel implements IExpModel{
+public abstract class AbstractModel implements IExpModel {
 
     protected LinkedTreeMap properties = null;
 
@@ -54,6 +56,17 @@ public abstract class AbstractModel implements IExpModel{
         return getString(Utils.UUID);
     }
 
+    @Override
+    public String toString() {
+        return this.properties.toString();
+    }
 
 
+    public void fling(IChannel channel, Map payload){
+        channel.fling(payload);
+    }
+
+    public Map getDocument(){
+        return this.properties;
+    }
 }

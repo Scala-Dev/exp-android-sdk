@@ -7,7 +7,7 @@ import com.scala.exp.android.sdk.SocketManager;
  */
 public class ChannelFactory {
 
-    public static Channel createChannel(String channelName,SocketManager socketManager,boolean system,boolean consumerApp){
+    public static Channel createChannel(String channelName, SocketManager socketManager, boolean system, boolean consumerApp){
         return new Channel(socketManager,channelName,system,consumerApp);
     }
 }

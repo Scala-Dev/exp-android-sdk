@@ -1,10 +1,7 @@
 package com.scala.exp.android.sdk.model;
 
-import android.support.annotation.NonNull;
 
-import com.google.gson.internal.LinkedTreeMap;
 
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -107,7 +104,7 @@ public class SearchResults<T> extends AbstractModel implements List<T> {
         return false;
     }
 
-    @NonNull
+
     @Override
     public Iterator<T> iterator() {
         return this.results.iterator();
@@ -123,7 +120,7 @@ public class SearchResults<T> extends AbstractModel implements List<T> {
         return this.results.listIterator();
     }
 
-    @NonNull
+
     @Override
     public ListIterator<T> listIterator(int location) {
         return this.results.listIterator(location);
@@ -159,19 +156,19 @@ public class SearchResults<T> extends AbstractModel implements List<T> {
         return this.results.size();
     }
 
-    @NonNull
+
     @Override
     public List<T> subList(int start, int end) {
         return null;
     }
 
-    @NonNull
+
     @Override
     public Object[] toArray() {
         return new Object[0];
     }
 
-    @NonNull
+
     @Override
     public <T1> T1[] toArray(T1[] array) {
         return null;
