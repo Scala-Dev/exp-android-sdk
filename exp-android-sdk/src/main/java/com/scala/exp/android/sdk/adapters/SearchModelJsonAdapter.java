@@ -55,28 +55,28 @@ public class SearchModelJsonAdapter<T extends AbstractModel> implements JsonDese
                 case CONTENT:
                     List<Content> contentArray = new ArrayList<Content>();
                     for (LinkedTreeMap child : results) {
-                        contentArray.add(ContentJsonAdapter.deserialize(json));
+                        contentArray.add(ContentJsonAdapter.deserialize(child));
                     }
                     searchResults.setResults((List<T>) contentArray);
                     break;
                 case THING:
                     List<Thing> thingArray = new ArrayList<Thing>();
                     for (LinkedTreeMap child : results) {
-                        thingArray.add(ThingJsonAdapter.deserialize(json));
+                        thingArray.add(ThingJsonAdapter.deserialize(child));
                     }
                     searchResults.setResults((List<T>) thingArray);
                     break;
                 case LOCATION:
                     List<Location> locationArray = new ArrayList<Location>();
                     for (LinkedTreeMap child : results) {
-                        locationArray.add(LocationJsonAdapter.deserialize(json));
+                        locationArray.add(LocationJsonAdapter.deserialize(child));
                     }
                     searchResults.setResults((List<T>) locationArray);
                     break;
                 case DEVICE:
                     List<Device> deviceArray = new ArrayList<Device>();
                     for (LinkedTreeMap child : results) {
-                        deviceArray.add(DeviceJsonAdapter.deserialize(json));
+                        deviceArray.add(DeviceJsonAdapter.deserialize(child));
                     }
                     searchResults.setResults((List<T>) deviceArray);
                     break;
@@ -85,7 +85,7 @@ public class SearchModelJsonAdapter<T extends AbstractModel> implements JsonDese
                     List<T> list = new ArrayList<T>();
                     for (LinkedTreeMap child : results) {
                         ModelJsonAdapter modelJsonAdapter = new ModelJsonAdapter(type);
-                        list.add((T) modelJsonAdapter.expDeserialzier(json));
+                        list.add((T) modelJsonAdapter.expDeserialzier(child));
                     }
                     searchResults.setResults(list);
                     break;

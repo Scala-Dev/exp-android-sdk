@@ -15,6 +15,7 @@ import com.scala.exp.android.sdk.model.Zone;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Cesar Oyarzun on 10/30/15.
@@ -24,18 +25,18 @@ public class DeviceJsonAdapter implements JsonDeserializer<Device>,IExpDeseriali
     @Override
     public Device deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext
             context) throws JsonParseException {
-        return expDeserialzier(json);
+        LinkedTreeMap treeMap = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
+        return expDeserialzier(treeMap);
     }
 
     @Override
-    public Device expDeserialzier(JsonElement json) {
-        return deserialize(json);
+    public Device expDeserialzier(Map map) {
+        return deserialize(map);
     }
 
-    public static Device deserialize(JsonElement json){
-        LinkedTreeMap treeMap = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
+    public static Device deserialize(Map treeMap){
         Device device = new Device();
-        device.setProperties(treeMap);
+        device.setProperties((LinkedTreeMap) treeMap);
         LinkedTreeMap locationDevice = (LinkedTreeMap) treeMap.get(Utils.LOCATION);
         if(locationDevice!=null){
             Location location = new Location();

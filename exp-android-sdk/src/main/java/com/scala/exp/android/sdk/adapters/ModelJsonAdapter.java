@@ -10,6 +10,7 @@ import com.scala.exp.android.sdk.model.AbstractModel;
 import com.scala.exp.android.sdk.model.IExpModel;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 
 /**
  * Created by Cesar Oyarzun on 10/30/15.
@@ -25,16 +26,16 @@ public class ModelJsonAdapter<T extends AbstractModel> implements JsonDeserializ
     @Override
     public T deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext
             context) throws JsonParseException {
-        return (T) expDeserialzier(json);
+        LinkedTreeMap treeMap = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
+        return (T) expDeserialzier(treeMap);
 
     }
 
     @Override
-    public IExpModel expDeserialzier(JsonElement json) {
+    public IExpModel expDeserialzier(Map treeMap) {
         try {
             T data = type.newInstance();
-            LinkedTreeMap treeMap = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
-            data.setProperties(treeMap);
+            data.setProperties((LinkedTreeMap) treeMap);
             return data;
 
         } catch (InstantiationException e) {
