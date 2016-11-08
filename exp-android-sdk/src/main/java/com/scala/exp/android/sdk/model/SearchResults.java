@@ -11,7 +11,7 @@ import java.util.ListIterator;
 /**
  * Created by adamgalloway on 12/10/15.
  */
-public class SearchResults<T> extends AbstractModel implements List<T> {
+public class SearchResults<T> extends AbstractModel implements Iterable<T> {
 
     private Integer total;
     private List<T> results = new ArrayList<T>();
@@ -54,124 +54,8 @@ public class SearchResults<T> extends AbstractModel implements List<T> {
 
 
     @Override
-    public void add(int location, T object) {
-
-    }
-
-    @Override
-    public boolean add(T object) {
-
-        return false;
-    }
-
-    @Override
-    public boolean addAll(int location, Collection<? extends T> collection) {
-        return false;
-    }
-
-    @Override
-    public boolean addAll(Collection<? extends T> collection) {
-        return false;
-    }
-
-    @Override
-    public void clear() {
-
-    }
-
-    @Override
-    public boolean contains(Object object) {
-        return false;
-    }
-
-    @Override
-    public boolean containsAll(Collection<?> collection) {
-        return false;
-    }
-
-    @Override
-    public T get(int location) {
-        return this.results.get(location);
-    }
-
-    @Override
-    public int indexOf(Object object) {
-        return this.results.indexOf(object);
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
-    }
-
-
-    @Override
     public Iterator<T> iterator() {
         return this.results.iterator();
-    }
-
-    @Override
-    public int lastIndexOf(Object object) {
-        return this.results.lastIndexOf(object);
-    }
-
-    @Override
-    public ListIterator<T> listIterator() {
-        return this.results.listIterator();
-    }
-
-
-    @Override
-    public ListIterator<T> listIterator(int location) {
-        return this.results.listIterator(location);
-    }
-
-    @Override
-    public T remove(int location) {
-        return this.results.remove(location);
-    }
-
-    @Override
-    public boolean remove(Object object) {
-        return this.results.remove(object);
-    }
-
-    @Override
-    public boolean removeAll(Collection<?> collection) {
-        return false;
-    }
-
-    @Override
-    public boolean retainAll(Collection<?> collection) {
-        return false;
-    }
-
-    @Override
-    public T set(int location, T object) {
-        return null;
-    }
-
-    @Override
-    public int size() {
-        return this.results.size();
-    }
-
-
-    @Override
-    public List<T> subList(int start, int end) {
-        return null;
-    }
-
-
-    @Override
-    public Object[] toArray() {
-        return new Object[0];
-    }
-
-
-    @Override
-    public <T1> T1[] toArray(T1[] array) {
-        return null;
     }
 }
 

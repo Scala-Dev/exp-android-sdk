@@ -15,6 +15,7 @@ import com.scala.exp.android.sdk.model.Zone;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Cesar Oyarzun on 10/30/15.
@@ -24,18 +25,18 @@ public class ThingJsonAdapter implements JsonDeserializer<Thing>,IExpDeserialize
     @Override
     public Thing deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext
             context) throws JsonParseException {
-        return expDeserialzier(json);
+        LinkedTreeMap treeMap = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
+        return expDeserialzier(treeMap);
     }
 
     @Override
-    public Thing expDeserialzier(JsonElement json) {
-        return deserialize(json);
+    public Thing expDeserialzier(Map map) {
+        return deserialize(map);
     }
 
-    public static Thing deserialize(JsonElement json){
-        LinkedTreeMap treeMap = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
+    public static Thing deserialize(Map treeMap){
         Thing thing = new Thing();
-        thing.setProperties(treeMap);
+        thing.setProperties((LinkedTreeMap) treeMap);
         LinkedTreeMap locationThing = (LinkedTreeMap) treeMap.get(Utils.LOCATION);
         if(locationThing!=null){
             Location location = new Location();

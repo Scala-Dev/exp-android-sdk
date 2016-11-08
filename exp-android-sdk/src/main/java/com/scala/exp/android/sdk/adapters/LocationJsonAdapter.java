@@ -13,6 +13,7 @@ import com.scala.exp.android.sdk.model.Zone;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Cesar Oyarzun on 10/30/15.
@@ -22,19 +23,20 @@ public class LocationJsonAdapter implements JsonDeserializer<Location>,IExpDeser
     @Override
     public Location deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext
             context) throws JsonParseException {
-        return expDeserialzier(json);
+        LinkedTreeMap treeMap = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
+        return expDeserialzier(treeMap);
     }
 
     @Override
-    public Location expDeserialzier(JsonElement json) {
-        return deserialize(json);
+    public Location expDeserialzier(Map map) {
+        return deserialize(map);
     }
 
 
-    public static Location deserialize(JsonElement json){
-        LinkedTreeMap treeMap = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
+    public static Location deserialize(Map treeMap){
+//        LinkedTreeMap treeMap = AppSingleton.getInstance().getGson().fromJson(json, LinkedTreeMap.class);
         Location location = new Location();
-        location.setProperties(treeMap);
+        location.setProperties((LinkedTreeMap) treeMap);
         List<LinkedTreeMap> zonesList = (List<LinkedTreeMap>) treeMap.get(Utils.ZONES);
         if(zonesList != null && !zonesList.isEmpty()){
             List<Zone> zonesArray = new ArrayList<Zone>();
@@ -48,4 +50,5 @@ public class LocationJsonAdapter implements JsonDeserializer<Location>,IExpDeser
         }
         return location;
     }
+
 }
