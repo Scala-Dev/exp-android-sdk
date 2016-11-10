@@ -65,23 +65,25 @@ public abstract class AbstractModel implements IExpModel {
     }
 
     /**
-     * Get Channel with options
-     * @param options
+     * Get Channel
      * @return
      */
-    public IChannel getChannel(Map options){
-        IChannel channel = null;
-        if(options!=null && !options.isEmpty()){
-            boolean consumer = false;
-            boolean system = false;
-            if(options.containsKey(CONSUMER)){
-                 consumer = (Boolean) options.get(CONSUMER);
-            }else if(options.containsKey(SYSTEM)){
-                 system = (Boolean) options.get(SYSTEM);
-            }
-            channel = Exp.getChannel(getUuid(),system,consumer);
-        }
-       return channel;
+    public IChannel getChannel(){
+       return  Exp.getChannel(getChannelName(),false,false);
+    }
+    
+    /**
+     * Get Channel
+     * @param system
+     * @param consumer
+     * @return
+     */
+    public IChannel getChannel(boolean system, boolean consumer){
+        return  Exp.getChannel(getChannelName(),system,consumer);
+    }
+
+    protected String getChannelName(){
+        return this.getUuid();
     }
 
     public Map getDocument(){
