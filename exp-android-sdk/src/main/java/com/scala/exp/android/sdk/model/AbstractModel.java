@@ -1,6 +1,7 @@
 package com.scala.exp.android.sdk.model;
 
 import com.google.gson.internal.LinkedTreeMap;
+import com.scala.exp.android.sdk.Exp;
 import com.scala.exp.android.sdk.Utils;
 import com.scala.exp.android.sdk.channels.IChannel;
 
@@ -11,6 +12,8 @@ import java.util.Map;
  */
 public abstract class AbstractModel implements IExpModel {
 
+    public static final String CONSUMER = "consumer";
+    public static final String SYSTEM = "system";
     protected LinkedTreeMap properties = null;
 
 
@@ -61,9 +64,26 @@ public abstract class AbstractModel implements IExpModel {
         return this.properties.toString();
     }
 
+    /**
+     * Get Channel
+     * @return
+     */
+    public IChannel getChannel(){
+       return  Exp.getChannel(getChannelName(),false,false);
+    }
+    
+    /**
+     * Get Channel
+     * @param system
+     * @param consumer
+     * @return
+     */
+    public IChannel getChannel(boolean system, boolean consumer){
+        return  Exp.getChannel(getChannelName(),system,consumer);
+    }
 
-    public void fling(IChannel channel, Map payload){
-        channel.fling(payload);
+    protected String getChannelName(){
+        return this.getUuid();
     }
 
     public Map getDocument(){
