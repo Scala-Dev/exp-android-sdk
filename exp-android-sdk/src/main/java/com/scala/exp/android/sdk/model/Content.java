@@ -99,8 +99,7 @@ public class Content extends AbstractModel {
         if (hasVariant(name)){
             String rt = AppSingleton.getInstance().getAuth().getRestrictedToken();
             return new StringBuilder(getUrl())
-                    .append("?").append(VARIANT).append(name)
-                    .append("&").append(RT).append(rt).toString();
+                    .append("&").append(VARIANT).append(name).toString();
         }
 
         throw new IllegalArgumentException("Variant not found.");
