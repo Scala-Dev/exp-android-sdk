@@ -7,6 +7,8 @@ import com.scala.exp.android.sdk.observer.ExpObservable;
 import java.util.List;
 
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Cesar Oyarzun on 10/30/15.
@@ -62,5 +64,14 @@ public class Device extends AbstractModel {
             }
         }
         return new ExpObservable<Device>(Observable.<Device>just(null));
+    }
+
+
+    @Override
+    public ExpObservable<Device> save() {
+        Observable<Device> deviceObservable = AppSingleton.getInstance().getEndPoint().saveDevice(getUuid(),getDocument())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Device>(deviceObservable);
     }
 }

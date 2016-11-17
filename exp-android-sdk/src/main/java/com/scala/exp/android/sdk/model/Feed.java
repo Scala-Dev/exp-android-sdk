@@ -32,4 +32,12 @@ public class Feed extends AbstractModel {
 
         return new ExpObservable<Map>(observable);
     }
+
+    @Override
+    public ExpObservable<Feed> save() {
+        Observable<Feed> observable = AppSingleton.getInstance().getEndPoint().saveFeed(getUuid(),getDocument())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Feed>(observable);
+    }
 }

@@ -1,6 +1,13 @@
 package com.scala.exp.android.sdk.model;
 
+import com.scala.exp.android.sdk.AppSingleton;
+import com.scala.exp.android.sdk.observer.ExpObservable;
+
 import java.util.List;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Cesar Oyarzun on 10/28/15.
@@ -36,5 +43,11 @@ public class Thing extends AbstractModel {
         this.experience = experience;
     }
 
-
+    @Override
+    public ExpObservable<Thing> save() {
+        Observable<Thing> thingObservable = AppSingleton.getInstance().getEndPoint().saveThing(getUuid(),getDocument())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Thing>(thingObservable);
+    }
 }

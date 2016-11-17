@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Cesar Oyarzun on 10/28/15.
@@ -70,5 +72,13 @@ public class Location extends AbstractModel {
                     }
                 }
             }));
+    }
+
+    @Override
+    public ExpObservable<Location> save() {
+        Observable<Location> locationObservable = AppSingleton.getInstance().getEndPoint().saveLocation(getUuid(),getDocument())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Location>(locationObservable);
     }
 }
