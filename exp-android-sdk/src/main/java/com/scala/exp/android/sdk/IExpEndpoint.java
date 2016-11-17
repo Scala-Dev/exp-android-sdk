@@ -18,6 +18,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -41,6 +42,9 @@ public interface IExpEndpoint {
         @PATCH("/api/things/{uuid}")
         Observable<Thing> saveThing(@Path("uuid") String uuid, @Body Map<String, Object> document);
 
+        @POST("/api/things")
+        Observable<Thing> createThing(@Body Map<String, Object> document);
+
         @GET("/api/devices/{uuid}")
         Observable<Device> getDevice(@Path("uuid") String uuid);
 
@@ -62,6 +66,9 @@ public interface IExpEndpoint {
         @PATCH("/api/experiences/{uuid}")
         Observable<Experience> saveExperience(@Path("uuid") String uuid, @Body Map<String, Object> document);
 
+        @POST("/api/experiences")
+        Observable<Experience> createExperience(@Body Map<String, Object> document);
+
         @GET("/api/locations/{uuid}")
         Observable<Location> getLocation(@Path("uuid") String uuid);
 
@@ -70,6 +77,9 @@ public interface IExpEndpoint {
 
         @PATCH("/api/locations/{uuid}")
         Observable<Location> saveLocation(@Path("uuid") String uuid,@Body Map<String, Object> document);
+
+        @POST("/api/locations")
+        Observable<Location> createLocation(@Body Map<String, Object> document);
 
         @GET("/api/content/{uuid}")
         Observable<Content> getContent(@Path("uuid") String uuid);
@@ -92,6 +102,9 @@ public interface IExpEndpoint {
         @GET("/api/data")
         Observable<SearchResults<Data>> findData(@QueryMap Map<String, Object> options);
 
+        @PUT("/api/data/{group}/{key}")
+        Observable<Data> createData(@Path("group") String group, @Path("key") String key,@Body Map<String, Object> document);
+
         @GET("/api/connectors/feeds/{uuid}")
         Observable<Feed> getFeed(@Path("uuid") String uuid);
 
@@ -106,6 +119,9 @@ public interface IExpEndpoint {
 
         @GET("/api/connectors/feeds/{uuid}/data")
         Observable<Map> getFeedData(@Path("uuid") String uuid, @QueryMap Map<String, Object> options);
+
+        @POST("/api/connectors/feeds")
+        Observable<Feed> createFeed(@Body Map<String, Object> document);
 
         @POST("/api/auth/token")
         Observable<Auth> refreshToken();

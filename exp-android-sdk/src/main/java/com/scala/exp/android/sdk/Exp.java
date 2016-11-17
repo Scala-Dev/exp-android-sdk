@@ -99,6 +99,17 @@ public class Exp {
     }
 
     /**
+     * Create Thing
+     * @param document
+     * @return
+     */
+    public static ExpObservable<Thing> createThing(Map<String,Object> document){
+        Observable<Thing> thingObservable = AppSingleton.getInstance().getEndPoint().createThing(document)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Thing>(thingObservable);
+    }
+    /**
      * Get Feed by UUID
      * @param uuid
      * @return
@@ -120,6 +131,18 @@ public class Exp {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
         return new ExpObservable<SearchResults<Feed>>(observable);
+    }
+
+    /**
+     * Create Feed
+     * @param document
+     * @return
+     */
+    public static ExpObservable<Feed> createFeed(Map<String,Object> document){
+        Observable<Feed> observable = AppSingleton.getInstance().getEndPoint().createFeed(document)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Feed>(observable);
     }
 
     /**
@@ -147,6 +170,18 @@ public class Exp {
     }
 
     /**
+     * Create Device
+     * @param document
+     * @return
+     */
+    public static ExpObservable<Device> createDevice(Map<String,Object> document){
+        Observable<Device> deviceObservable = AppSingleton.getInstance().getEndPoint().createDevice(document)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Device>(deviceObservable);
+    }
+
+    /**
      * Get Experience By UUID
      * @param uuid
      * @return
@@ -171,6 +206,18 @@ public class Exp {
     }
 
     /**
+     * Create Experience
+     * @param document
+     * @return
+     */
+    public static ExpObservable<Experience> createExperience(Map<String,Object> document){
+        Observable<Experience> experienceObservable = AppSingleton.getInstance().getEndPoint().createExperience(document)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Experience>(experienceObservable);
+    }
+
+    /**
      * Get Location by UUID
      * @param uuid
      * @return
@@ -192,6 +239,18 @@ public class Exp {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
         return new ExpObservable<SearchResults<Location>>(locationObservable);
+    }
+
+    /**
+     * Create Location
+     * @param document
+     * @return
+     */
+    public static ExpObservable<Location> createLocation(Map<String,Object> document){
+        Observable<Location> locationObservable = AppSingleton.getInstance().getEndPoint().createLocation(document)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Location>(locationObservable);
     }
 
     /**
@@ -275,6 +334,19 @@ public class Exp {
         return new ExpObservable<SearchResults<Data>>(dataObservable);
     }
 
+    /**
+     * Create Data
+     * @param group
+     * @param key
+     * @param document
+     * @return
+     */
+    public static ExpObservable<Data> createData(String group,String key,Map<String,Object> document){
+        Observable<Data> dataObservable = AppSingleton.getInstance().getEndPoint().createData(group, key,document)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Data>(dataObservable);
+    }
     /**
      * Respond method to broadcast
      * @param options
