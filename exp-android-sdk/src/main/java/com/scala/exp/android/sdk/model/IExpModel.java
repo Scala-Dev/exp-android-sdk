@@ -9,5 +9,6 @@ import java.util.Map;
  */
 public interface IExpModel {
     ExpObservable<?> save();
+    ExpObservable<?> refresh();
     void setProperty(String name,Object value);
 }

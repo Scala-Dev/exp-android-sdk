@@ -97,4 +97,9 @@ public abstract class AbstractModel implements IExpModel {
     public ExpObservable<?> save() {
         return null;
     }
+
+    @Override
+    public ExpObservable<?> refresh() {
+        return null;
+    }
 }

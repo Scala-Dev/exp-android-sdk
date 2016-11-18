@@ -48,4 +48,9 @@ public class Experience extends AbstractModel {
                 .observeOn(AndroidSchedulers.mainThread());
         return new ExpObservable<Experience>(experienceObservable);
     }
+
+    @Override
+    public ExpObservable<Experience> refresh() {
+        return Exp.getExperience(getUuid());
+    }
 }

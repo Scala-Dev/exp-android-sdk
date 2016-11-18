@@ -123,11 +123,11 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
 
-                        Map doc= new HashMap();
-                        doc.put("subtype","scala:device:player");
-                        doc.put("name","DeviceCreate 12");
+                        Map document= new HashMap();
+                        document.put("subtype","scala:device:player");
+                        document.put("name","DeviceCreate 12");
 
-                        Exp.createDevice(doc).then(new Subscriber<Device>() {
+                        Exp.createDevice(document).then(new Subscriber<Device>() {
                             @Override
                             public void onCompleted() {}
                             @Override
@@ -141,48 +141,56 @@ public class MainActivity extends AppCompatActivity {
                         map.put("test","val1");
                         Exp.createData("cesar","model1",map).then(new Subscriber<Data>() {
                             @Override
-                            public void onCompleted() {
-
-                            }
-
+                            public void onCompleted() {}
                             @Override
-                            public void onError(Throwable e) {
-                                Log.e(LOG_TAG, e.getMessage());
-                            }
-
+                            public void onError(Throwable e) {Log.e("Response", e.getMessage());}
                             @Override
                             public void onNext(Data data) {
                                 Log.i("Response", data.toString());
+                                Object name = data.get("name");
+                                Map document = data.getDocument();
+                            }
+                        });
+
+                        Map mapex= new HashMap();
+                        mapex.put("name","Experience 1");
+                        Exp.createExperience(mapex).then(new Subscriber<Experience>() {
+                            @Override
+                            public void onCompleted() {}
+                            @Override
+                            public void onError(Throwable e) {Log.e("Response", e.getMessage());}
+                            @Override
+                            public void onNext(Experience experience) {
+                                Log.i("Response", experience.toString());
                             }
                         });
 
                         Exp.getDevice("56646998-ac61-48c2-a245-5c9c746f180b").then(new Subscriber<Device>() {
                             @Override
                             public void onCompleted() {}
-
                             @Override
-                            public void onError(Throwable e) {
-
-                            }
-
+                            public void onError(Throwable e) {}
                             @Override
                             public void onNext(Device device) {
                                 Log.i("Response", device.toString());
                                 device.setProperty("name","Device Cesar 1");
                                 device.save().then(new Subscriber<Device>() {
                                     @Override
-                                    public void onCompleted() {
-
-                                    }
-
+                                    public void onCompleted() {}
                                     @Override
-                                    public void onError(Throwable e) {
-
-                                    }
-
+                                    public void onError(Throwable e) {}
                                     @Override
                                     public void onNext(Device device) {
-                                        Log.i("Response", device.toString());
+                                        device.refresh().then(new Subscriber<Device>() {
+                                            @Override
+                                            public void onCompleted() {}
+                                            @Override
+                                            public void onError(Throwable e) {}
+                                            @Override
+                                            public void onNext(Device device) {
+                                                Log.i("Response", "Device Refresh!!");
+                                            }
+                                        });
                                     }
                                 });
                             }

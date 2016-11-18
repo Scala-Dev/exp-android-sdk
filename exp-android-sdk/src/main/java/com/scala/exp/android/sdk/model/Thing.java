@@ -1,6 +1,7 @@
 package com.scala.exp.android.sdk.model;
 
 import com.scala.exp.android.sdk.AppSingleton;
+import com.scala.exp.android.sdk.Exp;
 import com.scala.exp.android.sdk.observer.ExpObservable;
 
 import java.util.List;
@@ -49,5 +50,10 @@ public class Thing extends AbstractModel {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
         return new ExpObservable<Thing>(thingObservable);
+    }
+
+    @Override
+    public ExpObservable<Thing> refresh() {
+        return Exp.getThing(getUuid());
     }
 }

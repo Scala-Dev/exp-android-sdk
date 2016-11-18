@@ -81,4 +81,9 @@ public class Location extends AbstractModel {
                 .observeOn(AndroidSchedulers.mainThread());
         return new ExpObservable<Location>(locationObservable);
     }
+
+    @Override
+    public ExpObservable<Location> refresh() {
+        return Exp.getLocation(getUuid());
+    }
 }

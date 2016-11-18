@@ -74,4 +74,9 @@ public class Device extends AbstractModel {
                 .observeOn(AndroidSchedulers.mainThread());
         return new ExpObservable<Device>(deviceObservable);
     }
+
+    @Override
+    public ExpObservable<Device> refresh() {
+        return Exp.getDevice(getUuid());
+    }
 }

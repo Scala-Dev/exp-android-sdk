@@ -5,7 +5,7 @@
 
 Gradle:
 ```groovy
- compile 'io.goexp:exp-android-sdk:v1.0.4'
+ compile 'io.goexp:exp-android-sdk:v1.0.6'
 ```
 
 Exp Android SDK requires at minimum Java 7 and Android 4.3.
@@ -95,7 +95,7 @@ Returns the current authentication payload. Will be null if not yet authenticate
 Exp.getAuth().getIdentity().getUsername();
 ```
 
-**`Exp.on("update",subscriber)`** 
+**`Exp.on("update",subscriber)`**
 
 Callback is called when authentication payload is updated.
 
@@ -161,15 +161,15 @@ Whether or not you are connected to the network.
 
 ## Channels
 
-**`Exp.getChannel(name, system, consumerApp)`** 
- 
+**`Exp.getChannel(name, system, consumerApp)`**
+
  Returns a channel with the given name with two flags: `consumerApp` and `system`. Consumer devices can only listen and broadcast on consumer channels. System channels are listen only and can receive broadcasts about system events.
 
  ```java
     IChannel channel = Exp.getChannel("my-channel",false,true);
 ```
 
-**`channel.broadcast(name, payload, timeout)`** 
+**`channel.broadcast(name, payload, timeout)`**
 
 Sends a broadcast with given `name` and `payload` on the channel. Waits for responses for `timeout` milliseconds and resolves with an array of responses.
 
@@ -179,7 +179,7 @@ payload.put("test", "nice to meet you!");
 channel.broadcast("hi", payload, 2000);
 ```
 
-**`channel.listen(name, callback)`** 
+**`channel.listen(name, callback)`**
 
 Registers a [listener](#listeners) callback for events on the channel with the given `name`. Resolves to a [listener](#listeners) when the callback is registered and the network connection has subscribed to the channel.
 
@@ -202,7 +202,7 @@ channel.listen("hi", new Subscriber() {
                         });
 ```
 
-**`channel.fling(payload)`** 
+**`channel.fling(payload)`**
 
 Fling an app launch payload on the channel.
 
@@ -235,7 +235,7 @@ channel1.identify();
 
 ## Devices
 
-Devices inherit all [common resource methods and attributes](#resources).
+Devices inherit all [common resource methods and attributes](#abstractmodel).
 
 **`Exp.getDevice(uuid)`**
 
@@ -278,6 +278,26 @@ Exp.findDevices(options)
         Log.i("Response", resultDevice.toString());
       }
   });
+```
+
+**`Exp.createDevice(document)`**
+
+Resolves to a device created based on the supplied document.
+
+```java
+Map document= new HashMap();
+document.put("subtype","scala:device:player");
+document.put("name","Device Name");
+Exp.createDevice(document).then(new Subscriber<Device>() {
+    @Override
+    public void onCompleted() {}
+    @Override
+    public void onError(Throwable e) {Log.e("Response", e.getMessage());}
+    @Override
+    public void onNext(Device device) {
+        Log.i("Response", device.toString());
+    }
+});
 ```
 
 **`device.getZones()`**
@@ -337,6 +357,8 @@ Resolves to the current Device(#devices) or `null`
 
 ## Things
 
+Things inherit all [common resource methods and attributes](#abstractmodel).
+
 **`Exp.getThing(uuid)**`
 
 Get a single thing by UUID. Resolves to a [Thing](#things).
@@ -385,6 +407,27 @@ Exp.findthings(options)
     });
 ```
 
+**`Exp.createThing(document)`**
+
+Resolves to a thing created based on the supplied document.
+
+```java
+Map document= new HashMap();
+document.put("subtype","scala:thing:rfid");
+document.put("id","rfid id");
+document.put("name","Rfid Name");
+Exp.createThing(document).then(new Subscriber<Thing>() {
+    @Override
+    public void onCompleted() {}
+    @Override
+    public void onError(Throwable e) {Log.e("Response", e.getMessage());}
+    @Override
+    public void onNext(Thing thing) {
+        Log.i("Response", thing.toString());
+    }
+});
+```
+
 **`thing.getZones()`**
 
 Resolves to an array of [zones](#zones) that are part of this device.
@@ -400,6 +443,7 @@ Resolves to an [Experience](#experiences) that are part of this device.
 
 ## Experiences
 
+Experiences inherit all [common resource methods and attributes](#abstractmodel).
 
 **`Exp.getExperience(uuid)`**
 
@@ -445,6 +489,25 @@ Exp.findExperiences(options)
                 }
 });
 ```
+**`Exp.createExperience(document)`**
+
+Resolves to an experience created based on the supplied document.
+
+```java
+Map document= new HashMap();
+document.put("name","Experience Name");
+Exp.createExperience(document).then(new Subscriber<Experience>() {
+    @Override
+    public void onCompleted() {}
+    @Override
+    public void onError(Throwable e) {Log.e("Response", e.getMessage());}
+    @Override
+    public void onNext(Experience experience) {
+        Log.i("Response", experience.toString());
+    }
+});
+```
+
 
 **`experience.geDevices()`**
 
@@ -473,6 +536,8 @@ experience.getDevices().then(new Subscriber<SearchResults<Device>>() {
 Resolves to the current Experience(#experiences) or `null`
 
 ## Locations
+
+Locations inherit all [common resource methods and attributes](#abstractmodel).
 
 **`Exp.getLocation(uuid)`**
 
@@ -512,6 +577,25 @@ Exp.findLocations(options)
                 Log.i("Response", resultLocation.toString());
             }
         });
+```
+
+**`Exp.createLocation(document)`**
+
+Resolves to a location created based on the supplied document.
+
+```java
+Map document= new HashMap();
+document.put("name","Location Name");
+Exp.createLocation(document).then(new Subscriber<Location>() {
+    @Override
+    public void onCompleted() {}
+    @Override
+    public void onError(Throwable e) {Log.e("Response", e.getMessage());}
+    @Override
+    public void onNext(Location location) {
+        Log.i("Response", location.toString());
+    }
+});
 ```
 
 **`location.getZones()`**
@@ -572,6 +656,8 @@ location.geThings().then(new Subscriber<SearchResults<Thing>>() {
 
 
 ## Zones
+
+Zones inherit all [common resource methods and attributes](#abstractmodel).
 
 **`zone.getKey()`**
 
@@ -634,8 +720,9 @@ zone.getThings().then(new Subscriber<SearchResults<Things>>() {
 Resolves to the zone's [location](#locations)
 
 
-
 ## Feeds
+
+Feeds inherit all [common resource methods and attributes](#abstractmodel).
 
 **`Exp.getFeed(uuid)`**
 
@@ -657,7 +744,7 @@ Exp.getFeed("052a2419-0621-45ad-aa03-3747dbfe2b6d")
         });
 ```
 
-**`ExpSwift.findFeeds(params)`**
+**`Exp.findFeeds(params)`**
 
 Query for multiple feeds. Resolves to an array of [Feeds](#feed-object).
 ```java
@@ -675,6 +762,28 @@ Exp.findFeeds(options)
             }
         });
 ```
+
+**`Exp.createFeed(document)`**
+
+Resolves to a feed created based on the supplied document.
+
+```java
+Map document= new HashMap();
+document.put("subtype","scala:feed:weather");
+document.put("searchValue","16902");
+document.put("name","My Weather Feed");
+Exp.createFeed(document).then(new Subscriber<Feed>() {
+    @Override
+    public void onCompleted() {}
+    @Override
+    public void onError(Throwable e) {Log.e("Response", e.getMessage());}
+    @Override
+    public void onNext(Feed feed) {
+        Log.i("Response", feed.toString());
+    }
+});
+```
+
 
 ## Feed Object
 
@@ -720,6 +829,8 @@ feed.getData(query).then(new Subscriber<Map>() {
 
 ## Data
 
+Data inherit all [common resource methods and attributes](#abstractmodel).There is a limit of 16MB per data document.
+
 **`Exp.getData(group:String, key:String)`**
 
 Get a single data item by group and key. Resolves to a [Data](#data).
@@ -761,7 +872,28 @@ Exp.findData(options)
 });
 ```
 
+**`Exp.createData(group, key, value)`**
+
+Resolves to a data item created based on the supplied group, key, and value.
+
+```java
+Map document = new HashMap();
+document.put("val","val");
+Exp.createData("data","model",document).then(new Subscriber<Data>() {
+    @Override
+    public void onCompleted() {}
+    @Override
+    public void onError(Throwable e) {Log.e("Response", e.getMessage());}
+    @Override
+    public void onNext(Data data) {
+        Log.i("Response", data.toString());
+    }
+});
+```
+
 ## Content
+
+Content inherit all [common resource methods and attributes](#abstractmodel) except save().
 
 **`Exp.getContentNode(uuid)`**
 
@@ -830,9 +962,10 @@ content.getChildren()
   });
 ```
 
+
 **`content.getChildren(options)`**
 
-Resolves to a SearchResults object containing children [Content](#content-object). 
+Resolves to a SearchResults object containing children [Content](#content-object).
 
 ```java
 Map options = new HashMap();
@@ -870,10 +1003,152 @@ Get the absolute url to the content node's variant data. Useful for image/video 
 String variantUrl = contentNode.getVariantUrl("320.png");
 ```
 
+## AbstractModel
+
+These methods and attributes are shared by many of the abstract API resources.
+
+**`getUuid()`**
+
+Returns the uuid of the resource. Cannot be set.
+
+```java
+String uuid = data.getUuid();
+```
+
+**`get(name)`**
+
+Returns an object by the name specify if exist in the properties document.
+
+```java
+Object name = data.get("name");
+```
+
+**`getString(String name)`**
+
+Returns an String by the name specify if exist in the properties document.
+
+```java
+String name = data.getString("name");
+```
+
+**`getInteger(String name)`**
+
+Returns an Integer by the name specify if exist in the properties document.
+
+```java
+Integer total = data.getString("total");
+```
+
+**`getBoolean(String name)`**
+
+Returns an Boolean by the name specify if exist in the properties document.
+
+```java
+Integer result = data.getBoolean("result");
+```
+
+**`getChannel()`**
+
+Returns the channel whose name is contextually associated with this resource.
+
+```java
+IChannel channel = data.getChannel();
+```
+
+**`getChannel(boolean system,boolean consumer)`**
+
+Returns the channel whose name is contextually associated with this resource, with the options for system and consumer .
+
+```java
+IChannel channel = data.getChannel(false,true);
+```
+
+**`getDocument()`**
+
+The resource’s underlying document.
+
+```java
+Map document = data.getDocument();
+```
+
+**`setProperty(String name,Object value)`**
+
+Set a new property with name and value to the resource.
+
+```java
+device.setProperty("name","New Device Name");
+```
+
+**`save()`**
+
+Saves the resource and updates the document in place. Returns a promise to the save operation.
+
+```java
+ Exp.getDevice("[device uuid]").then(new Subscriber<Device>() {
+    @Override
+    public void onCompleted() {}
+    @Override
+    public void onError(Throwable e) {}
+    @Override
+    public void onNext(Device device) {
+        Log.i("Response", device.toString());
+        device.setProperty("name","Device Cesar 1");
+        device.save().then(new Subscriber<Device>() {
+            @Override
+            public void onCompleted() {}
+            @Override
+            public void onError(Throwable e) {}
+            @Override
+            public void onNext(Device device) {
+                Log.i("Response", device.toString());
+            }
+        });
+    }
+});
+```
+
+**`refresh()`**
+
+Refreshes the resource’s underlying document in place. Returns a promise to refresh operation.
+
+```java
+Exp.getDevice("[device uuid]").then(new Subscriber<Device>() {
+    @Override
+    public void onCompleted() {}
+    @Override
+    public void onError(Throwable e) {}
+    @Override
+    public void onNext(Device device) {
+        Log.i("Response", device.toString());
+        device.setProperty("name","Device Cesar 1");
+        device.save().then(new Subscriber<Device>() {
+            @Override
+            public void onCompleted() {}
+            @Override
+            public void onError(Throwable e) {}
+            @Override
+            public void onNext(Device device) {
+                device.refresh().then(new Subscriber<Device>() {
+                    @Override
+                    public void onCompleted() {}
+                    @Override
+                    public void onError(Throwable e) {}
+                    @Override
+                    public void onNext(Device device) {
+                        Log.i("Response", "Device Refresh!!");
+                    }
+                });
+            }
+        });
+    }
+});
+
+```
+
 
 # LOGGING
 
-Android uses Proguard for packaging Apps, If you want to remove the ExpSwift logs before you publish your app you need to change **build.gradle** under your project and add the file **proguard-android-optimize.txt** under build tpyes proguardFiles, this will activate the proguard rules that you can define in the file **proguard-rules.pro**, in this file you can remove the logs that you want. The configuration should luke like this 
+Android uses Proguard for packaging Apps, If you want to remove the ExpSwift logs before you publish your app you need to change **build.gradle** under your project and add the file **proguard-android-optimize.txt** under build tpyes proguardFiles, this will activate the proguard rules that you can define in the file **proguard-rules.pro**, in this file you can remove the logs that you want. The configuration should luke like this
 ```xml
  buildTypes {
         release {

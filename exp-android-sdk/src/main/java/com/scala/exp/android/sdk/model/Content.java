@@ -133,11 +133,10 @@ public class Content extends AbstractModel {
         this.children = children;
     }
 
+
     @Override
-    public ExpObservable<Content> save() {
-        Observable<Content> contentNodeObservable = AppSingleton.getInstance().getEndPoint().saveContent(getUuid(),getDocument())
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread());
-        return new ExpObservable<Content>(contentNodeObservable);
+    public ExpObservable<Content> refresh() {
+        return Exp.getContent(getUuid());
     }
 }
+
