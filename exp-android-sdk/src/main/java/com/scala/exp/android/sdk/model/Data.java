@@ -28,7 +28,7 @@ public class Data extends AbstractModel {
     public ExpObservable<Data> refresh() {
         return Exp.getData(getString(Utils.GROUP),getString(Utils.KEY));
     }
-    
+
     @Override
     public ExpObservable<Data> save() {
         Observable<Data> dataObservable = AppSingleton.getInstance().getEndPoint().createData(getString(Utils.GROUP),getString(Utils.KEY),getDocument())

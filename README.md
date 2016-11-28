@@ -1092,7 +1092,7 @@ Saves the resource and updates the document in place. Returns a promise to the s
     @Override
     public void onNext(Device device) {
         Log.i("Response", device.toString());
-        device.setProperty("name","Device Cesar 1");
+        device.setProperty("name","Device New Name");
         device.save().then(new Subscriber<Device>() {
             @Override
             public void onCompleted() {}
@@ -1120,7 +1120,7 @@ Exp.getDevice("[device uuid]").then(new Subscriber<Device>() {
     @Override
     public void onNext(Device device) {
         Log.i("Response", device.toString());
-        device.setProperty("name","Device Cesar 1");
+        device.setProperty("name","Device New Name");
         device.save().then(new Subscriber<Device>() {
             @Override
             public void onCompleted() {}
