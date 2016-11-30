@@ -78,4 +78,9 @@ public class Zone  extends AbstractModel{
     public ExpObservable<Location> refresh() {
         return this.location.refresh();
     }
+
+    @Override
+    protected String getChannelName() {
+        return this.location.getUuid()+":zone:"+getKey();
+    }
 }
