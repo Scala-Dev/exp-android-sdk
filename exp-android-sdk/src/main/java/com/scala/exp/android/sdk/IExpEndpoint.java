@@ -16,7 +16,9 @@ import java.util.Map;
 
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -37,11 +39,23 @@ public interface IExpEndpoint {
         @GET("/api/things")
         Observable<SearchResults<Thing>> findThings(@QueryMap Map<String, Object> options);
 
+        @PATCH("/api/things/{uuid}")
+        Observable<Thing> saveThing(@Path("uuid") String uuid, @Body Map<String, Object> document);
+
+        @POST("/api/things")
+        Observable<Thing> createThing(@Body Map<String, Object> document);
+
         @GET("/api/devices/{uuid}")
         Observable<Device> getDevice(@Path("uuid") String uuid);
 
         @GET("/api/devices")
         Observable<SearchResults<Device>> findDevices(@QueryMap Map<String, Object> options);
+
+        @POST("/api/devices")
+        Observable<Device> createDevice(@Body Map<String, Object> document);
+
+        @PATCH("/api/devices/{uuid}")
+        Observable<Device> saveDevice(@Path("uuid") String uuid, @Body Map<String, Object> document);
 
         @GET("/api/experiences/{uuid}")
         Observable<Experience> getExperience(@Path("uuid") String uuid);
@@ -49,11 +63,23 @@ public interface IExpEndpoint {
         @GET("/api/experiences")
         Observable<SearchResults<Experience>> findExperiences(@QueryMap Map<String, Object> options);
 
+        @PATCH("/api/experiences/{uuid}")
+        Observable<Experience> saveExperience(@Path("uuid") String uuid, @Body Map<String, Object> document);
+
+        @POST("/api/experiences")
+        Observable<Experience> createExperience(@Body Map<String, Object> document);
+
         @GET("/api/locations/{uuid}")
         Observable<Location> getLocation(@Path("uuid") String uuid);
 
         @GET("/api/locations")
         Observable<SearchResults<Location>> findLocations(@QueryMap Map<String, Object> options);
+
+        @PATCH("/api/locations/{uuid}")
+        Observable<Location> saveLocation(@Path("uuid") String uuid,@Body Map<String, Object> document);
+
+        @POST("/api/locations")
+        Observable<Location> createLocation(@Body Map<String, Object> document);
 
         @GET("/api/content/{uuid}")
         Observable<Content> getContent(@Path("uuid") String uuid);
@@ -64,6 +90,9 @@ public interface IExpEndpoint {
         @GET("/api/content")
         Observable<SearchResults<Content>> findContent(@QueryMap Map<String, Object> options);
 
+        @PATCH("/api/content/{uuid}")
+        Observable<Content> saveContent(@Path("uuid") String uuid, @Body Map<String, Object> document);
+
         @GET("/api/content")
         Observable<SearchResults<ContentNode>> findContentNodes(@QueryMap Map<String, Object> options);
 
@@ -73,17 +102,26 @@ public interface IExpEndpoint {
         @GET("/api/data")
         Observable<SearchResults<Data>> findData(@QueryMap Map<String, Object> options);
 
+        @PUT("/api/data/{group}/{key}")
+        Observable<Data> createData(@Path("group") String group, @Path("key") String key,@Body Map<String, Object> document);
+
         @GET("/api/connectors/feeds/{uuid}")
         Observable<Feed> getFeed(@Path("uuid") String uuid);
 
         @GET("/api/connectors/feeds")
         Observable<SearchResults<Feed>> findFeeds(@QueryMap Map<String, Object> options);
 
+        @PATCH("/api/connectors/feeds/{uuid}")
+        Observable<Feed> saveFeed(@Path("uuid") String uuid,@Body Map<String, Object> document);
+
         @GET("/api/connectors/feeds/{uuid}/data")
         Observable<Map> getFeedData(@Path("uuid") String uuid);
 
         @GET("/api/connectors/feeds/{uuid}/data")
         Observable<Map> getFeedData(@Path("uuid") String uuid, @QueryMap Map<String, Object> options);
+
+        @POST("/api/connectors/feeds")
+        Observable<Feed> createFeed(@Body Map<String, Object> document);
 
         @POST("/api/auth/token")
         Observable<Auth> refreshToken();

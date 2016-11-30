@@ -6,7 +6,6 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.scala.exp.android.sdk.AppSingleton;
 import com.scala.exp.android.sdk.Exp;
 import com.scala.exp.android.sdk.Utils;
-import com.scala.exp.android.sdk.channels.IChannel;
 import com.scala.exp.android.sdk.observer.ExpObservable;
 
 import java.io.UnsupportedEncodingException;
@@ -14,6 +13,10 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Cesar Oyarzun on 10/30/15.
@@ -131,4 +134,9 @@ public class Content extends AbstractModel {
     }
 
 
+    @Override
+    public ExpObservable<Content> refresh() {
+        return Exp.getContent(getUuid());
+    }
 }
+

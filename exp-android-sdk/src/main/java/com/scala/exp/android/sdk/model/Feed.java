@@ -1,6 +1,7 @@
 package com.scala.exp.android.sdk.model;
 
 import com.scala.exp.android.sdk.AppSingleton;
+import com.scala.exp.android.sdk.Exp;
 import com.scala.exp.android.sdk.Utils;
 import com.scala.exp.android.sdk.observer.ExpObservable;
 
@@ -31,5 +32,18 @@ public class Feed extends AbstractModel {
                 .observeOn(AndroidSchedulers.mainThread());
 
         return new ExpObservable<Map>(observable);
+    }
+
+    @Override
+    public ExpObservable<Feed> save() {
+        Observable<Feed> observable = AppSingleton.getInstance().getEndPoint().saveFeed(getUuid(),getDocument())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Feed>(observable);
+    }
+
+    @Override
+    public ExpObservable<Feed> refresh() {
+        return Exp.getFeed(getUuid());
     }
 }

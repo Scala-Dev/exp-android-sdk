@@ -69,4 +69,13 @@ public class Zone  extends AbstractModel{
             }));
     }
 
+    @Override
+    public ExpObservable<Location> save() {
+       return this.location.save();
+    }
+
+    @Override
+    public ExpObservable<Location> refresh() {
+        return this.location.refresh();
+    }
 }

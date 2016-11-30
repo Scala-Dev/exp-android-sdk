@@ -8,6 +8,7 @@ import com.scala.exp.android.sdk.AppSingleton;
 import com.scala.exp.android.sdk.Exp;
 import com.scala.exp.android.sdk.Utils;
 import com.scala.exp.android.sdk.channels.IChannel;
+import com.scala.exp.android.sdk.model.Data;
 import com.scala.exp.android.sdk.model.Device;
 import com.scala.exp.android.sdk.model.Experience;
 
@@ -122,32 +123,74 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
 
-                        Exp.getDevice("56646998-ac61-48c2-a245-5c9c746f180b").then(new Subscriber<Device>() {
+                        Map document= new HashMap();
+                        document.put("subtype","scala:device:player");
+                        document.put("name","DeviceCreate 12");
+
+                        Exp.createDevice(document).then(new Subscriber<Device>() {
                             @Override
                             public void onCompleted() {}
-
                             @Override
-                            public void onError(Throwable e) {
-
-                            }
-
+                            public void onError(Throwable e) {Log.e("Response", e.getMessage());}
                             @Override
                             public void onNext(Device device) {
                                 Log.i("Response", device.toString());
-                                device.getExperience().then(new Subscriber<Experience>() {
-                                    @Override
-                                    public void onCompleted() {
+                            }
+                        });
+                        Map map = new HashMap();
+                        map.put("test","val1");
+                        Exp.createData("cesar","model1",map).then(new Subscriber<Data>() {
+                            @Override
+                            public void onCompleted() {}
+                            @Override
+                            public void onError(Throwable e) {Log.e("Response", e.getMessage());}
+                            @Override
+                            public void onNext(Data data) {
+                                Log.i("Response", data.toString());
+                                Object name = data.get("name");
+                                Map document = data.getDocument();
+                            }
+                        });
 
-                                    }
+                        Map mapex= new HashMap();
+                        mapex.put("name","Experience 1");
+                        Exp.createExperience(mapex).then(new Subscriber<Experience>() {
+                            @Override
+                            public void onCompleted() {}
+                            @Override
+                            public void onError(Throwable e) {Log.e("Response", e.getMessage());}
+                            @Override
+                            public void onNext(Experience experience) {
+                                Log.i("Response", experience.toString());
+                            }
+                        });
 
+                        Exp.getDevice("56646998-ac61-48c2-a245-5c9c746f180b").then(new Subscriber<Device>() {
+                            @Override
+                            public void onCompleted() {}
+                            @Override
+                            public void onError(Throwable e) {}
+                            @Override
+                            public void onNext(Device device) {
+                                Log.i("Response", device.toString());
+                                device.setProperty("name","Device Cesar 1");
+                                device.save().then(new Subscriber<Device>() {
                                     @Override
-                                    public void onError(Throwable e) {
-                                        Log.e("error", e.toString());
-                                    }
-
+                                    public void onCompleted() {}
                                     @Override
-                                    public void onNext(Experience experience) {
-                                        Log.i("Response", experience.toString());
+                                    public void onError(Throwable e) {}
+                                    @Override
+                                    public void onNext(Device device) {
+                                        device.refresh().then(new Subscriber<Device>() {
+                                            @Override
+                                            public void onCompleted() {}
+                                            @Override
+                                            public void onError(Throwable e) {}
+                                            @Override
+                                            public void onNext(Device device) {
+                                                Log.i("Response", "Device Refresh!!");
+                                            }
+                                        });
                                     }
                                 });
                             }

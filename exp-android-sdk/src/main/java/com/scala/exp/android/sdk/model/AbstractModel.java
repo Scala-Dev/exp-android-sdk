@@ -4,6 +4,7 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.scala.exp.android.sdk.Exp;
 import com.scala.exp.android.sdk.Utils;
 import com.scala.exp.android.sdk.channels.IChannel;
+import com.scala.exp.android.sdk.observer.ExpObservable;
 
 import java.util.Map;
 
@@ -12,10 +13,7 @@ import java.util.Map;
  */
 public abstract class AbstractModel implements IExpModel {
 
-    public static final String CONSUMER = "consumer";
-    public static final String SYSTEM = "system";
     protected LinkedTreeMap properties = null;
-
 
     public Object get(String path) {
         Object o = null;
@@ -88,5 +86,20 @@ public abstract class AbstractModel implements IExpModel {
 
     public Map getDocument(){
         return this.properties;
+    }
+
+    @Override
+    public void setProperty(String name, Object value) {
+        getDocument().put(name,value);
+    }
+
+    @Override
+    public ExpObservable<?> save() {
+        return null;
+    }
+
+    @Override
+    public ExpObservable<?> refresh() {
+        return null;
     }
 }
