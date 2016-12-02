@@ -15,6 +15,7 @@ import com.scala.exp.android.sdk.model.Thing;
 import java.util.Map;
 
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
@@ -45,6 +46,9 @@ public interface IExpEndpoint {
         @POST("/api/things")
         Observable<Thing> createThing(@Body Map<String, Object> document);
 
+        @DELETE("/api/things/{uuid}")
+        Observable<Void> deleteThing(@Path("uuid") String uuid);
+
         @GET("/api/devices/{uuid}")
         Observable<Device> getDevice(@Path("uuid") String uuid);
 
@@ -69,6 +73,9 @@ public interface IExpEndpoint {
         @POST("/api/experiences")
         Observable<Experience> createExperience(@Body Map<String, Object> document);
 
+        @DELETE("/api/experiences/{uuid}")
+        Observable<Void> deleteExperience(@Path("uuid") String uuid);
+
         @GET("/api/locations/{uuid}")
         Observable<Location> getLocation(@Path("uuid") String uuid);
 
@@ -77,6 +84,9 @@ public interface IExpEndpoint {
 
         @PATCH("/api/locations/{uuid}")
         Observable<Location> saveLocation(@Path("uuid") String uuid,@Body Map<String, Object> document);
+
+        @DELETE("/api/locations/{uuid}")
+        Observable<Void> deleteLocation(@Path("uuid") String uuid);
 
         @POST("/api/locations")
         Observable<Location> createLocation(@Body Map<String, Object> document);
@@ -105,6 +115,9 @@ public interface IExpEndpoint {
         @PUT("/api/data/{group}/{key}")
         Observable<Data> createData(@Path("group") String group, @Path("key") String key,@Body Map<String, Object> document);
 
+        @DELETE("/api/data/{group}/{key}")
+        Observable<Void> deleteData(@Path("group") String group, @Path("key") String key);
+
         @GET("/api/connectors/feeds/{uuid}")
         Observable<Feed> getFeed(@Path("uuid") String uuid);
 
@@ -113,6 +126,9 @@ public interface IExpEndpoint {
 
         @PATCH("/api/connectors/feeds/{uuid}")
         Observable<Feed> saveFeed(@Path("uuid") String uuid,@Body Map<String, Object> document);
+
+        @DELETE("/api/connectors/feeds/{uuid}")
+        Observable<Void> deleteFeed(@Path("uuid") String uuid);
 
         @GET("/api/connectors/feeds/{uuid}/data")
         Observable<Map> getFeedData(@Path("uuid") String uuid);
@@ -131,5 +147,9 @@ public interface IExpEndpoint {
 
         @POST("/api/networks/current/responses")
         Observable<Message> respond(@Body Map<String, Object> options);
+
+        @DELETE("/api/devices/{uuid}")
+        Observable<Void> deleteDevice(@Path("uuid") String uuid);
+
 
 }
