@@ -17,6 +17,18 @@ import rx.schedulers.Schedulers;
  */
 public class Data extends AbstractModel {
 
+    public String getGroup(){
+        return getString(Utils.GROUP);
+    }
+
+    public String getKey(){
+        return getString(Utils.KEY);
+    }
+
+    public Object getValue(){
+        return getDocument();
+    }
+
     @Override
     protected String getChannelName() {
         String key = getString(Utils.KEY);
