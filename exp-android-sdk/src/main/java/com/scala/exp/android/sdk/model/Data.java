@@ -1,5 +1,6 @@
 package com.scala.exp.android.sdk.model;
 
+import com.google.gson.internal.LinkedTreeMap;
 import com.scala.exp.android.sdk.AppSingleton;
 import com.scala.exp.android.sdk.Exp;
 import com.scala.exp.android.sdk.Utils;
@@ -25,8 +26,8 @@ public class Data extends AbstractModel {
         return getString(Utils.KEY);
     }
 
-    public Object getValue(){
-        return getDocument();
+    public LinkedTreeMap getValue(){
+        return (LinkedTreeMap) get(Utils.VALUE);
     }
 
     @Override
