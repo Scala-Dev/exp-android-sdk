@@ -26,7 +26,7 @@ public class Data extends AbstractModel {
         return getString(Utils.KEY);
     }
 
-    public LinkedTreeMap getValue(){
+    public Map getValue(){
         return (LinkedTreeMap) get(Utils.VALUE);
     }
 
