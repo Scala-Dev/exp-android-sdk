@@ -7,6 +7,7 @@ import com.scala.exp.android.sdk.observer.ExpObservable;
 import java.util.HashMap;
 import java.util.Map;
 
+import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -109,6 +110,18 @@ public class Exp {
                 .observeOn(AndroidSchedulers.mainThread());
         return new ExpObservable<Thing>(thingObservable);
     }
+
+    /**
+     * Delete Thing
+     * @param uuid
+     * @return
+     */
+    public static ExpObservable<Void> deleteThing(String uuid){
+        Observable<Void> thingObservable = AppSingleton.getInstance().getEndPoint().deleteThing(uuid)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Void>(thingObservable);
+    }
     /**
      * Get Feed by UUID
      * @param uuid
@@ -143,6 +156,18 @@ public class Exp {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
         return new ExpObservable<Feed>(observable);
+    }
+
+    /**
+     * Delete Feed
+     * @param uuid
+     * @return
+     */
+    public static ExpObservable<Void> deleteFeed(String uuid){
+        Observable<Void> observable = AppSingleton.getInstance().getEndPoint().deleteFeed(uuid)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Void>(observable);
     }
 
     /**
@@ -182,6 +207,18 @@ public class Exp {
     }
 
     /**
+     * Delete Device
+     * @param uuid
+     * @return
+     */
+    public static ExpObservable<Void> deleteDevice(String uuid) {
+        Observable<Void> deviceObservable = AppSingleton.getInstance().getEndPoint().deleteDevice(uuid)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Void>(deviceObservable);
+    }
+
+    /**
      * Get Experience By UUID
      * @param uuid
      * @return
@@ -217,6 +254,20 @@ public class Exp {
         return new ExpObservable<Experience>(experienceObservable);
     }
 
+
+    /**
+     * Delete Experience
+     * @param uuid
+     * @return
+     */
+    public static ExpObservable<Void> deleteExperience(String uuid){
+        Observable<Void> experienceObservable = AppSingleton.getInstance().getEndPoint().deleteExperience(uuid)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Void>(experienceObservable);
+    }
+
+
     /**
      * Get Location by UUID
      * @param uuid
@@ -251,6 +302,18 @@ public class Exp {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
         return new ExpObservable<Location>(locationObservable);
+    }
+
+    /**
+     * Delete Location
+     * @param uuid
+     * @return
+     */
+    public static ExpObservable<Void> deleteLocation(String uuid){
+        Observable<Void> locationObservable = AppSingleton.getInstance().getEndPoint().deleteLocation(uuid)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Void>(locationObservable);
     }
 
     /**
@@ -347,6 +410,20 @@ public class Exp {
                 .observeOn(AndroidSchedulers.mainThread());
         return new ExpObservable<Data>(dataObservable);
     }
+
+    /**
+     * Delete Data
+     * @param group
+     * @param key
+     * @return
+     */
+    public static ExpObservable<Void> deleteData(String group, String key){
+        Observable<Void> dataObservable = AppSingleton.getInstance().getEndPoint().deleteData(group, key)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Void>(dataObservable);
+    }
+
     /**
      * Respond method to broadcast
      * @param options

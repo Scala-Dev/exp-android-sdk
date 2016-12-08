@@ -1,5 +1,6 @@
 package com.scala.exp.android.sdk.model;
 
+import com.google.gson.internal.LinkedTreeMap;
 import com.scala.exp.android.sdk.AppSingleton;
 import com.scala.exp.android.sdk.Exp;
 import com.scala.exp.android.sdk.Utils;
@@ -16,6 +17,18 @@ import rx.schedulers.Schedulers;
  * Created by Cesar Oyarzun on 10/28/15.
  */
 public class Data extends AbstractModel {
+
+    public String getGroup(){
+        return getString(Utils.GROUP);
+    }
+
+    public String getKey(){
+        return getString(Utils.KEY);
+    }
+
+    public Map getValue(){
+        return (LinkedTreeMap) get(Utils.VALUE);
+    }
 
     @Override
     protected String getChannelName() {
