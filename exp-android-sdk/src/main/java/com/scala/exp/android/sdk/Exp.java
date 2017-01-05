@@ -437,6 +437,19 @@ public class Exp {
     }
 
     /**
+     * Get current user
+     * @return
+     */
+    public static ExpObservable<User> getCurrentUser(){
+        Observable<User> respondObservable = AppSingleton.getInstance().getEndPoint().getCurrentUser()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<User>(respondObservable);
+    }
+
+
+
+    /**
      * RefreshToken observable
      * @return
      */

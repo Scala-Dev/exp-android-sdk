@@ -11,6 +11,7 @@ import com.scala.exp.android.sdk.model.Location;
 import com.scala.exp.android.sdk.model.Message;
 import com.scala.exp.android.sdk.model.SearchResults;
 import com.scala.exp.android.sdk.model.Thing;
+import com.scala.exp.android.sdk.model.User;
 
 import java.util.Map;
 
@@ -150,6 +151,9 @@ public interface IExpEndpoint {
 
         @DELETE("/api/devices/{uuid}")
         Observable<Void> deleteDevice(@Path("uuid") String uuid);
+
+        @GET("/api/users/current")
+        Observable<User> getCurrentUser();
 
 
 }
