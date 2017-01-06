@@ -11,6 +11,7 @@ import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 
@@ -18,6 +19,7 @@ import rx.schedulers.Schedulers;
  * Created by Cesar Oyarzun on 10/28/15.
  */
 public class Exp {
+
 
     private static Runtime runtime = new Runtime();
     protected static SocketManager socketManager = new SocketManager();
@@ -36,6 +38,19 @@ public class Exp {
         startOptions.put(Utils.DEVICE_UUID,uuid);
         startOptions.put(Utils.SECRET,secret);
         return  runtime.start(startOptions);
+    }
+
+    /**
+     * Start EXP connection
+     * @param host
+     * @param auth
+     * @return
+     */
+    public static Observable<Boolean> start(String host,Auth auth){
+        Map<String,Object> startOptions = new HashMap<>();
+        startOptions.put(Utils.HOST,host);
+        startOptions.put(Utils.AUTH,auth);
+        return runtime.start(startOptions);
     }
 
     /**
@@ -437,6 +452,24 @@ public class Exp {
     }
 
     /**
+     * Get user with token and host
+     * @param host
+     * @param token
+     * @return
+     */
+    public static Observable<User> getUser(String host, String token){
+        return runtime.init(host,token).flatMap(new Func1<Boolean, Observable<User>>() {
+            @Override
+            public Observable<User> call(Boolean aBoolean) {
+                Observable<User> respondObservable = AppSingleton.getInstance().getEndPoint().getCurrentUser()
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread());
+                return respondObservable;
+            }
+        });
+    }
+
+    /**
      * Get current user
      * @return
      */
@@ -445,6 +478,7 @@ public class Exp {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
         return new ExpObservable<User>(respondObservable);
+
     }
 
 
