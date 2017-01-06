@@ -91,6 +91,18 @@ public class Exp {
     }
 
     /**
+     * Get token
+     * @param options
+     * @return
+     */
+    public static ExpObservable<Auth> getToken(Map<String, Object> options){
+        Observable<Auth> observable = AppSingleton.getInstance().getEndPoint().getToken(options)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<Auth>(observable);
+    }
+
+    /**
      * Get Things by UUID
      * @param uuid
      * @return
@@ -521,7 +533,11 @@ public class Exp {
      * @return
      */
     public static boolean isConnected(){
-        return socketManager.isConnected();
+        boolean isConnected = false;
+        if(socketManager != null){
+            isConnected = socketManager.isConnected();
+        }
+        return isConnected;
     }
 
     /**

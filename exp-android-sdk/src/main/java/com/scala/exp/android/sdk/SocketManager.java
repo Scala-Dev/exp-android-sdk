@@ -292,6 +292,10 @@ public class SocketManager {
      * @return
      */
     public boolean isConnected(){
-        return socket.connected();
+        boolean isConnected = false;
+        if(socket!=null){
+            isConnected = socket.connected();
+        }
+        return isConnected;
     }
 }
