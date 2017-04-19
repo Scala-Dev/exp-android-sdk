@@ -58,6 +58,7 @@ public class Runtime extends Exp{
         String hostUrl = "";
         if(options.get(Utils.HOST) != null){
             AppSingleton.getInstance().setHost((String) options.get(Utils.HOST));
+            AppSingleton.getInstance().setHostSocket((String) options.get(Utils.HOST));
         }
         if(options.get(Utils.ENABLE_EVENTS) != null){
             enableSocket = (Boolean) options.get(Utils.ENABLE_EVENTS);
@@ -103,12 +104,7 @@ public class Runtime extends Exp{
                                     public Observable<Boolean> call(Auth auth) {
                                         Log.d(LOG_TAG, "EXP login response :" + auth.getToken());
                                         AppSingleton.getInstance().setToken(auth.getToken());
-                                        if (auth.getNetwork() != null) {
-                                            String hostSocket = auth.getNetwork().getHost();
-                                            AppSingleton.getInstance().setHostSocket(hostSocket);
-                                        }
                                         AppSingleton.getInstance().setAuth(auth);
-
                                         final BigInteger expiration = auth.getExpiration();
                                         return ExpService.init(AppSingleton.getInstance().getHost(), auth.getToken())
                                                 .flatMap(new Func1<Boolean, Observable<Boolean>>() {
