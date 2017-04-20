@@ -84,9 +84,15 @@ public class Exp {
      * @return
      */
     public static Observable<Auth> login(Map<String, Object> options){
-        Observable<Auth> observable = AppSingleton.getInstance().getEndPoint().login(options)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread());
+        Observable<Auth> observable;
+        if(options.get(Utils.AUTH)==null){
+             observable = AppSingleton.getInstance().getEndPoint().login(options)
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread());
+        }else{
+            observable = Observable.just((Auth)options.get(Utils.AUTH));
+
+        }
         return observable;
     }
 

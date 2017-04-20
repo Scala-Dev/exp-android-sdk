@@ -81,8 +81,12 @@ public class Auth {
         this.network = network;
     }
 
-    public Api getApi() {return api;}
+    public Api getApi() {
+        return api;
+    }
 
-    public void setApi(Api api) {this.api = api;}
+    public void setApi(Api api) {
+        this.api = api;
+    }
 
 }
