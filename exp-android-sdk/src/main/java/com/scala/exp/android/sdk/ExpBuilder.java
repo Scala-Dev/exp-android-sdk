@@ -19,6 +19,7 @@ import com.scala.exp.android.sdk.model.Location;
 import com.scala.exp.android.sdk.model.Message;
 import com.scala.exp.android.sdk.model.SearchResults;
 import com.scala.exp.android.sdk.model.Thing;
+import com.scala.exp.android.sdk.model.User;
 
 /**
  * Created by Cesar Oyarzun on 9/2/16.
@@ -45,6 +46,7 @@ public class ExpBuilder {
         gsonBuilder.registerTypeAdapter(Feed.class, new ModelJsonAdapter<Feed>(Feed.class));
         gsonBuilder.registerTypeAdapter(Message.class, new ModelJsonAdapter<Message>(Message.class));
         gsonBuilder.registerTypeAdapter(Content.class, new ContentJsonAdapter());
+        gsonBuilder.registerTypeAdapter(User.class, new ModelJsonAdapter<User>(User.class));
         gsonBuilder.registerTypeAdapter(ContentNode.class, new ContentNodeJsonAdapter());
         gsonBuilder.registerTypeAdapter(new TypeToken<SearchResults<Content>>(){}.getType(),new SearchModelJsonAdapter<Content>(Content.class));
         gsonBuilder.registerTypeAdapter(new TypeToken<SearchResults<Device>>(){}.getType(),new SearchModelJsonAdapter<Device>(Device.class));

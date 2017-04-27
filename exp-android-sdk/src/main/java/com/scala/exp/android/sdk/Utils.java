@@ -49,6 +49,8 @@ public class Utils {
     public static final String SUBTYPE = "subtype";
     public static final String GROUP = "group";
     public static final String VALUE = "value";
+    public static final String AUTH = "auth";
+    public static final String TOKEN = "token";
 
     public enum SOCKET_CHANNELS {
         SYSTEM ("system"),

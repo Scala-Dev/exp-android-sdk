@@ -12,6 +12,8 @@ public class Auth {
     private BigInteger expiration;
     private Identity identity;
     private Network network;
+    private Api api;
+
 
     /**
      *
@@ -78,4 +80,13 @@ public class Auth {
     public void setNetwork(Network network) {
         this.network = network;
     }
+
+    public Api getApi() {
+        return api;
+    }
+
+    public void setApi(Api api) {
+        this.api = api;
+    }
+
 }

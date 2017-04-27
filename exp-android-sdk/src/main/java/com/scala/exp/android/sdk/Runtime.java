@@ -23,6 +23,7 @@ import rx.schedulers.Schedulers;
  */
 public class Runtime extends Exp{
     private static final String LOG_TAG = Runtime.class.getSimpleName();
+
     private static Boolean enableSocket = true;
 
 
@@ -63,22 +64,24 @@ public class Runtime extends Exp{
             enableSocket = (Boolean) options.get(Utils.ENABLE_EVENTS);
         }
         if(options.get(Utils.USERNAME) != null && options.get(Utils.PASSWORD) != null && options.get(Utils.ORGANIZATION) != null){
-            observable = start_auth(options);
+            observable = startAuth(options);
         }else if (options.get(Utils.UUID) != null && options.get(Utils.SECRET) != null) {
-            opts.put("token",createToken((String) options.get(Utils.UUID), (String) options.get(Utils.SECRET),Utils.DEVICE));
-            observable = start_auth(opts);
+            opts.put(Utils.TOKEN,createToken((String) options.get(Utils.UUID), (String) options.get(Utils.SECRET),Utils.DEVICE));
+            observable = startAuth(opts);
         } else if (options.get(Utils.DEVICE_UUID) != null && options.get(Utils.SECRET) != null) {
-            opts.put("token",createToken((String) options.get(Utils.DEVICE_UUID), (String) options.get(Utils.SECRET),Utils.DEVICE));
-            observable = start_auth(opts);
+            opts.put(Utils.TOKEN,createToken((String) options.get(Utils.DEVICE_UUID), (String) options.get(Utils.SECRET),Utils.DEVICE));
+            observable = startAuth(opts);
         } else if (options.get(Utils.NETWORK_UUID) != null && options.get(Utils.API_KEY) != null) {
-            opts.put("token",createToken((String) options.get(Utils.NETWORK_UUID), (String) options.get(Utils.API_KEY),Utils.CONSUMER_APP));
-            observable = start_auth(opts);
+            opts.put(Utils.TOKEN,createToken((String) options.get(Utils.NETWORK_UUID), (String) options.get(Utils.API_KEY),Utils.CONSUMER_APP));
+            observable = startAuth(opts);
         } else if (options.get(Utils.CONSUMER_APP_UUID) != null && options.get(Utils.API_KEY) != null) {
-            opts.put("token",createToken((String) options.get(Utils.CONSUMER_APP_UUID), (String) options.get(Utils.API_KEY), Utils.CONSUMER_APP));
-            observable = start_auth(opts);
+            opts.put(Utils.TOKEN,createToken((String) options.get(Utils.CONSUMER_APP_UUID), (String) options.get(Utils.API_KEY), Utils.CONSUMER_APP));
+            observable = startAuth(opts);
         } else if (options.get(Utils.UUID) != null && options.get(Utils.API_KEY) != null) {
-            opts.put("token",createToken((String) options.get(Utils.UUID), (String) options.get(Utils.API_KEY),Utils.CONSUMER_APP));
-            observable = start_auth(opts);
+            opts.put(Utils.TOKEN,createToken((String) options.get(Utils.UUID), (String) options.get(Utils.API_KEY),Utils.CONSUMER_APP));
+            observable = startAuth(opts);
+        } else if(options.get(Utils.AUTH)!=null){
+            observable = startAuth(opts);
         } else {
             throw new RuntimeException("Credentials are missing from start call");
         }
@@ -91,7 +94,7 @@ public class Runtime extends Exp{
      * @param options
      * @return
      */
-    public static Observable<Boolean> start_auth(final Map<String, Object> options){
+    public static Observable<Boolean> startAuth(final Map<String, Object> options){
         return ExpService.init(AppSingleton.getInstance().getHost())
                 .flatMap(new Func1<Boolean, Observable<Boolean>>() {
                     @Override
@@ -117,7 +120,7 @@ public class Runtime extends Exp{
 
                                                         // refreshToken timeout
                                                         Observable.timer(getTimeOut(expiration), TimeUnit.SECONDS)
-                                                                .flatMap(new Func1<Long, Observable<Long>>() {
+                                                                .flatMap( new Func1<Long, Observable<Long>>() {
                                                                     @Override
                                                                     public Observable<Long> call(Long aLong) {
                                                                         return Exp.refreshToken()
@@ -165,6 +168,7 @@ public class Runtime extends Exp{
                     }
                 });
     }
+    
 
     /**
      * Stop Connection to EXP
@@ -224,5 +228,15 @@ public class Runtime extends Exp{
         });
 
         return observableRefresh;
+    }
+
+    /**
+     * Init with host and token
+     * @param host
+     * @param token
+     * @return
+     */
+    public Observable<Boolean> init(String host, String token){
+        return ExpService.init(host,token);
     }
 }

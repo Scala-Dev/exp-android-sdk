@@ -11,6 +11,7 @@ import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 
@@ -18,6 +19,7 @@ import rx.schedulers.Schedulers;
  * Created by Cesar Oyarzun on 10/28/15.
  */
 public class Exp {
+
 
     private static Runtime runtime = new Runtime();
     protected static SocketManager socketManager = new SocketManager();
@@ -36,6 +38,19 @@ public class Exp {
         startOptions.put(Utils.DEVICE_UUID,uuid);
         startOptions.put(Utils.SECRET,secret);
         return  runtime.start(startOptions);
+    }
+
+    /**
+     * Start EXP connection
+     * @param host
+     * @param auth
+     * @return
+     */
+    public static Observable<Boolean> start(String host,Auth auth){
+        Map<String,Object> startOptions = new HashMap<>();
+        startOptions.put(Utils.HOST,host);
+        startOptions.put(Utils.AUTH,auth);
+        return runtime.start(startOptions);
     }
 
     /**
@@ -69,10 +84,28 @@ public class Exp {
      * @return
      */
     public static Observable<Auth> login(Map<String, Object> options){
-        Observable<Auth> observable = AppSingleton.getInstance().getEndPoint().login(options)
+        Observable<Auth> observable;
+        if(options.get(Utils.AUTH)==null){
+             observable = AppSingleton.getInstance().getEndPoint().login(options)
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread());
+        }else{
+            observable = Observable.just((Auth)options.get(Utils.AUTH));
+
+        }
+        return observable;
+    }
+
+    /**
+     * Get token
+     * @param options
+     * @return
+     */
+    public static ExpObservable<Auth> getToken(Map<String, Object> options){
+        Observable<Auth> observable = AppSingleton.getInstance().getEndPoint().getToken(options)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
-        return observable;
+        return new ExpObservable<Auth>(observable);
     }
 
     /**
@@ -437,6 +470,38 @@ public class Exp {
     }
 
     /**
+     * Get user with token and host
+     * @param host
+     * @param token
+     * @return
+     */
+    public static Observable<User> getUser(String host, String token){
+        return runtime.init(host,token).flatMap(new Func1<Boolean, Observable<User>>() {
+            @Override
+            public Observable<User> call(Boolean aBoolean) {
+                Observable<User> respondObservable = AppSingleton.getInstance().getEndPoint().getCurrentUser()
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread());
+                return respondObservable;
+            }
+        });
+    }
+
+    /**
+     * Get current user
+     * @return
+     */
+    public static ExpObservable<User> getCurrentUser(){
+        Observable<User> respondObservable = AppSingleton.getInstance().getEndPoint().getCurrentUser()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+        return new ExpObservable<User>(respondObservable);
+
+    }
+
+
+
+    /**
      * RefreshToken observable
      * @return
      */
@@ -474,7 +539,11 @@ public class Exp {
      * @return
      */
     public static boolean isConnected(){
-        return socketManager.isConnected();
+        boolean isConnected = false;
+        if(socketManager != null){
+            isConnected = socketManager.isConnected();
+        }
+        return isConnected;
     }
 
     /**
